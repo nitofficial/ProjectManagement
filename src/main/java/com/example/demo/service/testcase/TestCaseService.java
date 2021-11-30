@@ -5,90 +5,93 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.FindAndModifyOptions;
-import org.springframework.data.mongodb.core.MongoOperations;
+
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Update;
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.projectcreation.RequirementModel;
 import com.example.demo.model.testcase.TestCaseModel;
 import com.example.demo.constants.Constants;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.utilities.ProjectUtility;
 
 @Service
 public class TestCaseService {
-	
+
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(TestCaseService.class);
 
-	/*
-	 * public TestCaseService(MongoTemplate mongoTemplate) { this.mongoTemplate =
-	 * mongoTemplate; }
-	 */
-	
-	public TestCaseModel getByTestCaseId(String projectId,String requirementId,String testcaseId) {
-		Map<String,String> conditionsMap=new HashMap<String,String>();
-		conditionsMap.put("projectId",projectId );
-		conditionsMap.put("requirementId",requirementId );
-		conditionsMap.put("id",testcaseId );
-		return mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), TestCaseModel.class);
+	public TestCaseModel getByTestCaseId(String projectId, String requirementId, String testcaseId) {
+		Map<String, String> conditionsMap = new HashMap<String, String>();
+		conditionsMap.put("projectId", projectId);
+		conditionsMap.put("requirementId", requirementId);
+		conditionsMap.put("id", testcaseId);
+		try {
+			return mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), TestCaseModel.class);
+		} catch (Exception e) {
+			LOGGER.warn("SPECIFIC TESTCASE NOT FOUND");
+			throw new BadRequestException("Specific TestCase Not Found");
+		}
+
 	}
 
 	public List<TestCaseModel> getAllTestCase() {
+		try {
+			return mongoTemplate.findAll(TestCaseModel.class);
+		} catch (Exception e) {
+			LOGGER.warn("TESTCASES NOT FOUND");
+			throw new BadRequestException("TestCases Not Found");
+		}
 
-		return mongoTemplate.findAll(TestCaseModel.class);
 	}
 
 	public String addTestCase(List<TestCaseModel> testcaseModelList) {
-         
-		
-		 for(int testcaseIndex=0;testcaseIndex<testcaseModelList.size();testcaseIndex++)
-		 {
-			 TestCaseModel testcaseModel=testcaseModelList.get(testcaseIndex);
-			 Map<String,String> conditionsMap=new HashMap<String,String>();
-			 conditionsMap.put("projectId", testcaseModel.getProjectId());
-			 conditionsMap.put("requirementId", testcaseModel.getRequirementId());
-			 
-			 testcaseModel.setStatus(Constants.TESTCASE_STATUS_PASSED);
-			 RequirementModel requirementModel=mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), RequirementModel.class);
-			 if(requirementModel!=null)
-			 {
-				 testcaseModel.setTestcaseId(Constants.TESTCASE_PREFIX+String.valueOf(requirementModel.incrementTestCaseCount()));
-				 mongoTemplate.insert(testcaseModel);
-				 mongoTemplate.save(requirementModel);
-			 }
 
-		 }
+		for (int testcaseIndex = 0; testcaseIndex < testcaseModelList.size(); testcaseIndex++) {
+			TestCaseModel testcaseModel = testcaseModelList.get(testcaseIndex);
+			Map<String, String> conditionsMap = new HashMap<String, String>();
+			conditionsMap.put("projectId", testcaseModel.getProjectId());
+			conditionsMap.put("requirementId", testcaseModel.getRequirementId());
+
+			testcaseModel.setStatus(Constants.TESTCASE_STATUS_PASSED);
+			RequirementModel requirementModel = mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap),
+					RequirementModel.class);
+			if (requirementModel != null) {
+				testcaseModel.setTestcaseId(
+						Constants.TESTCASE_PREFIX + String.valueOf(requirementModel.incrementTestCaseCount()));
+
+				if (mongoTemplate.insert(testcaseModel) == null) {
+					LOGGER.warn("FEW TESTCASES ARE NOT INSERTED SUCCESSFULLY ");
+				}
+				if (mongoTemplate.save(requirementModel) == null) {
+					LOGGER.warn("TESTCASE COUNT IS NOT UPDATED");
+				}
+			} else {
+				LOGGER.warn("REQUIREMENT ID DOESNT EXIST");
+				throw new BadRequestException("Requirement id Doesnt exist");
+			}
+
+		}
 		return "Inserted";
-//		if (mongoTemplate.insert(testcaseModel) != null)
-//			return " Inserted";
-//		else
-//			return "Not Inserted";
 
 	}
 
-//	public TestCaseCounter uniqueValue(String key) {
-//
-//		Update update = new Update();
-//		update.inc(Constants.TESTCASE_COUNTER_DOCUMENT_SEQUENCE_COLUMN, 1);
-//		FindAndModifyOptions options = new FindAndModifyOptions();
-//		options.returnNew(true).upsert(true);
-//		TestCaseCounter counter = mongoOperation.findAndModify(TestCaseUtility.getQueryByKeyValue("_id", key), update,
-//				options, TestCaseCounter.class);
-//
-//		return counter;
-//
-//	}
-
-	public String updateProject(TestCaseModel testCaseModel,String projectId,String requirementId,String testcaseId) {
-		TestCaseModel requestedTestCase = getByTestCaseId(projectId,requirementId,testcaseId);
+	public String updateProject(TestCaseModel testCaseModel, String projectId, String requirementId,
+			String testcaseId) {
+		TestCaseModel requestedTestCase = getByTestCaseId(projectId, requirementId, testcaseId);
 
 		if (testCaseModel == null) {
 			requestedTestCase.setStatus(Constants.TESTCASE_STATUS_ONHOLD);
-			mongoTemplate.save(requestedTestCase);
+			if (mongoTemplate.save(requestedTestCase) == null) {
+				LOGGER.warn("TESTCASE COULD NOT BE DELETED");
+				throw new BadRequestException("Testcase could not be deleted");
+			}
 			return "testCase Deleted";
 		}
 
@@ -111,9 +114,13 @@ public class TestCaseService {
 			requestedTestCase.setStatus(testCaseModel.getStatus());
 		}
 
-		mongoTemplate.save(requestedTestCase);
+		if (mongoTemplate.save(requestedTestCase) == null) {
+			LOGGER.warn("TESTCASE COULD NOT BE UPDATED");
+			throw new BadRequestException("Testcase could not be updated");
 
-		return "TestCase " + requestedTestCase.getTestcaseId() + " Updated";
+		} else {
+			return "TestCase " + requestedTestCase.getTestcaseId() + " Updated";
+		}
 
 	}
 

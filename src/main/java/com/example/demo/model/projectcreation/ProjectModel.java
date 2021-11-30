@@ -2,7 +2,6 @@ package com.example.demo.model.projectcreation;
 
 import java.util.*;
 
-
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.example.demo.constants.Constants;
@@ -13,54 +12,38 @@ public class ProjectModel {
 	private String id;
 	private String name;
 	private String description;
-	
-	 @JsonFormat(shape=JsonFormat.Shape.STRING, pattern=Constants.DATE_FORMAT)
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_FORMAT)
 	private Date startDate;
-	
-	 @JsonFormat(shape=JsonFormat.Shape.STRING, pattern=Constants.DATE_FORMAT)
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_FORMAT)
 	private Date endDate;
-	
-	 @JsonFormat(shape=JsonFormat.Shape.STRING, pattern=Constants.DATE_FORMAT)
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_FORMAT)
 	private Date targetedRelease;
 
 	private List<UpdateHistory> updateHistoryList;
 	private int requirementsCount;
-	
+
 	public ProjectModel() {
-		updateHistoryList=new ArrayList<UpdateHistory>();
+		updateHistoryList = new ArrayList<UpdateHistory>();
 	}
-	
-	
-    
+
 	public int getRequirementsCount() {
 		return requirementsCount;
 	}
-
-
 
 	public void setRequirementsCount(int requirementsCount) {
 		this.requirementsCount = requirementsCount;
 	}
 
-
-
-	public int requirementCountIncrement()
-	{
-		requirementsCount+=1;
+	public int requirementCountIncrement() {
+		requirementsCount += 1;
 		return requirementsCount;
 	}
 
-	/*
-	 * public void addRequirements(RequirementModel requirementModel) {
-	 * requirements.add(requirementModel); }
-	 * 
-	 * public void updateRequirementbyIndex(int index,RequirementModel
-	 * requirementModel) { requirements.set(index, requirementModel); }
-	 */
-	
-	public void addUpdateDate(String message)
-	{
-		updateHistoryList.add(new UpdateHistory(new Date(),message));
+	public void addUpdateDate(String message) {
+		updateHistoryList.add(new UpdateHistory(new Date(), message));
 	}
 
 	public String getId() {
@@ -111,8 +94,6 @@ public class ProjectModel {
 		this.targetedRelease = targetedRelease;
 	}
 
-	
-
 	public List<UpdateHistory> getUpdateHistoryList() {
 		return updateHistoryList;
 	}
@@ -120,9 +101,5 @@ public class ProjectModel {
 	public void setUpdateHistoryList(List<UpdateHistory> updateHistoryList) {
 		this.updateHistoryList = updateHistoryList;
 	}
-
-
-	
-
 
 }

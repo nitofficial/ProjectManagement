@@ -47,6 +47,7 @@ public final class Constants {
 	public static final String REQUIREMENT_COLLECTION =  "requirement";
 	
 	public static final String REQUIREMENT_VALID_STATUS =  "valid";
+	public static final String REQUIREMENT_INVALID_STATUS =  "invalid";
 	
 	
 	//Defects

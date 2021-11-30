@@ -1,6 +1,6 @@
 package com.example.demo.model.projectcreation;
 
-import java.util.ArrayList;
+
 
 
 import org.springframework.data.annotation.Id;
@@ -19,12 +19,6 @@ public class Counter {
 		super();
 	}
 	
-	/*
-	 * public void addRequirementCount() { requirementCounter.add(0); }
-	 * 
-	 * public void setRequirementCountByIndex(int index,int value) {
-	 * requirementCounter.set(index, value); }
-	 */
 	
 
 	public String getId() {

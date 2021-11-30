@@ -13,11 +13,11 @@ public class RequirementModel {
 	private String inputParameters;
 	private String status;
 	private int testCaseCount;
-	
+
 	public int incrementTestCaseCount() {
-		testCaseCount+=1;
+		testCaseCount += 1;
 		return testCaseCount;
-	} 
+	}
 
 	public String getInputParameters() {
 		return inputParameters;
@@ -42,8 +42,6 @@ public class RequirementModel {
 	public void setTestCaseCount(int testCaseCount) {
 		this.testCaseCount = testCaseCount;
 	}
-
-	
 
 	public String getRequirementId() {
 		return requirementId;

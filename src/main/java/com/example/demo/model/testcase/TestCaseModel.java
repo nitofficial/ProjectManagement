@@ -2,10 +2,9 @@ package com.example.demo.model.testcase;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
 import com.example.demo.constants.Constants;
 
-@Document(collection =Constants.TESTCASE_COLLECTION)
+@Document(collection = Constants.TESTCASE_COLLECTION)
 public class TestCaseModel {
 	private String _id;
 	private String projectId;
@@ -42,8 +41,6 @@ public class TestCaseModel {
 	public void setRequirementId(String requirementId) {
 		this.requirementId = requirementId;
 	}
-
-	
 
 	public String getTestcaseId() {
 		return testcaseId;
@@ -108,6 +105,5 @@ public class TestCaseModel {
 	public void set_id(String _id) {
 		this._id = _id;
 	}
-	
 
 }
