@@ -14,29 +14,18 @@ public class Counter {
 	@Id
 	private String id;
 	private int seq;
-	private  ArrayList<Integer> requirementCounter = new ArrayList<Integer>();
 	
 	public Counter() {
 		super();
 	}
 	
-	public void addRequirementCount()
-	{
-		requirementCounter.add(0);
-	}
+	/*
+	 * public void addRequirementCount() { requirementCounter.add(0); }
+	 * 
+	 * public void setRequirementCountByIndex(int index,int value) {
+	 * requirementCounter.set(index, value); }
+	 */
 	
-	public void setRequirementCountByIndex(int index,int value)
-	{
-		requirementCounter.set(index, value);
-	}
-	
-	public ArrayList<Integer> getRequirementCounter() {
-		return requirementCounter;
-	}
-
-	public void setRequirementCounter(ArrayList<Integer> requirementCounter) {
-		this.requirementCounter = requirementCounter;
-	}
 
 	public String getId() {
 		return id;

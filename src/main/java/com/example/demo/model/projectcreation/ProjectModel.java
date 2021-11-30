@@ -2,6 +2,7 @@ package com.example.demo.model.projectcreation;
 
 import java.util.*;
 
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.example.demo.constants.Constants;
@@ -22,27 +23,44 @@ public class ProjectModel {
 	 @JsonFormat(shape=JsonFormat.Shape.STRING, pattern=Constants.DATE_FORMAT)
 	private Date targetedRelease;
 
-	private List<Date> updateHistory;
-	private List<RequirementModel> requirements;
+	private List<UpdateHistory> updateHistoryList;
+	private int requirementsCount;
 	
 	public ProjectModel() {
-		updateHistory=new ArrayList<Date>();
-		requirements=new ArrayList<RequirementModel>();
+		updateHistoryList=new ArrayList<UpdateHistory>();
 	}
 	
-	public void addRequirements(RequirementModel requirementModel)
-	{
-		requirements.add(requirementModel);
-	}
 	
-	public void updateRequirementbyIndex(int index,RequirementModel requirementModel)
-	{
-		requirements.set(index,  requirementModel);
+    
+	public int getRequirementsCount() {
+		return requirementsCount;
 	}
-	
-	public void addUpdateDate()
+
+
+
+	public void setRequirementsCount(int requirementsCount) {
+		this.requirementsCount = requirementsCount;
+	}
+
+
+
+	public int requirementCountIncrement()
 	{
-		updateHistory.add(new Date());
+		requirementsCount+=1;
+		return requirementsCount;
+	}
+
+	/*
+	 * public void addRequirements(RequirementModel requirementModel) {
+	 * requirements.add(requirementModel); }
+	 * 
+	 * public void updateRequirementbyIndex(int index,RequirementModel
+	 * requirementModel) { requirements.set(index, requirementModel); }
+	 */
+	
+	public void addUpdateDate(String message)
+	{
+		updateHistoryList.add(new UpdateHistory(new Date(),message));
 	}
 
 	public String getId() {
@@ -93,21 +111,16 @@ public class ProjectModel {
 		this.targetedRelease = targetedRelease;
 	}
 
-	public List<Date> getUpdateHistory() {
-		return updateHistory;
+	
+
+	public List<UpdateHistory> getUpdateHistoryList() {
+		return updateHistoryList;
 	}
 
-	public void setUpdateHistory(List<Date> updateHistory) {
-		this.updateHistory = updateHistory;
+	public void setUpdateHistoryList(List<UpdateHistory> updateHistoryList) {
+		this.updateHistoryList = updateHistoryList;
 	}
 
-	public List<RequirementModel> getRequirements() {
-		return requirements;
-	}
-
-	public void setRequirements(List<RequirementModel> requirements) {
-		this.requirements = requirements;
-	}
 
 	
 

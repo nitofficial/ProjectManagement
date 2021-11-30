@@ -2,6 +2,7 @@ package com.example.demo.controller.testcase;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.model.testcase.TestCaseCounter;
 import com.example.demo.model.testcase.TestCaseModel;
-import com.example.demo.constants.Constants;
 import com.example.demo.service.testcase.TestCaseService;
 
 
@@ -27,12 +26,12 @@ public class TestCaseController {
 		private TestCaseService testCaseService;
 		
 		@PostMapping("/testcase")	
-		public String createProject(@RequestBody TestCaseModel testCaseModel)
+		public String addTestCases(@RequestBody List<TestCaseModel> testCaseModelList)
 		{
-			TestCaseCounter counter=testCaseService.uniqueValue(Constants.TESTCASE_COUNTER_DOCUMENT_ID);
-			testCaseModel.setId("Test-"+String.valueOf(counter.getSeq()));
+//			TestCaseCounter counter=testCaseService.uniqueValue(Constants.TESTCASE_COUNTER_DOCUMENT_ID);
+//			testCaseModel.setId("Test-"+String.valueOf(counter.getSeq()));
 			
-			return testCaseService.addTestCase(testCaseModel);
+			return testCaseService.addTestCase(testCaseModelList);
 		}
 		
 		@GetMapping("/testcase")	
@@ -41,24 +40,25 @@ public class TestCaseController {
 			return testCaseService.getAllTestCase();
 		}
 		
-		
-		@GetMapping("/testcase/{id}")
-		public TestCaseModel testcaseByID(@PathVariable("id") String id){
-			return testCaseService.getByTestCaseId(id);
+		//do here
+		@GetMapping("/testcase/{pid}/{rid}/{tid}")
+		public TestCaseModel testcaseByID(@PathVariable("pid") String projectId,@PathVariable("rid") String requirementId,@PathVariable("tid") String testcaseId){
+			return testCaseService.getByTestCaseId(projectId,requirementId,testcaseId);
 			
 		}
 		
-		@PutMapping("/testcase/{id}")	
-		public String updateProject(@PathVariable("id") String id,@RequestBody TestCaseModel testCaseModel)
+		@PutMapping("/testcase/{pid}/{rid}/{tid}")	
+		public String updateTestCase(@PathVariable("pid") String projectId,@PathVariable("rid") String requirementId,@PathVariable("tid") String testcaseId,@RequestBody TestCaseModel testCaseModel)
 		{
-			return testCaseService.updateProject(testCaseModel,id);
+			return testCaseService.updateProject(testCaseModel,projectId,requirementId,testcaseId);
 		}
 		
-		@DeleteMapping("/testcase/{id}")
-		public String deleteRequirement(@PathVariable("id") String id) {
+		@DeleteMapping("/testcase/{pid}/{rid}/{tid}")
+		public String deleteTestCase(@PathVariable("pid") String projectId,@PathVariable("rid") String requirementId,@PathVariable("tid") String testcaseId) {
 			
-			return testCaseService.updateProject(null,id);
+			return testCaseService.updateProject(null,projectId,requirementId,testcaseId);
 			
 		}
 		
 }
+

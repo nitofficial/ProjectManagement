@@ -7,12 +7,14 @@ import com.example.demo.constants.Constants;
 
 @Document(collection =Constants.TESTCASE_COLLECTION)
 public class TestCaseModel {
+	private String _id;
 	private String projectId;
 	private String projectname;
 	private String requirementId;
-	private String id;
+	private String testcaseId;
 	private String name;
 	private String description;
+	private String inputParameters;
 	private String expectedResults;
 	private String actualResults;
 	private String status;
@@ -41,12 +43,14 @@ public class TestCaseModel {
 		this.requirementId = requirementId;
 	}
 
-	public String getId() {
-		return id;
+	
+
+	public String getTestcaseId() {
+		return testcaseId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setTestcaseId(String testcaseId) {
+		this.testcaseId = testcaseId;
 	}
 
 	public String getName() {
@@ -60,33 +64,3 @@ public class TestCaseModel {
 	public String getDescription() {
 		return description;
 	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getExpectedResults() {
-		return expectedResults;
-	}
-
-	public void setExpectedResults(String expectedResults) {
-		this.expectedResults = expectedResults;
-	}
-
-	public String getActualResults() {
-		return actualResults;
-	}
-
-	public void setActualResults(String actualResults) {
-		this.actualResults = actualResults;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-}

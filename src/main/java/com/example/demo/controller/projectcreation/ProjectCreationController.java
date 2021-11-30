@@ -25,6 +25,7 @@ import com.example.demo.service.projectcreation.ProjectService;
 @RestController
 public class ProjectCreationController {
      
+	
 	@Autowired
 	private ProjectService projectService;   
 	
@@ -33,9 +34,10 @@ public class ProjectCreationController {
 	public String createProject(@RequestBody ProjectModel projectModel)
 	{
 		//System.out.println("test created");
-		Counter counter=projectService.uniqueValue(Constants.PROJECT_COUNTER_DOCUMENT_ID);
-		projectModel.setId(Constants.PROJECT_PREFIX+String.valueOf(counter.getSeq()));
-		projectModel=projectService.setRequirementCount(projectModel, counter);
+//		Counter counter=projectService.uniqueValue(Constants.PROJECT_COUNTER_DOCUMENT_ID);
+		projectModel.setId(Constants.PROJECT_PREFIX+String.valueOf(projectService.uniqueValue(Constants.PROJECT_COUNTER_DOCUMENT_ID)));
+//		projectModel=projectService.setRequirementCount(projectModel, counter);
+		projectModel.setRequirementsCount(0);
 		return projectService.addProject(projectModel);
 	}
 	
@@ -63,9 +65,9 @@ public class ProjectCreationController {
 	   //Requirement controller
 
 		@PostMapping("/project/requirement/{id}")
-		public String createRequirement(@PathVariable("id") String id, @RequestBody RequirementModel requirementModel) {
+		public String createRequirement(@PathVariable("id") String id, @RequestBody List<RequirementModel> requirementModelList) {
 
-			return projectService.addRequirement(requirementModel, id);
+			return projectService.addRequirement(requirementModelList, id);
 		}
 
 		@PutMapping("/project/requirement/{id}/{rid}")

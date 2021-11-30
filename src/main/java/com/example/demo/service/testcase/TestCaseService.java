@@ -1,61 +1,40 @@
 package com.example.demo.service.testcase;
 
 import java.util.HashMap;
+
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.dashboard.IdOnly;
-import com.example.demo.model.defect.Defect;
-import com.example.demo.model.testcase.TestCaseCounter;
+import com.example.demo.model.projectcreation.RequirementModel;
 import com.example.demo.model.testcase.TestCaseModel;
 import com.example.demo.constants.Constants;
-import com.example.demo.utilities.TestCaseUtility;
+import com.example.demo.utilities.ProjectUtility;
 
 @Service
 public class TestCaseService {
+	
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
-	@Autowired
-	private MongoOperations mongoOperation;
 
-	public long getTestsCount() {
-
-		Query query = new Query();
-		query.addCriteria(Criteria.where("status").ne("Passed"));
-		return mongoTemplate.count(query, TestCaseModel.class);
-
-	}
-
-	public List<IdOnly> getOpenTests() {
-		Query q = new Query();
-		q.addCriteria(Criteria.where("status").ne("Passed"));
-		q.fields().include("id");
-		List<IdOnly> a = mongoTemplate.find(q, IdOnly.class, Constants.TESTCASE_COLLECTION);
-		System.out.print(a);
-		return a;
-	}
-
-	public long getPassedTestsCount() {
-		Query query = new Query();
-		query.addCriteria(Criteria.where("status").is("Passed"));
-		return mongoTemplate.count(query, TestCaseModel.class);
-	}
-
-	public TestCaseService(MongoTemplate mongoTemplate) {
-		this.mongoTemplate = mongoTemplate;
-	}
-
-	public TestCaseModel getByTestCaseId(String id) {
-		return mongoTemplate.findOne(TestCaseUtility.getQueryByKeyValue("id", id), TestCaseModel.class);
+	/*
+	 * public TestCaseService(MongoTemplate mongoTemplate) { this.mongoTemplate =
+	 * mongoTemplate; }
+	 */
+	
+	public TestCaseModel getByTestCaseId(String projectId,String requirementId,String testcaseId) {
+		Map<String,String> conditionsMap=new HashMap<String,String>();
+		conditionsMap.put("projectId",projectId );
+		conditionsMap.put("requirementId",requirementId );
+		conditionsMap.put("id",testcaseId );
+		return mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), TestCaseModel.class);
 	}
 
 	public List<TestCaseModel> getAllTestCase() {
@@ -63,30 +42,49 @@ public class TestCaseService {
 		return mongoTemplate.findAll(TestCaseModel.class);
 	}
 
-	public String addTestCase(TestCaseModel testcaseModel) {
+	public String addTestCase(List<TestCaseModel> testcaseModelList) {
+         
+		
+		 for(int testcaseIndex=0;testcaseIndex<testcaseModelList.size();testcaseIndex++)
+		 {
+			 TestCaseModel testcaseModel=testcaseModelList.get(testcaseIndex);
+			 Map<String,String> conditionsMap=new HashMap<String,String>();
+			 conditionsMap.put("projectId", testcaseModel.getProjectId());
+			 conditionsMap.put("requirementId", testcaseModel.getRequirementId());
+			 
+			 testcaseModel.setStatus(Constants.TESTCASE_STATUS_PASSED);
+			 RequirementModel requirementModel=mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), RequirementModel.class);
+			 if(requirementModel!=null)
+			 {
+				 testcaseModel.setTestcaseId(Constants.TESTCASE_PREFIX+String.valueOf(requirementModel.incrementTestCaseCount()));
+				 mongoTemplate.insert(testcaseModel);
+				 mongoTemplate.save(requirementModel);
+			 }
 
-		if (mongoTemplate.insert(testcaseModel) != null)
-			return " Inserted";
-		else
-			return "Not Inserted";
+		 }
+		return "Inserted";
+//		if (mongoTemplate.insert(testcaseModel) != null)
+//			return " Inserted";
+//		else
+//			return "Not Inserted";
 
 	}
 
-	public TestCaseCounter uniqueValue(String key) {
+//	public TestCaseCounter uniqueValue(String key) {
+//
+//		Update update = new Update();
+//		update.inc(Constants.TESTCASE_COUNTER_DOCUMENT_SEQUENCE_COLUMN, 1);
+//		FindAndModifyOptions options = new FindAndModifyOptions();
+//		options.returnNew(true).upsert(true);
+//		TestCaseCounter counter = mongoOperation.findAndModify(TestCaseUtility.getQueryByKeyValue("_id", key), update,
+//				options, TestCaseCounter.class);
+//
+//		return counter;
+//
+//	}
 
-		Update update = new Update();
-		update.inc(Constants.TESTCASE_COUNTER_DOCUMENT_SEQUENCE_COLUMN, 1);
-		FindAndModifyOptions options = new FindAndModifyOptions();
-		options.returnNew(true).upsert(true);
-		TestCaseCounter counter = mongoOperation.findAndModify(TestCaseUtility.getQueryByKeyValue("_id", key), update,
-				options, TestCaseCounter.class);
-
-		return counter;
-
-	}
-
-	public String updateProject(TestCaseModel testCaseModel, String id) {
-		TestCaseModel requestedTestCase = getByTestCaseId(id);
+	public String updateProject(TestCaseModel testCaseModel,String projectId,String requirementId,String testcaseId) {
+		TestCaseModel requestedTestCase = getByTestCaseId(projectId,requirementId,testcaseId);
 
 		if (testCaseModel == null) {
 			requestedTestCase.setStatus(Constants.TESTCASE_STATUS_ONHOLD);
@@ -103,6 +101,9 @@ public class TestCaseService {
 		if (testCaseModel.getExpectedResults() != null) {
 			requestedTestCase.setExpectedResults(testCaseModel.getExpectedResults());
 		}
+		if (testCaseModel.getInputParameters() != null) {
+			requestedTestCase.setInputParameters(testCaseModel.getInputParameters());
+		}
 		if (testCaseModel.getActualResults() != null) {
 			requestedTestCase.setActualResults(testCaseModel.getActualResults());
 		}
@@ -112,7 +113,7 @@ public class TestCaseService {
 
 		mongoTemplate.save(requestedTestCase);
 
-		return "TestCase " + requestedTestCase.getId() + " Updated";
+		return "TestCase " + requestedTestCase.getTestcaseId() + " Updated";
 
 	}
 

@@ -1,6 +1,8 @@
 package com.example.demo.service.projectcreation;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
@@ -19,7 +21,7 @@ import com.example.demo.utilities.ProjectUtility;
 
 @Service
 public class ProjectService {
-private MongoTemplate mongoTemplate;
+	private MongoTemplate mongoTemplate;
 	
 	@Autowired
 	private MongoOperations mongoOperation;
@@ -48,8 +50,10 @@ private MongoTemplate mongoTemplate;
 		return   mongoTemplate.findAll(ProjectModel.class);
 	}
 	public ProjectModel getByProjectId(String id) {
-	
-		return mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue("id", id), ProjectModel.class);
+	    
+		 Map<String,String> conditionsMap=new HashMap<String,String>();
+		  conditionsMap.put("id", id);
+		return mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), ProjectModel.class);
 	}
 	
 	public String updateProject(ProjectModel projectModel,String id) {
@@ -74,7 +78,7 @@ private MongoTemplate mongoTemplate;
 		{
 			requestedProject.setTargetedRelease(projectModel.getTargetedRelease());
 		}
-		requestedProject.addUpdateDate();
+		requestedProject.addUpdateDate(requestedProject.getId()+" is Updated");
 		 
 		mongoTemplate.save(requestedProject);
 		
@@ -84,50 +88,66 @@ private MongoTemplate mongoTemplate;
 	}
 
 	
-	public Counter uniqueValue(String key)
+	public int uniqueValue(String key)
 	{
 		 
 		 Update update = new Update();
 		  update.inc(Constants.PROJECT_COUNTER_DOCUMENT_SEQUENCE_COLUMN, 1);
 		  FindAndModifyOptions options = new FindAndModifyOptions();
 		  options.returnNew(true).upsert(true);
-		  Counter counter= mongoOperation.findAndModify(ProjectUtility.getQueryByKeyValue("_id", key), update, options, Counter.class);
-		  counter.addRequirementCount();
 		  
+		  Map<String,String> conditionsMap=new HashMap<String,String>();
+		  conditionsMap.put("_id", key);
+		  
+		  Counter counter= mongoOperation.findAndModify(ProjectUtility.getQueryByKeyValue(conditionsMap), update, options, Counter.class);
+		
 		  mongoTemplate.save(counter);
 
-		return counter;
+		return counter.getSeq();
 		
 	}
-	public ProjectModel setRequirementCount(ProjectModel projectModel,Counter counter)
-	{
-		 List<RequirementModel> requirements =projectModel.getRequirements();
-		for(int reqIndex=0 ;reqIndex<projectModel.getRequirements().size();reqIndex++)
-		{
-			RequirementModel tempRequirement=requirements.get(reqIndex);
-			tempRequirement.setId(Constants.REQUIREMENT_PREFIX+String.valueOf(reqIndex+1));
-			requirements.set(reqIndex,tempRequirement);
-		}
-		counter.setRequirementCountByIndex(counter.getSeq()-1,counter.getRequirementCounter().get(counter.getSeq()-1)+projectModel.getRequirements().size() );
-		
-		mongoTemplate.save(counter);
+	
+	
+//	public ProjectModel setRequirementCount(ProjectModel projectModel,Counter counter)
+//	{
+//		 List<RequirementModel> requirements =projectModel.getRequirements();
+//		for(int reqIndex=0 ;reqIndex<projectModel.getRequirements().size();reqIndex++)
+//		{
+//			RequirementModel tempRequirement=requirements.get(reqIndex);
+//			tempRequirement.setId(Constants.REQUIREMENT_PREFIX+String.valueOf(reqIndex+1));
+//			requirements.set(reqIndex,tempRequirement);
+//		}
+//		counter.setRequirementCountByIndex(counter.getSeq()-1,counter.getRequirementCounter().get(counter.getSeq()-1)+projectModel.getRequirements().size() );
+//		
+//		mongoTemplate.save(counter);
+//
+//		return projectModel;
+//	}
 
-		return projectModel;
-	}
-
-	public String addRequirement(RequirementModel requirementModel, String id) {
+	public String addRequirement(List<RequirementModel> requirementModelList, String projectId) {
 		
-		ProjectModel projectModel=getByProjectId(id);
+		  ProjectModel projectModel=getByProjectId(projectId);
 		
-		 Counter counter=mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue("_id", Constants.PROJECT_COUNTER_DOCUMENT_ID), Counter.class);
-		 int requirementCounterIndex=Integer.valueOf(id.substring(4));
-		 int value=counter.getRequirementCounter().get(requirementCounterIndex-1);
-		 value+=1;
-		 counter.setRequirementCountByIndex(requirementCounterIndex-1, value);
-		 requirementModel.setId(Constants.REQUIREMENT_PREFIX+String.valueOf(value));
-		 projectModel.addRequirements(requirementModel);
+//		 Counter counter=mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue("_id", Constants.PROJECT_COUNTER_DOCUMENT_ID), Counter.class);
+		  
+		 for(int requirementIndex=0;requirementIndex<requirementModelList.size();requirementIndex++)
+		 {
+			 RequirementModel requirementModel=requirementModelList.get(requirementIndex);
+			 requirementModel.setStatus(Constants.REQUIREMENT_VALID_STATUS);
+			 requirementModel.setProjectId(projectId);
+			 requirementModel.setRequirementId( Constants.REQUIREMENT_PREFIX+String.valueOf(projectModel.requirementCountIncrement()));
+			 requirementModel.setTestCaseCount(0);
+			 mongoTemplate.insert(requirementModel);
+		 }
+		  
+//		 int requirementCounterIndex=Integer.valueOf(id.substring(4));
+//		 int value=counter.getRequirementCounter().get(requirementCounterIndex-1);
+//		 value+=1;
+//		 counter.setRequirementCountByIndex(requirementCounterIndex-1, value);
+//		 requirementModel.setId(Constants.REQUIREMENT_PREFIX+String.valueOf(value));
+//		 projectModel.addRequirements(requirementModel);
 		 mongoTemplate.save(projectModel);
-		 mongoTemplate.save(counter);
+//		 mongoTemplate.save(counter);
 		 
 		return "requirement added";
 	}
@@ -135,20 +155,37 @@ private MongoTemplate mongoTemplate;
 	public String updateRequirement(RequirementModel requirementModel, String id, String rid, boolean remove) {
 
 		ProjectModel projectModel = getByProjectId(id);
-		int requirementIndex = Integer.valueOf(rid.substring(4));
-		RequirementModel requestedRequirement = projectModel.getRequirements().get(requirementIndex - 1);
+//		int requirementIndex = Integer.valueOf(rid.substring(4));
+		
+		Map<String,String> conditionsMap=new HashMap<String,String>();
+		conditionsMap.put("projectId", id);
+		conditionsMap.put("id", rid);
+		
+		RequirementModel requestedRequirement =mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), RequirementModel.class);
 		if (remove) {
-			requestedRequirement.setStatus("Not Required");
+			requestedRequirement.setStatus("Invalid");
+			updateTestcaseStatus();
 		} 
 
 		if (requirementModel.getDescription() != null) {
 			requestedRequirement.setDescription(requirementModel.getDescription());
 		}
-		projectModel.updateRequirementbyIndex(requirementIndex - 1, requestedRequirement);
+		if (requirementModel.getInputParameters() != null) {
+			requestedRequirement.setInputParameters(requirementModel.getInputParameters());
+		}
+//		projectModel.updateRequirementbyIndex(requirementIndex - 1, requestedRequirement);
+		projectModel.addUpdateDate("Requirement "+requestedRequirement.getRequirementId()+" of project Id "+projectModel.getId()+" is Updated");
 
 		mongoTemplate.save(projectModel);
+		mongoTemplate.save(requestedRequirement);
 
 		return "Requirement Updated";
+	}
+	
+	//
+	private void updateTestcaseStatus()
+	{
+		
 	}
 	
 	
