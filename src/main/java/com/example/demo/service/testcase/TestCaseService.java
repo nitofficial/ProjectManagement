@@ -10,9 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
-
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.model.dashboard.IdOnly;
 import com.example.demo.model.projectcreation.RequirementModel;
 import com.example.demo.model.testcase.TestCaseModel;
 import com.example.demo.constants.Constants;
@@ -27,6 +29,26 @@ public class TestCaseService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestCaseService.class);
 
+	
+	public List<IdOnly> getOpenTests() {
+		Query q = new Query();
+		q.addCriteria(Criteria.where("status").ne("Passed"));
+		q.fields().include("id");
+		List<IdOnly> a = mongoTemplate.find(q, IdOnly.class, Constants.TESTCASE_COLLECTION);
+		System.out.print(a);
+		return a;
+	}
+
+	public long getPassedTestsCount() {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("status").is("Passed"));
+		return mongoTemplate.count(query, TestCaseModel.class);
+	}
+	
+	
+	
+	
+	
 	public TestCaseModel getByTestCaseId(String projectId, String requirementId, String testcaseId) {
 		Map<String, String> conditionsMap = new HashMap<String, String>();
 		conditionsMap.put("projectId", projectId);
