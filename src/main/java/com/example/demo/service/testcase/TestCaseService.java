@@ -33,7 +33,7 @@ public class TestCaseService {
 	public List<IdOnly> getOpenTests() {
 		Query q = new Query();
 		q.addCriteria(Criteria.where("status").ne("Passed"));
-		q.fields().include("id");
+		q.fields().include("testcaseId");
 		List<IdOnly> a = mongoTemplate.find(q, IdOnly.class, Constants.TESTCASE_COLLECTION);
 		System.out.print(a);
 		return a;

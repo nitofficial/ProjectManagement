@@ -33,6 +33,17 @@ public class FileService {
 		this.mongoTemplate = mongoTemplate;
 
 	}
+	
+	/**
+	 * Method to Route the process to corresponding handler to get the complete
+	 * response
+	 *
+	 * @param context APIContext with the request details.
+	 * @param view    contains the request body.
+	 * @return ResponseEntity with respective status and information.
+	 * @throws APIException handles Exception from Handler class.
+
+	 */
 
 	public FileModel addFile(FileModel filemodel) {
 
@@ -50,6 +61,16 @@ public class FileService {
 		}
 	}
 
+	/**
+	 * Method to Route the process to corresponding handler to get the complete
+	 * response
+	 *
+	 * @param context APIContext with the request details.
+	 * @param view    contains the request body.
+	 * @return ResponseEntity with respective status and information.
+	 * @throws APIException handles Exception from Handler class.
+
+	 */	
 	public FileModel updateFileByIdAndAssetId(FileModel filemodel, String defect_id, String asset_id) {
 		try {
 			Query query = new Query();
@@ -65,12 +86,32 @@ public class FileService {
 
 		}
 	}
+	
+	/**
+	 * Method to Route the process to corresponding handler to get the complete
+	 * response
+	 *
+	 * @param context APIContext with the request details.
+	 * @param view    contains the request body.
+	 * @return ResponseEntity with respective status and information.
+	 * @throws APIException handles Exception from Handler class.
 
+	 */
 	public List<FileModel> getAllFiles() {
 
 		return mongoTemplate.findAll(FileModel.class);
 	}
 
+	/**
+	 * Method to Route the process to corresponding handler to get the complete
+	 * response
+	 *
+	 * @param context APIContext with the request details.
+	 * @param view    contains the request body.
+	 * @return ResponseEntity with respective status and information.
+	 * @throws APIException handles Exception from Handler class.
+
+	 */
 	public FileModel getFileById(String defect_id) {
 
 		Query q = new Query();
@@ -84,6 +125,17 @@ public class FileService {
 		}
 
 	}
+	
+	/**
+	 * Method to Route the process to corresponding handler to get the complete
+	 * response
+	 *
+	 * @param context APIContext with the request details.
+	 * @param view    contains the request body.
+	 * @return ResponseEntity with respective status and information.
+	 * @throws APIException handles Exception from Handler class.
+
+	 */
 
 	public FileModel getFileByAssetId(String defect_id, String asset_id) {
 		Query query = new Query();
@@ -98,6 +150,17 @@ public class FileService {
 			throw new BadRequestException("File not found");
 		}
 	}
+	
+	/**
+	 * Method to Route the process to corresponding handler to get the complete
+	 * response
+	 *
+	 * @param context APIContext with the request details.
+	 * @param view    contains the request body.
+	 * @return ResponseEntity with respective status and information.
+	 * @throws APIException handles Exception from Handler class.
+
+	 */
 
 	public String deleteAllFiles(String defect_id) {
 
@@ -112,6 +175,17 @@ public class FileService {
 		}
 
 	}
+	
+	/**
+	 * Method to Route the process to corresponding handler to get the complete
+	 * response
+	 *
+	 * @param context APIContext with the request details.
+	 * @param view    contains the request body.
+	 * @return ResponseEntity with respective status and information.
+	 * @throws APIException handles Exception from Handler class.
+
+	 */
 
 	public String deleteFileByAssetId(String defect_id, String asset_id) {
 

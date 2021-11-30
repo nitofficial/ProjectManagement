@@ -61,36 +61,31 @@ public class FileManagementTests {
 //		assertEquals("DEF_10", service.addFile(Cloudinary.uploadToCloudinary(file, "DEF_10")).getDefect_id());
 //	}
 
-//	@Test
-//	public void updateFileByIdAndAssetIdTest() throws IOException {
+	@Test
+	public void updateFileByIdAndAssetIdTest() throws IOException {
+
+		Assertions.assertThrows(BadRequestException.class,
+				() -> service.updateFileByIdAndAssetId(Cloudinary.uploadToCloudinary(file, "DEF_5"), "DEF_5",
+						"60519e15be0455795b8ef100685a71a1").getDefect_id());
+
+
+	}
 //
-//		Assertions.assertThrows(BadRequestException.class,
-//				() -> service.updateFileByIdAndAssetId(Cloudinary.uploadToCloudinary(file, "DEF_5"), "DEF_5",
-//						"60519e15be0455795b8ef100685a71a1").getDefect_id());
-//
-////		assertEquals("DEF_5", service.updateFileByIdAndAssetId(Cloudinary.uploadToCloudinary(file, "DEF_5"),"DEF_5","60519e15be0455795b8ef100685a71a1").getDefect_id());
-//
-//	}
-//
-//	@Test
-//	public void addFileTest() throws IOException {
-//		
-//		FileService mock = org.mockito.Mockito.mock(FileService.class);
-//
-//		FileModel filemodel = Cloudinary.uploadToCloudinary(file, "DEF_10");
-//		
-//		
-//
-//		when(mock.addFile(filemodel)).thenReturn(filemodel);
-//		FileModel filemodelmock= service.addFile(filemodel);
-//
-//		assertEquals(filemodel.getDefect_id(), filemodelmock.getDefect_id());
-//	}
-//
-//	@Test
-//	public void getAllFilesTest() {
-//		assertEquals(5, service.getAllFiles().size());
-//	}
+	@Test
+	public void addFileTest() throws IOException {
+		
+		FileService mock = org.mockito.Mockito.mock(FileService.class);
+
+		FileModel filemodel = Cloudinary.uploadToCloudinary(file, "DEF_10");
+		
+		
+
+		when(mock.addFile(filemodel)).thenReturn(filemodel);
+		FileModel filemodelmock= service.addFile(filemodel);
+
+		assertEquals(filemodel.getDefect_id(), filemodelmock.getDefect_id());
+	}
+	
 
 //	@Test
 //	public void getFileByIdTest() {
@@ -108,7 +103,7 @@ public class FileManagementTests {
 		FileModel filemodel = new FileModel();
 
 		when(mongoTemplate.findOne(query, FileModel.class)).thenReturn( new FileModel());
-		assertEquals(filemodel, service.getFileById("DEF_1556"));
+		assertEquals(filemodel, service.getFileById("DEF_3"));
 
 	}
 
@@ -118,33 +113,33 @@ public class FileManagementTests {
 		when(mongoTemplate.findAll(FileModel.class))
 				.thenReturn(Stream.of(new FileModel()).collect(Collectors.toList()));
 		
-		assertEquals(2,service.getAllFiles().size());
+		assertEquals(1,service.getAllFiles().size());
 
 		
 	}
 
-//	@Test
-//	public void getFileByAssetIdTest() {
-//		assertEquals("DEF_3", service.getFileByAssetId("DEF_3", "9990e0fb5df653797045b13cdec03157").getDefect_id());
-//	}
-//
-//	@Test
-//	public void deleteAllFilesTest() {
-//
-//		Assertions.assertThrows(BadRequestException.class, () -> service.deleteAllFiles("DEF_2"));
-//	}
-//
-//	@Test
-//	void FileCountTest() {
-//
-//		FileCount filecount = new FileCount("test", 10);
-//	}
-//
-//	@Test
-//	void uploadToCloudinaryTest() throws IOException {
-//
-//		assertEquals("DEF_10", Cloudinary.uploadToCloudinary(file, "DEF_10").getDefect_id());
-//
-//	}
+	@Test
+	public void getFileByAssetIdTest() {
+		assertEquals("DEF_3", service.getFileByAssetId("DEF_3", "9990e0fb5df653797045b13cdec03157").getDefect_id());
+	}
+
+	@Test
+	public void deleteAllFilesTest() {
+
+		Assertions.assertThrows(BadRequestException.class, () -> service.deleteAllFiles("DEF_2"));
+	}
+
+	@Test
+	void FileCountTest() {
+
+		FileCount filecount = new FileCount("test", 10);
+	}
+
+	@Test
+	void uploadToCloudinaryTest() throws IOException {
+
+		assertEquals("DEF_10", Cloudinary.uploadToCloudinary(file, "DEF_10").getDefect_id());
+
+	}
 
 }

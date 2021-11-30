@@ -32,6 +32,12 @@ public class FileController {
 	@Autowired
 	private FileService fileservice;
 
+	/**
+	 * Method to get all files
+	 *
+	 * @return List of Files with respective fields and information.
+	 */
+
 	@GetMapping("/getallfiles")
 	public List<FileModel> getAllFiles() {
 		LOGGER.info("IN GET ALL FILES");
@@ -42,6 +48,7 @@ public class FileController {
 	/**
 	 * Method to get all files by defect_id
 	 *
+	 * 
 	 * @param defect_id as HashMap.
 	 * @return FileModel with respective status and information.
 	 */
@@ -51,11 +58,25 @@ public class FileController {
 		return fileservice.getFileById(dataHashMap.get("defect_id"));
 	}
 
+	/**
+	 * Method to get a file by defect_id and asset_id
+	 *
+	 * @param defect_id, asset_id as HashMap.
+	 * @return FileModel with respective status and information.
+	 */
+
 	@GetMapping("/getfilebyassetid")
 	public FileModel getFileByAssetId(@RequestBody HashMap<String, String> dataHashMap) {
 		return fileservice.getFileByAssetId(dataHashMap.get("defect_id"), dataHashMap.get("asset_id"));
 	}
 
+	/**
+	 * Method to upload a file by defect_id
+	 *
+	 * @param defect_id as HashMap.
+	 * @param Multipart file
+	 * @return FileModel with respective status and information.
+	 */
 	@PostMapping(value = "/upload", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public FileModel uploadFile(@RequestPart("file") MultipartFile file, @RequestPart("defect_id") String defect_id)
 			throws IOException {
@@ -63,6 +84,14 @@ public class FileController {
 		return fileservice.addFile(Cloudinary.uploadToCloudinary(file, defect_id));
 
 	}
+
+	/**
+	 * Method to update a file by defect_id and asset_id.
+	 *
+	 * @param defect_id, asset_id as HashMap.
+	 * @param Multipart file as new file
+	 * @return FileModel with respective status and information.
+	 */
 
 	@PostMapping(value = "/updatefilebyid", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public FileModel updateFileByIdAndAssetId(@RequestPart("file") MultipartFile file,
@@ -72,11 +101,25 @@ public class FileController {
 
 	}
 
+	/**
+	 * Method to delete all files by defect_id
+	 *
+	 * @param defect_id as HashMap.
+	 * @return String stating the message.
+	 */
+
 	@DeleteMapping("/deleteallfilesbyid")
 	public String deleteAllFiles(@RequestBody HashMap<String, String> dataHashMap) {
 		return fileservice.deleteAllFiles(dataHashMap.get("defect_id"));
 
 	}
+
+	/**
+	 * Method to delete a file by defect_id and asset_id 
+	 *
+	 * @param defect_id, asset_id as HashMap.
+	 * @return String stating the message.
+	 */
 
 	@DeleteMapping("/deletefilesbyassetid")
 	public String deleteFileByAssetId(@RequestBody HashMap<String, String> dataHashMap) {

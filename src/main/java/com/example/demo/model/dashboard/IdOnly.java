@@ -2,14 +2,16 @@ package com.example.demo.model.dashboard;
 
 public class IdOnly {
 
-	private String id;
+	private String testcaseId;
 
-	public String getId() {
-		return id;
+	public String getTestcaseId() {
+		return testcaseId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setTestcaseId(String testcaseId) {
+		this.testcaseId = testcaseId;
 	}
+
+
 
 }
