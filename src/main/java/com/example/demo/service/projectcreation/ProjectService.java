@@ -31,6 +31,13 @@ public class ProjectService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProjectService.class);
 
+	/**
+	 * Method to add Projects in the Mongo database
+	 *
+	 * @param ProjectModel which contains Project details
+	 * @return Status and information of the Project Creation.
+
+	 */
 	public String addProject(ProjectModel projectModel) {
 		if (mongoTemplate.insert(projectModel) != null) {
 			return "Project Created with ID " + projectModel.getId();
@@ -41,6 +48,12 @@ public class ProjectService {
 
 	}
 
+	/**
+	 * Method to get every Projects from the Mongo database
+	 * @return List of Projects from the Mongo Database.
+	 * @throws  Handles Exception from Database read,write .
+
+	 */
 	public List<ProjectModel> getAllProjects() {
 		try {
 			return mongoTemplate.findAll(ProjectModel.class);
@@ -51,6 +64,13 @@ public class ProjectService {
 
 	}
 
+	/**
+	 * Method to get specific Project by project Id from the Mongo Database
+	 * @param the Project id is passed.
+	 * @return ProjectModel which contains Details of the project.
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
 	public ProjectModel getByProjectId(String id) {
 		try {
 			Map<String, String> conditionsMap = new HashMap<String, String>();
@@ -63,6 +83,13 @@ public class ProjectService {
 
 	}
 
+	/**
+	 * Method to update specific Project by project Id from the Mongo Database
+	 * @param the Project id and Projectmodel is passed.
+	 * @return Status and information of the Project Update.
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
 	public String updateProject(ProjectModel projectModel, String id) {
 		ProjectModel requestedProject = getByProjectId(id);
 		if (projectModel.getName() != null) {
@@ -92,6 +119,13 @@ public class ProjectService {
 
 	}
 
+	/**
+	 * Method to generate Unique value for Created Projects
+	 * @param the key of the Counter Document is passed.
+	 * @return the unique Value of String dataType.
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
 	public int uniqueValue(String key) {
 		try {
 			Update update = new Update();
@@ -115,6 +149,13 @@ public class ProjectService {
 
 	}
 
+	/**
+	 * Method to add Requirements for the Project to the Mongo Database
+	 * @param the Project id and RequirementModel List is passed.
+	 * @return status and information of the Added Requirement .
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
 	public String addRequirement(List<RequirementModel> requirementModelList, String projectId) {
 
 		ProjectModel projectModel = getByProjectId(projectId);
@@ -139,6 +180,13 @@ public class ProjectService {
 		return "requirements added";
 	}
 
+	/**
+	 * Method to add Requirements for the Project to the Mongo Database
+	 * @param the Project id and RequirementModel List is passed.
+	 * @return status and information of the Added Requirement .
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
 	public String updateRequirement(RequirementModel requirementModel, String id, String rid, boolean remove) {
 
 		ProjectModel projectModel = getByProjectId(id);
@@ -190,6 +238,13 @@ public class ProjectService {
 
 	}
 
+	/**
+	 * Method to Update TestCase Status when requirement Status is altered
+	 * @param the Project id , Requirement id is passed and status to be changed.
+	 * @return Nothing .
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
 	private void updateTestcaseStatus(String requirementId, String projectId, String status) {
 		Map<String, String> conditionsMap = new HashMap<String, String>();
 		conditionsMap.put("projectId", projectId);
