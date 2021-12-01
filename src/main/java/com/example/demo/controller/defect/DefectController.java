@@ -4,7 +4,12 @@ import java.util.List;
 
 import java.util.Map;
 
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Transient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,57 +26,54 @@ import com.example.demo.service.defect.IdGen;
 import com.example.demo.service.defect.SequenceGenService;
 import com.example.demo.utilities.Dashboard;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @RequestMapping("/api/defects")
 @RestController
 public class DefectController {
-	
-	@Autowired
-	private SequenceGenService service;
+	@Transient
+	Logger logger = LoggerFactory.getLogger(DefectController.class);
+
 	private DefectService defService;
 	
 	public DefectController(DefectService defService) {
+		logger.info("Entered Defect Controller Class");
 		this.defService = defService;
 	}
 	
 	@PostMapping("/create")
-	public String createDefect(@RequestBody Defect defect) {
-		defect.setId("D"+service.getCount(IdGen.getSequenceName()));
+	public String createDefect(@Valid @RequestBody Defect defect) {
+		logger.info(" Entered Create Defect Controller");
 		return defService.addDefect(defect);
 	}
 	
 	@GetMapping("/display")
-	public List<Defect> getAllDefects(){
-		return defService.getAllDefects();
-	}
-	
-	@GetMapping("displayprojectdef/{pid}")
-	public List<Defect> getProjectDefects(@PathVariable("pid") String pid){
-		return defService.getDefectsByProjectId(pid);
+	public List<Defect> getAllDefects(@RequestBody Map<String,String> filters){
+		logger.info("Entered Display Defect Controller");
+		return defService.getAllDefects(filters);
 	}
 	
 	@GetMapping("/display/{id}")
-	public Dashboard getDefectById(@PathVariable("id") String id){
-		return defService.getDefectById(id);
+	public Dashboard getDefectById(@PathVariable("id") String defectId){
+		logger.info("Entered Get Defect By ID Controller");
+		return defService.getDefectById(defectId);
 	}
 	
-	@PostMapping("/addComment")
-	public String addComment(@RequestBody Comments c) {
-		return defService.addComment(c);
-	}
+//	@PostMapping("/addComment")
+//	public String addComment(@RequestBody Comments comment) {
+//		logger.info("Entered Add Comment Controller");
+//		return defService.addComment(comment);
+//	}
 	
 	@PutMapping("/update")
 	public String updateDefect(@RequestBody Map<String,String> defect) {
+		logger.info("Entered Update Defect Controller");
 		return defService.updateDefectByID(defect);
 	}
 	
-	@PutMapping("/updateStatus")
-	public String updateDefectStatus(@PathVariable("id") String id, @RequestBody Map<String,String> defect) {
-		return defService.updateDefectStatus(defect);
-	}
-	
 	@DeleteMapping("/delete/{id}")
-	public String deleteDefect(@PathVariable("id") String id) {
-		return defService.deleteDefect(id);
+	public String deleteDefect(@PathVariable("id") String defectId) {
+		logger.info("Entered Delete Defect Controller");
+		return defService.deleteDefect(defectId);
 	}
 }

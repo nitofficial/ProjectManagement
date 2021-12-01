@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.annotation.Transient;
 
 import com.example.demo.service.defect.ValidationService;
 
@@ -14,6 +15,7 @@ public class Timestamp {
 	private int year;
 	private int hour;
 	private int min;
+	@Transient
 	Logger logger = LoggerFactory.getLogger(ValidationService.class);
 	
 	public Timestamp() {

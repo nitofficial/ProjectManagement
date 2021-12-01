@@ -17,15 +17,15 @@ public class ValidationService {
 	private MongoTemplate mongoTemplate;
 	Logger logger = LoggerFactory.getLogger(ValidationService.class);
 	
-	public boolean validateDefId(String defId) {
+	public Defect validateDefId(String defId) {
 		Query q = new Query();
 		q.addCriteria(Criteria.where("id").is(defId));
-		List<Defect> a = mongoTemplate.find(q,Defect.class);
-		if(a.size()==0) {
+		Defect defect = mongoTemplate.findOne(q,Defect.class);
+		if(defect==null) {
 			logger.warn("Validation failed");
 			throw new BadRequestException("The entered Defect ID is invalid.");
 		}
-		return true;
+		return defect;
 	}
 	public boolean validateProjectId(String projectId) {
 		Query q = new Query();

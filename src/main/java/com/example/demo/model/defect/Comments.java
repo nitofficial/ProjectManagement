@@ -1,5 +1,8 @@
 package com.example.demo.model.defect;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.example.demo.constants.Constants;
@@ -10,6 +13,8 @@ import com.example.demo.utilities.Timestamp;
 public class Comments {
 	private Timestamp timestamp;
 	private String userId;
+	@NotNull(message = "The comment field cannot be left blank")
+	@Size(max = 100, message = "The comment cannot exceed 100 characters")
 	private String comment;
 	private String defectId;
 	public Timestamp getTimestamp() {

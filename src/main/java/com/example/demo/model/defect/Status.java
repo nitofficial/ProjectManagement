@@ -12,6 +12,19 @@ public class Status {
 	private Timestamp dateTime;
 	private String status;
 	
+	public Status() {
+		super();
+	}
+	
+	
+	public Status(String defectId, Timestamp dateTime, String status) {
+		super();
+		this.defectId = defectId;
+		this.dateTime = dateTime;
+		this.status = status;
+	}
+
+
 	public String getDefectId() {
 		return defectId;
 	}
