@@ -1,3 +1,6 @@
+/**
+	 * @author Nithish	
+*/
 package com.example.demo.model;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;

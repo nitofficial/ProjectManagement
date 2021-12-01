@@ -1,3 +1,7 @@
+
+/**
+	 * @author Nithish	
+*/
 package com.example.demo.controller;
 
 import java.io.IOException;
@@ -89,7 +93,7 @@ public class FileController {
 	 * Method to update a file by defect_id and asset_id.
 	 *
 	 * @param defect_id, asset_id as HashMap.
-	 * @param Multipart file as new file
+	 * @param Multipart  file as new file
 	 * @return FileModel with respective status and information.
 	 */
 
@@ -115,7 +119,7 @@ public class FileController {
 	}
 
 	/**
-	 * Method to delete a file by defect_id and asset_id 
+	 * Method to delete a file by defect_id and asset_id
 	 *
 	 * @param defect_id, asset_id as HashMap.
 	 * @return String stating the message.
