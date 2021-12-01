@@ -28,9 +28,9 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import com.example.demo.constants.Constants;
 import com.example.demo.exception.BadRequestException;
-import com.example.demo.model.filemanagement.FileCount;
-import com.example.demo.model.filemanagement.FileModel;
-import com.example.demo.service.filemangement.FileService;
+import com.example.demo.model.FileCount;
+import com.example.demo.model.FileModel;
+import com.example.demo.service.FileService;
 import com.example.demo.utilities.Cloudinary;
 
 @SpringBootTest
@@ -103,7 +103,7 @@ public class FileManagementTests {
 		FileModel filemodel = new FileModel();
 
 		when(mongoTemplate.findOne(query, FileModel.class)).thenReturn( new FileModel());
-		assertEquals(filemodel, service.getFileById("DEF_3"));
+		assertEquals(filemodel.getDefect_id(), service.getFileById("DEF_3").getDefect_id());
 
 	}
 

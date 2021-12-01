@@ -6,20 +6,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+@EnableSwagger2
 @SpringBootApplication
 @EnableScheduling
-<span class="fc" id="L11">public class EmpCrudApplication {</span>
+<span class="fc" id="L14">public class EmpCrudApplication {</span>
 
 
 	@Bean
 	public RestTemplate getRestTemplate() {
-<span class="fc" id="L16">		return new RestTemplate();</span>
+<span class="fc" id="L19">		return new RestTemplate();</span>
 	}
 	
 
 	public static void main(String[] args) {
-<span class="nc" id="L21">		SpringApplication.run(EmpCrudApplication.class, args);</span>
-<span class="nc" id="L22">	}</span>
+<span class="nc" id="L24">		SpringApplication.run(EmpCrudApplication.class, args);</span>
+<span class="nc" id="L25">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

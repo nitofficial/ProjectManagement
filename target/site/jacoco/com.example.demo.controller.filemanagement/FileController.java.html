@@ -32,55 +32,98 @@ import com.mongodb.MongoQueryException;
 	@Autowired
 	private FileService fileservice;
 
+	/**
+	 * Method to get all files
+	 *
+	 * @return List of Files with respective fields and information.
+	 */
+
 	@GetMapping(&quot;/getallfiles&quot;)
 	public List&lt;FileModel&gt; getAllFiles() {
-<span class="nc" id="L37">		LOGGER.info(&quot;IN GET ALL FILES&quot;);</span>
+<span class="nc" id="L43">		LOGGER.info(&quot;IN GET ALL FILES&quot;);</span>
 
-<span class="nc" id="L39">		return fileservice.getAllFiles();</span>
+<span class="nc" id="L45">		return fileservice.getAllFiles();</span>
 	}
 
 	/**
 	 * Method to get all files by defect_id
 	 *
+	 * 
 	 * @param defect_id as HashMap.
 	 * @return FileModel with respective status and information.
 	 */
 	@GetMapping(&quot;/getfilebyid&quot;)
 	public FileModel getFileById(@RequestBody HashMap&lt;String, String&gt; dataHashMap) {
 
-<span class="nc" id="L51">		return fileservice.getFileById(dataHashMap.get(&quot;defect_id&quot;));</span>
+<span class="nc" id="L58">		return fileservice.getFileById(dataHashMap.get(&quot;defect_id&quot;));</span>
 	}
+
+	/**
+	 * Method to get a file by defect_id and asset_id
+	 *
+	 * @param defect_id, asset_id as HashMap.
+	 * @return FileModel with respective status and information.
+	 */
 
 	@GetMapping(&quot;/getfilebyassetid&quot;)
 	public FileModel getFileByAssetId(@RequestBody HashMap&lt;String, String&gt; dataHashMap) {
-<span class="nc" id="L56">		return fileservice.getFileByAssetId(dataHashMap.get(&quot;defect_id&quot;), dataHashMap.get(&quot;asset_id&quot;));</span>
+<span class="nc" id="L70">		return fileservice.getFileByAssetId(dataHashMap.get(&quot;defect_id&quot;), dataHashMap.get(&quot;asset_id&quot;));</span>
 	}
 
+	/**
+	 * Method to upload a file by defect_id
+	 *
+	 * @param defect_id as HashMap.
+	 * @param Multipart file
+	 * @return FileModel with respective status and information.
+	 */
 	@PostMapping(value = &quot;/upload&quot;, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public FileModel uploadFile(@RequestPart(&quot;file&quot;) MultipartFile file, @RequestPart(&quot;defect_id&quot;) String defect_id)
 			throws IOException {
 
-<span class="nc" id="L63">		return fileservice.addFile(Cloudinary.uploadToCloudinary(file, defect_id));</span>
+<span class="nc" id="L84">		return fileservice.addFile(Cloudinary.uploadToCloudinary(file, defect_id));</span>
 
 	}
+
+	/**
+	 * Method to update a file by defect_id and asset_id.
+	 *
+	 * @param defect_id, asset_id as HashMap.
+	 * @param Multipart file as new file
+	 * @return FileModel with respective status and information.
+	 */
 
 	@PostMapping(value = &quot;/updatefilebyid&quot;, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public FileModel updateFileByIdAndAssetId(@RequestPart(&quot;file&quot;) MultipartFile file,
 			@RequestPart(&quot;defect_id&quot;) String defect_id, @RequestPart(&quot;asset_id&quot;) String asset_id) throws IOException {
-<span class="nc" id="L70">		return fileservice.updateFileByIdAndAssetId(Cloudinary.uploadToCloudinary(file, defect_id), defect_id,</span>
+<span class="nc" id="L99">		return fileservice.updateFileByIdAndAssetId(Cloudinary.uploadToCloudinary(file, defect_id), defect_id,</span>
 				asset_id);
 
 	}
 
+	/**
+	 * Method to delete all files by defect_id
+	 *
+	 * @param defect_id as HashMap.
+	 * @return String stating the message.
+	 */
+
 	@DeleteMapping(&quot;/deleteallfilesbyid&quot;)
 	public String deleteAllFiles(@RequestBody HashMap&lt;String, String&gt; dataHashMap) {
-<span class="nc" id="L77">		return fileservice.deleteAllFiles(dataHashMap.get(&quot;defect_id&quot;));</span>
+<span class="nc" id="L113">		return fileservice.deleteAllFiles(dataHashMap.get(&quot;defect_id&quot;));</span>
 
 	}
 
+	/**
+	 * Method to delete a file by defect_id and asset_id 
+	 *
+	 * @param defect_id, asset_id as HashMap.
+	 * @return String stating the message.
+	 */
+
 	@DeleteMapping(&quot;/deletefilesbyassetid&quot;)
 	public String deleteFileByAssetId(@RequestBody HashMap&lt;String, String&gt; dataHashMap) {
-<span class="nc" id="L83">		return fileservice.deleteFileByAssetId(dataHashMap.get(&quot;defect_id&quot;), dataHashMap.get(&quot;asset_id&quot;));</span>
+<span class="nc" id="L126">		return fileservice.deleteFileByAssetId(dataHashMap.get(&quot;defect_id&quot;), dataHashMap.get(&quot;asset_id&quot;));</span>
 
 	}
 

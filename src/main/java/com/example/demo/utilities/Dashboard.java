@@ -2,9 +2,9 @@ package com.example.demo.utilities;
 
 import java.util.List;
 
-import com.example.demo.model.defect.Comments;
-import com.example.demo.model.defect.Defect;
-import com.example.demo.model.defect.Status;
+import com.example.demo.model.Comments;
+import com.example.demo.model.Defect;
+import com.example.demo.model.Status;
 
 public class Dashboard {
 	private Defect defect;

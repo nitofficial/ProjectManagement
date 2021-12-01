@@ -12,105 +12,95 @@ public class ProjectModel {
 	private String id;
 	private String name;
 	private String description;
-	
-	 @JsonFormat(shape=JsonFormat.Shape.STRING, pattern=Constants.DATE_FORMAT)
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_FORMAT)
 	private Date startDate;
-	
-	 @JsonFormat(shape=JsonFormat.Shape.STRING, pattern=Constants.DATE_FORMAT)
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_FORMAT)
 	private Date endDate;
-	
-	 @JsonFormat(shape=JsonFormat.Shape.STRING, pattern=Constants.DATE_FORMAT)
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_FORMAT)
 	private Date targetedRelease;
 
-	private List&lt;Date&gt; updateHistory;
-	private List&lt;RequirementModel&gt; requirements;
-	
+	private List&lt;UpdateHistory&gt; updateHistoryList;
+	private int requirementsCount;
+
 <span class="nc" id="L28">	public ProjectModel() {</span>
-<span class="nc" id="L29">		updateHistory=new ArrayList&lt;Date&gt;();</span>
-<span class="nc" id="L30">		requirements=new ArrayList&lt;RequirementModel&gt;();</span>
-<span class="nc" id="L31">	}</span>
-	
-	public void addRequirements(RequirementModel requirementModel)
-	{
-<span class="nc" id="L35">		requirements.add(requirementModel);</span>
-<span class="nc" id="L36">	}</span>
-	
-	public void updateRequirementbyIndex(int index,RequirementModel requirementModel)
-	{
-<span class="nc" id="L40">		requirements.set(index,  requirementModel);</span>
-<span class="nc" id="L41">	}</span>
-	
-	public void addUpdateDate()
-	{
-<span class="nc" id="L45">		updateHistory.add(new Date());</span>
-<span class="nc" id="L46">	}</span>
+<span class="nc" id="L29">		updateHistoryList = new ArrayList&lt;UpdateHistory&gt;();</span>
+<span class="nc" id="L30">	}</span>
+
+	public int getRequirementsCount() {
+<span class="nc" id="L33">		return requirementsCount;</span>
+	}
+
+	public void setRequirementsCount(int requirementsCount) {
+<span class="nc" id="L37">		this.requirementsCount = requirementsCount;</span>
+<span class="nc" id="L38">	}</span>
+
+	public int requirementCountIncrement() {
+<span class="nc" id="L41">		requirementsCount += 1;</span>
+<span class="nc" id="L42">		return requirementsCount;</span>
+	}
+
+	public void addUpdateDate(String message) {
+<span class="nc" id="L46">		updateHistoryList.add(new UpdateHistory(new Date(), message));</span>
+<span class="nc" id="L47">	}</span>
 
 	public String getId() {
-<span class="nc" id="L49">		return id;</span>
+<span class="nc" id="L50">		return id;</span>
 	}
 
 	public void setId(String id) {
-<span class="nc" id="L53">		this.id = id;</span>
-<span class="nc" id="L54">	}</span>
+<span class="nc" id="L54">		this.id = id;</span>
+<span class="nc" id="L55">	}</span>
 
 	public String getName() {
-<span class="nc" id="L57">		return name;</span>
+<span class="nc" id="L58">		return name;</span>
 	}
 
 	public void setName(String name) {
-<span class="nc" id="L61">		this.name = name;</span>
-<span class="nc" id="L62">	}</span>
+<span class="nc" id="L62">		this.name = name;</span>
+<span class="nc" id="L63">	}</span>
 
 	public String getDescription() {
-<span class="nc" id="L65">		return description;</span>
+<span class="nc" id="L66">		return description;</span>
 	}
 
 	public void setDescription(String description) {
-<span class="nc" id="L69">		this.description = description;</span>
-<span class="nc" id="L70">	}</span>
+<span class="nc" id="L70">		this.description = description;</span>
+<span class="nc" id="L71">	}</span>
 
 	public Date getStartDate() {
-<span class="nc" id="L73">		return startDate;</span>
+<span class="nc" id="L74">		return startDate;</span>
 	}
 
 	public void setStartDate(Date startDate) {
-<span class="nc" id="L77">		this.startDate = startDate;</span>
-<span class="nc" id="L78">	}</span>
+<span class="nc" id="L78">		this.startDate = startDate;</span>
+<span class="nc" id="L79">	}</span>
 
 	public Date getEndDate() {
-<span class="nc" id="L81">		return endDate;</span>
+<span class="nc" id="L82">		return endDate;</span>
 	}
 
 	public void setEndDate(Date endDate) {
-<span class="nc" id="L85">		this.endDate = endDate;</span>
-<span class="nc" id="L86">	}</span>
+<span class="nc" id="L86">		this.endDate = endDate;</span>
+<span class="nc" id="L87">	}</span>
 
 	public Date getTargetedRelease() {
-<span class="nc" id="L89">		return targetedRelease;</span>
+<span class="nc" id="L90">		return targetedRelease;</span>
 	}
 
 	public void setTargetedRelease(Date targetedRelease) {
-<span class="nc" id="L93">		this.targetedRelease = targetedRelease;</span>
-<span class="nc" id="L94">	}</span>
+<span class="nc" id="L94">		this.targetedRelease = targetedRelease;</span>
+<span class="nc" id="L95">	}</span>
 
-	public List&lt;Date&gt; getUpdateHistory() {
-<span class="nc" id="L97">		return updateHistory;</span>
+	public List&lt;UpdateHistory&gt; getUpdateHistoryList() {
+<span class="nc" id="L98">		return updateHistoryList;</span>
 	}
 
-	public void setUpdateHistory(List&lt;Date&gt; updateHistory) {
-<span class="nc" id="L101">		this.updateHistory = updateHistory;</span>
-<span class="nc" id="L102">	}</span>
-
-	public List&lt;RequirementModel&gt; getRequirements() {
-<span class="nc" id="L105">		return requirements;</span>
-	}
-
-	public void setRequirements(List&lt;RequirementModel&gt; requirements) {
-<span class="nc" id="L109">		this.requirements = requirements;</span>
-<span class="nc" id="L110">	}</span>
-
-	
-
+	public void setUpdateHistoryList(List&lt;UpdateHistory&gt; updateHistoryList) {
+<span class="nc" id="L102">		this.updateHistoryList = updateHistoryList;</span>
+<span class="nc" id="L103">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

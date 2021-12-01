@@ -8,14 +8,14 @@ public class Role {
 	
 	@Id
 	private String id;
-	private ERole name;
+	private String name;
 	
 <span class="nc" id="L13">	public Role() {}</span>
 	
-<span class="nc" id="L15">	public Role(ERole name) {</span>
-<span class="nc" id="L16">		this.name=name;</span>
+<span class="nc" id="L15">	public Role(String rolename) {</span>
+<span class="nc" id="L16">		this.name=rolename;</span>
 <span class="nc" id="L17">	}</span>
-	
+
 	public String getId() {
 <span class="nc" id="L20">		return id;</span>
 	}
@@ -24,7 +24,7 @@ public class Role {
 <span class="nc" id="L24">		this.id=id;</span>
 <span class="nc" id="L25">	}</span>
 	
-	public ERole getName() {
+	public String getName() {
 <span class="nc" id="L28">		return name;</span>
 	}
 }

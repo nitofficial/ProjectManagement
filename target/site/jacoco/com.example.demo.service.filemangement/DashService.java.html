@@ -21,16 +21,15 @@ public class DashService {
 	
 	
 	public long countFiles() {
-<span class="fc" id="L24">		Query query = new Query();</span>
-<span class="fc" id="L25">		return mongoTemplate.count(query, FileModel.class);</span>
+<span class="nc" id="L24">		Query query = new Query();</span>
+<span class="nc" id="L25">		return mongoTemplate.count(query, FileModel.class);</span>
 		
 	}
 
 	public String addEntry(FileCount entry) {
-<span class="fc" id="L30">		mongoTemplate.save(entry);</span>
-<span class="fc" id="L31">		return entry.getTime()+&quot; &quot;+ entry.getFilesCount()+&quot; added&quot;;		</span>
-		
-		
+<span class="nc" id="L30">		mongoTemplate.save(entry);</span>
+<span class="nc" id="L31">		return entry.getTime()+&quot; &quot;+ entry.getFilesCount()+&quot; added&quot;;		</span>
+
 		
 	}
 }

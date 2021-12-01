@@ -12,14 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.model.dashboard.DefectHistory;
-import com.example.demo.model.dashboard.IdOnly;
-import com.example.demo.model.dashboard.TestHistory;
-import com.example.demo.model.filemanagement.FileCount;
-import com.example.demo.service.dashboard.DashboardService;
-import com.example.demo.service.defect.DefectService;
-import com.example.demo.service.filemangement.DashService;
-import com.example.demo.service.testcase.TestCaseService;
+import com.example.demo.model.DefectHistory;
+import com.example.demo.model.FileCount;
+import com.example.demo.model.IdOnly;
+import com.example.demo.model.TestHistory;
+import com.example.demo.service.DashService;
+import com.example.demo.service.DashboardService;
+import com.example.demo.service.DefectService;
+import com.example.demo.service.TestCaseService;
 
 @Component
 public class ScheduledTasks {

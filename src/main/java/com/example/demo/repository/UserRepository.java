@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-
-import com.example.demo.model.rolemanagement.*;
+import com.example.demo.model.User;
+import com.example.demo.model.*;
 
 public interface UserRepository extends MongoRepository<User, String> {
 	Optional<User> findByUsername(String username);

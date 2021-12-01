@@ -2,92 +2,109 @@
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
 import com.example.demo.constants.Constants;
 
-@Document(collection =Constants.TESTCASE_COLLECTION)
-<span class="nc" id="L9">public class TestCaseModel {</span>
+@Document(collection = Constants.TESTCASE_COLLECTION)
+<span class="nc" id="L8">public class TestCaseModel {</span>
+	private String _id;
 	private String projectId;
 	private String projectname;
 	private String requirementId;
-	private String id;
+	private String testcaseId;
 	private String name;
 	private String description;
+	private String inputParameters;
 	private String expectedResults;
 	private String actualResults;
 	private String status;
 
 	public String getProjectId() {
-<span class="nc" id="L21">		return projectId;</span>
+<span class="nc" id="L22">		return projectId;</span>
 	}
 
 	public void setProjectId(String projectId) {
-<span class="nc" id="L25">		this.projectId = projectId;</span>
-<span class="nc" id="L26">	}</span>
+<span class="nc" id="L26">		this.projectId = projectId;</span>
+<span class="nc" id="L27">	}</span>
 
 	public String getProjectname() {
-<span class="nc" id="L29">		return projectname;</span>
+<span class="nc" id="L30">		return projectname;</span>
 	}
 
 	public void setProjectname(String projectname) {
-<span class="nc" id="L33">		this.projectname = projectname;</span>
-<span class="nc" id="L34">	}</span>
+<span class="nc" id="L34">		this.projectname = projectname;</span>
+<span class="nc" id="L35">	}</span>
 
 	public String getRequirementId() {
-<span class="nc" id="L37">		return requirementId;</span>
+<span class="nc" id="L38">		return requirementId;</span>
 	}
 
 	public void setRequirementId(String requirementId) {
-<span class="nc" id="L41">		this.requirementId = requirementId;</span>
-<span class="nc" id="L42">	}</span>
+<span class="nc" id="L42">		this.requirementId = requirementId;</span>
+<span class="nc" id="L43">	}</span>
 
-	public String getId() {
-<span class="nc" id="L45">		return id;</span>
+	public String getTestcaseId() {
+<span class="nc" id="L46">		return testcaseId;</span>
 	}
 
-	public void setId(String id) {
-<span class="nc" id="L49">		this.id = id;</span>
-<span class="nc" id="L50">	}</span>
+	public void setTestcaseId(String testcaseId) {
+<span class="nc" id="L50">		this.testcaseId = testcaseId;</span>
+<span class="nc" id="L51">	}</span>
 
 	public String getName() {
-<span class="nc" id="L53">		return name;</span>
+<span class="nc" id="L54">		return name;</span>
 	}
 
 	public void setName(String name) {
-<span class="nc" id="L57">		this.name = name;</span>
-<span class="nc" id="L58">	}</span>
+<span class="nc" id="L58">		this.name = name;</span>
+<span class="nc" id="L59">	}</span>
 
 	public String getDescription() {
-<span class="nc" id="L61">		return description;</span>
+<span class="nc" id="L62">		return description;</span>
 	}
 
 	public void setDescription(String description) {
-<span class="nc" id="L65">		this.description = description;</span>
-<span class="nc" id="L66">	}</span>
+<span class="nc" id="L66">		this.description = description;</span>
+<span class="nc" id="L67">	}</span>
 
 	public String getExpectedResults() {
-<span class="nc" id="L69">		return expectedResults;</span>
+<span class="nc" id="L70">		return expectedResults;</span>
 	}
 
 	public void setExpectedResults(String expectedResults) {
-<span class="nc" id="L73">		this.expectedResults = expectedResults;</span>
-<span class="nc" id="L74">	}</span>
+<span class="nc" id="L74">		this.expectedResults = expectedResults;</span>
+<span class="nc" id="L75">	}</span>
 
 	public String getActualResults() {
-<span class="nc" id="L77">		return actualResults;</span>
+<span class="nc" id="L78">		return actualResults;</span>
 	}
 
 	public void setActualResults(String actualResults) {
-<span class="nc" id="L81">		this.actualResults = actualResults;</span>
-<span class="nc" id="L82">	}</span>
+<span class="nc" id="L82">		this.actualResults = actualResults;</span>
+<span class="nc" id="L83">	}</span>
 
 	public String getStatus() {
-<span class="nc" id="L85">		return status;</span>
+<span class="nc" id="L86">		return status;</span>
 	}
 
 	public void setStatus(String status) {
-<span class="nc" id="L89">		this.status = status;</span>
-<span class="nc" id="L90">	}</span>
+<span class="nc" id="L90">		this.status = status;</span>
+<span class="nc" id="L91">	}</span>
+
+	public String getInputParameters() {
+<span class="nc" id="L94">		return inputParameters;</span>
+	}
+
+	public void setInputParameters(String inputParameters) {
+<span class="nc" id="L98">		this.inputParameters = inputParameters;</span>
+<span class="nc" id="L99">	}</span>
+
+	public String get_id() {
+<span class="nc" id="L102">		return _id;</span>
+	}
+
+	public void set_id(String _id) {
+<span class="nc" id="L106">		this._id = _id;</span>
+<span class="nc" id="L107">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

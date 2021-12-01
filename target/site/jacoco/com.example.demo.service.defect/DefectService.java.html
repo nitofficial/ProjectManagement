@@ -66,75 +66,114 @@ public class DefectService {
 <span class="nc" id="L66">		return a;</span>
 	}
 	
+	public long getDefectCount() {
+<span class="nc" id="L70">		Query q = new Query();</span>
+<span class="nc" id="L71">		q.addCriteria(Criteria.where(&quot;status&quot;).ne(&quot;Closed&quot;));</span>
+<span class="nc" id="L72">		return mongoTemplate.count(q, Defect.class);</span>
+		
+	}
+	public List&lt;Defect&gt; getOpenDefects(){
+<span class="nc" id="L76">		Query q = new Query();</span>
+<span class="nc" id="L77">		q.addCriteria(Criteria.where(&quot;status&quot;).ne(&quot;Closed&quot;));</span>
+<span class="nc" id="L78">		List&lt;Defect&gt; a = mongoTemplate.find(q,Defect.class);</span>
+<span class="nc" id="L79">		System.out.print(a);</span>
+<span class="nc" id="L80">		return a;</span>
+	}
+	
+	public List&lt;Defect&gt; getClosedDefects(){
+<span class="nc" id="L84">		Query q = new Query();</span>
+<span class="nc" id="L85">		q.fields().include(&quot;id&quot;);</span>
+<span class="nc" id="L86">		q.addCriteria(Criteria.where(&quot;status&quot;).is(&quot;Closed&quot;));</span>
+<span class="nc" id="L87">		List&lt;Defect&gt; a = mongoTemplate.find(q,Defect.class);</span>
+<span class="nc" id="L88">		System.out.print(a);</span>
+<span class="nc" id="L89">		return a;</span>
+	}
+	
+	
+	public long getClosedDefectCount() {
+<span class="nc" id="L94">		Query q = new Query();</span>
+<span class="nc" id="L95">		q.addCriteria(Criteria.where(&quot;status&quot;).is(&quot;Closed&quot;));</span>
+<span class="nc" id="L96">		return mongoTemplate.count(q, Defect.class);</span>
+		
+	}
+	
+	
 	public List&lt;Defect&gt; getDefectsByProjectId(String pid){
-<span class="nc" id="L70">		valSer.validateProjectId(pid);</span>
-<span class="nc" id="L71">		Query q = new Query();</span>
-<span class="nc" id="L72">		q.addCriteria(Criteria.where(&quot;status&quot;).ne(&quot;Cancelled&quot;));</span>
-<span class="nc" id="L73">		q.addCriteria(Criteria.where(&quot;projectId&quot;).is(pid));</span>
-<span class="nc" id="L74">		List&lt;Defect&gt; a = mongoTemplate.find(q,Defect.class);</span>
-<span class="nc" id="L75">		System.out.print(a);</span>
-<span class="nc" id="L76">		return a;</span>
+<span class="nc" id="L102">		valSer.validateProjectId(pid);</span>
+<span class="nc" id="L103">		Query q = new Query();</span>
+<span class="nc" id="L104">		q.addCriteria(Criteria.where(&quot;status&quot;).ne(&quot;Cancelled&quot;));</span>
+<span class="nc" id="L105">		q.addCriteria(Criteria.where(&quot;projectId&quot;).is(pid));</span>
+<span class="nc" id="L106">		List&lt;Defect&gt; a = mongoTemplate.find(q,Defect.class);</span>
+<span class="nc" id="L107">		System.out.print(a);</span>
+<span class="nc" id="L108">		return a;</span>
 	}
 	
 	public String addComment(Comments c) {
-<span class="nc" id="L80">		valSer.validateDefId(c.getDefectId());</span>
-<span class="nc" id="L81">		Timestamp t = new Timestamp();</span>
-<span class="nc" id="L82">		c.setTimestamp(t);</span>
-<span class="nc" id="L83">		mongoTemplate.insert(c);</span>
-<span class="nc" id="L84">		return &quot;Your comment has been added into the database.&quot;;</span>
+<span class="nc" id="L112">		valSer.validateDefId(c.getDefectId());</span>
+<span class="nc" id="L113">		Timestamp t = new Timestamp();</span>
+<span class="nc" id="L114">		c.setTimestamp(t);</span>
+<span class="nc" id="L115">		mongoTemplate.insert(c);</span>
+<span class="nc" id="L116">		return &quot;Your comment has been added into the database.&quot;;</span>
 	}
 	
 	public String updateDefectByID(Map&lt;String, String&gt; data) {
-<span class="nc" id="L88">		logger.info(&quot;Validation for update request starts&quot;);</span>
-<span class="nc" id="L89">		valSer.validateDefId(data.get(&quot;id&quot;));</span>
-<span class="nc" id="L90">		logger.info(&quot;Validation for update request done!&quot;);</span>
-<span class="nc" id="L91">		Query select = Query.query(Criteria.where(&quot;id&quot;).is(data.get(&quot;id&quot;)));</span>
-<span class="nc" id="L92">		Update update = new Update();</span>
-<span class="nc bnc" id="L93" title="All 2 branches missed.">		for(Map.Entry m:data.entrySet()){</span>
-<span class="nc bnc" id="L94" title="All 2 branches missed.">			if(m.getKey().equals(&quot;status&quot;)) {</span>
-<span class="nc" id="L95">				updateDefectStatus(data);</span>
-<span class="nc" id="L96">				continue;</span>
+<span class="nc" id="L120">		logger.info(&quot;Validation for update request starts&quot;);</span>
+<span class="nc" id="L121">		valSer.validateDefId(data.get(&quot;id&quot;));</span>
+<span class="nc" id="L122">		logger.info(&quot;Validation for update request done!&quot;);</span>
+<span class="nc" id="L123">		Query select = Query.query(Criteria.where(&quot;id&quot;).is(data.get(&quot;id&quot;)));</span>
+<span class="nc" id="L124">		Update update = new Update();</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">		for(Map.Entry m:data.entrySet()){</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">			if(m.getKey().equals(&quot;status&quot;)) {</span>
+<span class="nc" id="L127">				updateDefectStatus(data);</span>
+<span class="nc" id="L128">				continue;</span>
 			}
-<span class="nc" id="L98">			update.set((String) m.getKey(), m.getValue());  </span>
-<span class="nc" id="L99">	    }</span>
-<span class="nc" id="L100">		mongoTemplate.findAndModify(select, update, Defect.class);</span>
-<span class="nc" id="L101">		return &quot;Update successful&quot;;</span>
+<span class="nc" id="L130">			update.set((String) m.getKey(), m.getValue());  </span>
+<span class="nc" id="L131">	    }</span>
+<span class="nc" id="L132">		mongoTemplate.findAndModify(select, update, Defect.class);</span>
+<span class="nc" id="L133">		return &quot;Update successful&quot;;</span>
 	}
 	public String updateDefectStatus(Map&lt;String, String&gt; data) {
-<span class="nc" id="L104">		valSer.validateDefId(data.get(&quot;id&quot;));</span>
-<span class="nc" id="L105">		Query select = Query.query(Criteria.where(&quot;id&quot;).is(data.get(&quot;id&quot;)));</span>
-<span class="nc" id="L106">		Update update = new Update();</span>
-<span class="nc" id="L107">		update.set(&quot;status&quot;, data.get(&quot;status&quot;));</span>
-<span class="nc" id="L108">		mongoTemplate.findAndModify(select, update, Defect.class);</span>
-<span class="nc" id="L109">		addStatus(data.get(&quot;id&quot;),data.get(&quot;status&quot;));</span>
-<span class="nc" id="L110">		return &quot;The status of the defect &quot;+data.get(&quot;id&quot;)+&quot; has been updated to &quot;+data.get(&quot;status&quot;);</span>
+<span class="nc" id="L136">		valSer.validateDefId(data.get(&quot;id&quot;));</span>
+<span class="nc" id="L137">		Query select = Query.query(Criteria.where(&quot;id&quot;).is(data.get(&quot;id&quot;)));</span>
+<span class="nc" id="L138">		Update update = new Update();</span>
+<span class="nc" id="L139">		update.set(&quot;status&quot;, data.get(&quot;status&quot;));</span>
+<span class="nc" id="L140">		mongoTemplate.findAndModify(select, update, Defect.class);</span>
+<span class="nc" id="L141">		addStatus(data.get(&quot;id&quot;),data.get(&quot;status&quot;));</span>
+<span class="nc" id="L142">		return &quot;The status of the defect &quot;+data.get(&quot;id&quot;)+&quot; has been updated to &quot;+data.get(&quot;status&quot;);</span>
 	}
 	
 	public String deleteDefect(String id) {
-<span class="nc" id="L114">		valSer.validateDefId(id);</span>
-<span class="nc" id="L115">		Query select = Query.query(Criteria.where(&quot;id&quot;).is(id));</span>
-<span class="nc" id="L116">		Update update = new Update();</span>
-<span class="nc" id="L117">		update.set(&quot;status&quot;, &quot;Cancelled&quot;);</span>
-<span class="nc" id="L118">		mongoTemplate.findAndModify(select, update, Defect.class);</span>
-<span class="nc" id="L119">		addStatus(id,&quot;Cancelled&quot;);</span>
-<span class="nc" id="L120">		return &quot;The defect &quot;+id+&quot; is deleted successfully&quot;;</span>
+<span class="nc" id="L146">		valSer.validateDefId(id);</span>
+<span class="nc" id="L147">		Query select = Query.query(Criteria.where(&quot;id&quot;).is(id));</span>
+<span class="nc" id="L148">		Update update = new Update();</span>
+<span class="nc" id="L149">		update.set(&quot;status&quot;, &quot;Cancelled&quot;);</span>
+<span class="nc" id="L150">		mongoTemplate.findAndModify(select, update, Defect.class);</span>
+<span class="nc" id="L151">		addStatus(id,&quot;Cancelled&quot;);</span>
+<span class="nc" id="L152">		return &quot;The defect &quot;+id+&quot; is deleted successfully&quot;;</span>
 	}
 	public Dashboard getDefectById(String id) {
-<span class="nc" id="L123">		logger.info(&quot;Dashboard initation&quot;);</span>
-<span class="nc" id="L124">		valSer.validateDefId(id);</span>
-<span class="nc" id="L125">		Query q = new Query();</span>
-<span class="nc" id="L126">		q.addCriteria(Criteria.where(&quot;id&quot;).is(id));</span>
-<span class="nc" id="L127">		Defect a = mongoTemplate.find(q,Defect.class).get(0);</span>
-<span class="nc" id="L128">		q = new Query();</span>
-<span class="nc" id="L129">		q.addCriteria(Criteria.where(&quot;defectId&quot;).is(id));</span>
-<span class="nc" id="L130">		List &lt;Status&gt; b = mongoTemplate.find(q, Status.class);</span>
-<span class="nc" id="L131">		List &lt;Comments&gt; c = mongoTemplate.find(q, Comments.class);</span>
-<span class="nc" id="L132">		Dashboard d = new Dashboard();</span>
-<span class="nc" id="L133">		d.setDefect(a);</span>
-<span class="nc" id="L134">		d.setStatus(b);</span>
-<span class="nc" id="L135">		d.setComments(c);</span>
-<span class="nc" id="L136">		logger.info(&quot;Information retrieval for dashboard successful&quot;);</span>
-<span class="nc" id="L137">		return d;</span>
+<span class="nc" id="L155">		logger.info(&quot;Dashboard initation&quot;);</span>
+<span class="nc" id="L156">		valSer.validateDefId(id);</span>
+<span class="nc" id="L157">		Query q = new Query();</span>
+<span class="nc" id="L158">		q.addCriteria(Criteria.where(&quot;id&quot;).is(id));</span>
+<span class="nc" id="L159">		Defect a = mongoTemplate.find(q,Defect.class).get(0);</span>
+<span class="nc" id="L160">		q = new Query();</span>
+<span class="nc" id="L161">		q.addCriteria(Criteria.where(&quot;defectId&quot;).is(id));</span>
+<span class="nc" id="L162">		List &lt;Status&gt; b = mongoTemplate.find(q, Status.class);</span>
+<span class="nc" id="L163">		List &lt;Comments&gt; c = mongoTemplate.find(q, Comments.class);</span>
+<span class="nc" id="L164">		Dashboard d = new Dashboard();</span>
+<span class="nc" id="L165">		d.setDefect(a);</span>
+<span class="nc" id="L166">		d.setStatus(b);</span>
+<span class="nc" id="L167">		d.setComments(c);</span>
+<span class="nc" id="L168">		logger.info(&quot;Information retrieval for dashboard successful&quot;);</span>
+<span class="nc" id="L169">		return d;</span>
 	}
+	
+	
+	
+
+	
+	
+	
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

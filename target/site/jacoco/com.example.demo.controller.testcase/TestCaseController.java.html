@@ -2,6 +2,8 @@
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,54 +14,52 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.model.testcase.TestCaseCounter;
 import com.example.demo.model.testcase.TestCaseModel;
-import com.example.demo.constants.Constants;
 import com.example.demo.service.testcase.TestCaseService;
-
 
 @RequestMapping(&quot;/api/v1&quot;)
 @RestController
-<span class="fc" id="L23">public class TestCaseController {</span>
+<span class="fc" id="L22">public class TestCaseController {</span>
 
-	 
-		@Autowired
-		private TestCaseService testCaseService;
-		
-		@PostMapping(&quot;/testcase&quot;)	
-		public String createProject(@RequestBody TestCaseModel testCaseModel)
-		{
-<span class="nc" id="L32">			TestCaseCounter counter=testCaseService.uniqueValue(Constants.TESTCASE_COUNTER_DOCUMENT_ID);</span>
-<span class="nc" id="L33">			testCaseModel.setId(&quot;Test-&quot;+String.valueOf(counter.getSeq()));</span>
-			
-<span class="nc" id="L35">			return testCaseService.addTestCase(testCaseModel);</span>
-		}
-		
-		@GetMapping(&quot;/testcase&quot;)	
-		public List&lt;TestCaseModel&gt; allTestCase()
-		{
-<span class="nc" id="L41">			return testCaseService.getAllTestCase();</span>
-		}
-		
-		
-		@GetMapping(&quot;/testcase/{id}&quot;)
-		public TestCaseModel testcaseByID(@PathVariable(&quot;id&quot;) String id){
-<span class="nc" id="L47">			return testCaseService.getByTestCaseId(id);</span>
-			
-		}
-		
-		@PutMapping(&quot;/testcase/{id}&quot;)	
-		public String updateProject(@PathVariable(&quot;id&quot;) String id,@RequestBody TestCaseModel testCaseModel)
-		{
-<span class="nc" id="L54">			return testCaseService.updateProject(testCaseModel,id);</span>
-		}
-		
-		@DeleteMapping(&quot;/testcase/{id}&quot;)
-		public String deleteRequirement(@PathVariable(&quot;id&quot;) String id) {
-			
-<span class="nc" id="L60">			return testCaseService.updateProject(null,id);</span>
-			
-		}
-		
+<span class="fc" id="L24">	private static final Logger LOGGER = LoggerFactory.getLogger(TestCaseController.class);</span>
+
+	@Autowired
+	private TestCaseService testCaseService;
+
+	@PostMapping(&quot;/testcase&quot;)
+	public String addTestCases(@RequestBody List&lt;TestCaseModel&gt; testCaseModelList) {
+<span class="nc" id="L31">		LOGGER.info(&quot;IN ADD/CREATE TESTCASES&quot;);</span>
+<span class="nc" id="L32">		return testCaseService.addTestCase(testCaseModelList);</span>
+	}
+
+	@GetMapping(&quot;/testcase&quot;)
+	public List&lt;TestCaseModel&gt; allTestCase() {
+<span class="nc" id="L37">		LOGGER.info(&quot;IN GETTING ALL TESTCASES&quot;);</span>
+<span class="nc" id="L38">		return testCaseService.getAllTestCase();</span>
+	}
+
+	@GetMapping(&quot;/testcase/{pid}/{rid}/{tid}&quot;)
+	public TestCaseModel testcaseByID(@PathVariable(&quot;pid&quot;) String projectId, @PathVariable(&quot;rid&quot;) String requirementId,
+			@PathVariable(&quot;tid&quot;) String testcaseId) {
+<span class="nc" id="L44">		LOGGER.info(&quot;IN GETTING SPECIFIC TESTCASE&quot;);</span>
+<span class="nc" id="L45">		return testCaseService.getByTestCaseId(projectId, requirementId, testcaseId);</span>
+
+	}
+
+	@PutMapping(&quot;/testcase/{pid}/{rid}/{tid}&quot;)
+	public String updateTestCase(@PathVariable(&quot;pid&quot;) String projectId, @PathVariable(&quot;rid&quot;) String requirementId,
+			@PathVariable(&quot;tid&quot;) String testcaseId, @RequestBody TestCaseModel testCaseModel) {
+<span class="nc" id="L52">		LOGGER.info(&quot;IN UPDATE TESTCASES&quot;);</span>
+<span class="nc" id="L53">		return testCaseService.updateProject(testCaseModel, projectId, requirementId, testcaseId);</span>
+	}
+
+	@DeleteMapping(&quot;/testcase/{pid}/{rid}/{tid}&quot;)
+	public String deleteTestCase(@PathVariable(&quot;pid&quot;) String projectId, @PathVariable(&quot;rid&quot;) String requirementId,
+			@PathVariable(&quot;tid&quot;) String testcaseId) {
+<span class="nc" id="L59">		LOGGER.info(&quot;IN DELETE TESTCASES&quot;);</span>
+<span class="nc" id="L60">		return testCaseService.updateProject(null, projectId, requirementId, testcaseId);</span>
+
+	}
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
