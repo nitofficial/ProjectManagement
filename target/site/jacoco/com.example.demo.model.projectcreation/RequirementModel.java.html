@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RequirementModel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EmpCrud</a> &gt; <a href="index.source.html" class="el_package">com.example.demo.model.projectcreation</a> &gt; <span class="el_source">RequirementModel.java</span></div><h1>RequirementModel.java</h1><pre class="source lang-java linenums">package com.example.demo.model.projectcreation;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.example.demo.constants.Constants;
+
+@Document(collection = Constants.REQUIREMENT_COLLECTION)
+<span class="nc" id="L8">public class RequirementModel {</span>
+	private String _id;
+	private String requirementId;
+	private String projectId;
+	private String description;
+	private String inputParameters;
+	private String status;
+	private int testCaseCount;
+
+	public int incrementTestCaseCount() {
+<span class="nc" id="L18">		testCaseCount += 1;</span>
+<span class="nc" id="L19">		return testCaseCount;</span>
+	}
+
+	public String getInputParameters() {
+<span class="nc" id="L23">		return inputParameters;</span>
+	}
+
+	public void setInputParameters(String inputParameters) {
+<span class="nc" id="L27">		this.inputParameters = inputParameters;</span>
+<span class="nc" id="L28">	}</span>
+
+	public String getProjectId() {
+<span class="nc" id="L31">		return projectId;</span>
+	}
+
+	public void setProjectId(String projectId) {
+<span class="nc" id="L35">		this.projectId = projectId;</span>
+<span class="nc" id="L36">	}</span>
+
+	public int getTestCaseCount() {
+<span class="nc" id="L39">		return testCaseCount;</span>
+	}
+
+	public void setTestCaseCount(int testCaseCount) {
+<span class="nc" id="L43">		this.testCaseCount = testCaseCount;</span>
+<span class="nc" id="L44">	}</span>
+
+	public String getRequirementId() {
+<span class="nc" id="L47">		return requirementId;</span>
+	}
+
+	public void setRequirementId(String requirementId) {
+<span class="nc" id="L51">		this.requirementId = requirementId;</span>
+<span class="nc" id="L52">	}</span>
+
+	public String getDescription() {
+<span class="nc" id="L55">		return description;</span>
+	}
+
+	public void setDescription(String description) {
+<span class="nc" id="L59">		this.description = description;</span>
+<span class="nc" id="L60">	}</span>
+
+	public String getStatus() {
+<span class="nc" id="L63">		return status;</span>
+	}
+
+	public void setStatus(String status) {
+<span class="nc" id="L67">		this.status = status;</span>
+<span class="nc" id="L68">	}</span>
+
+	public String get_id() {
+<span class="nc" id="L71">		return _id;</span>
+	}
+
+	public void set_id(String _id) {
+<span class="nc" id="L75">		this._id = _id;</span>
+<span class="nc" id="L76">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

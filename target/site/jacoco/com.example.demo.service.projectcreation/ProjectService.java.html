@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProjectService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EmpCrud</a> &gt; <a href="index.source.html" class="el_package">com.example.demo.service.projectcreation</a> &gt; <span class="el_source">ProjectService.java</span></div><h1>ProjectService.java</h1><pre class="source lang-java linenums">package com.example.demo.service.projectcreation;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.model.projectcreation.Counter;
+import com.example.demo.model.projectcreation.ProjectModel;
+import com.example.demo.model.projectcreation.RequirementModel;
+import com.example.demo.model.testcase.TestCaseModel;
+import com.example.demo.constants.Constants;
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.utilities.ProjectUtility;
+
+@Service
+<span class="fc" id="L25">public class ProjectService {</span>
+	@Autowired
+	private MongoTemplate mongoTemplate;
+
+	@Autowired
+	private MongoOperations mongoOperation;
+
+<span class="fc" id="L32">	private static final Logger LOGGER = LoggerFactory.getLogger(ProjectService.class);</span>
+
+	/**
+	 * Method to add Projects in the Mongo database
+	 *
+	 * @param ProjectModel which contains Project details
+	 * @return Status and information of the Project Creation.
+
+	 */
+	public String addProject(ProjectModel projectModel) {
+<span class="nc bnc" id="L42" title="All 2 branches missed.">		if (mongoTemplate.insert(projectModel) != null) {</span>
+<span class="nc" id="L43">			return &quot;Project Created with ID &quot; + projectModel.getId();</span>
+		} else {
+<span class="nc" id="L45">			LOGGER.warn(&quot;PROJECT NOT CREATED&quot;);</span>
+<span class="nc" id="L46">			return &quot;Project Not Created&quot;;</span>
+		}
+
+	}
+
+	/**
+	 * Method to get every Projects from the Mongo database
+	 * @return List of Projects from the Mongo Database.
+	 * @throws  Handles Exception from Database read,write .
+
+	 */
+	public List&lt;ProjectModel&gt; getAllProjects() {
+		try {
+<span class="nc" id="L59">			return mongoTemplate.findAll(ProjectModel.class);</span>
+<span class="nc" id="L60">		} catch (Exception e) {</span>
+<span class="nc" id="L61">			LOGGER.warn(&quot;PROJECTS NOT FOUND&quot;);</span>
+<span class="nc" id="L62">			throw new BadRequestException(&quot;Projects Not Found&quot;);</span>
+		}
+
+	}
+
+	/**
+	 * Method to get specific Project by project Id from the Mongo Database
+	 * @param the Project id is passed.
+	 * @return ProjectModel which contains Details of the project.
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
+	public ProjectModel getByProjectId(String id) {
+		try {
+<span class="nc" id="L76">			Map&lt;String, String&gt; conditionsMap = new HashMap&lt;String, String&gt;();</span>
+<span class="nc" id="L77">			conditionsMap.put(&quot;id&quot;, id);</span>
+<span class="nc" id="L78">			return mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), ProjectModel.class);</span>
+<span class="nc" id="L79">		} catch (Exception e) {</span>
+<span class="nc" id="L80">			LOGGER.warn(&quot;PROJECT NOT FOUND&quot;);</span>
+<span class="nc" id="L81">			throw new BadRequestException(&quot;Project requested is not available&quot;);</span>
+		}
+
+	}
+
+	/**
+	 * Method to update specific Project by project Id from the Mongo Database
+	 * @param the Project id and Projectmodel is passed.
+	 * @return Status and information of the Project Update.
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
+	public String updateProject(ProjectModel projectModel, String id) {
+<span class="nc" id="L94">		ProjectModel requestedProject = getByProjectId(id);</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (projectModel.getName() != null) {</span>
+<span class="nc" id="L96">			requestedProject.setName(projectModel.getName());</span>
+		}
+<span class="nc bnc" id="L98" title="All 2 branches missed.">		if (projectModel.getDescription() != null) {</span>
+<span class="nc" id="L99">			requestedProject.setDescription(projectModel.getDescription());</span>
+		}
+<span class="nc bnc" id="L101" title="All 2 branches missed.">		if (projectModel.getStartDate() != null) {</span>
+<span class="nc" id="L102">			requestedProject.setStartDate(projectModel.getStartDate());</span>
+		}
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		if (projectModel.getEndDate() != null) {</span>
+<span class="nc" id="L105">			requestedProject.setEndDate(projectModel.getEndDate());</span>
+		}
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		if (projectModel.getTargetedRelease() != null) {</span>
+<span class="nc" id="L108">			requestedProject.setTargetedRelease(projectModel.getTargetedRelease());</span>
+		}
+<span class="nc" id="L110">		requestedProject.addUpdateDate(requestedProject.getId() + &quot; is Updated&quot;);</span>
+
+<span class="nc bnc" id="L112" title="All 2 branches missed.">		if (mongoTemplate.save(requestedProject) != null) {</span>
+<span class="nc" id="L113">			LOGGER.info(&quot;PROJECT UPDATED SUCCESSFULLY&quot;);</span>
+<span class="nc" id="L114">			return &quot;Project &quot; + requestedProject.getId() + &quot; Updated&quot;;</span>
+		} else {
+<span class="nc" id="L116">			LOGGER.warn(&quot;PROJECT NOT UPDATED&quot;);</span>
+<span class="nc" id="L117">			throw new BadRequestException(&quot;Project could not be updated&quot;);</span>
+		}
+
+	}
+
+	/**
+	 * Method to generate Unique value for Created Projects
+	 * @param the key of the Counter Document is passed.
+	 * @return the unique Value of String dataType.
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
+	public int uniqueValue(String key) {
+		try {
+<span class="nc" id="L131">			Update update = new Update();</span>
+<span class="nc" id="L132">			update.inc(Constants.PROJECT_COUNTER_DOCUMENT_SEQUENCE_COLUMN, 1);</span>
+<span class="nc" id="L133">			FindAndModifyOptions options = new FindAndModifyOptions();</span>
+<span class="nc" id="L134">			options.returnNew(true).upsert(true);</span>
+
+<span class="nc" id="L136">			Map&lt;String, String&gt; conditionsMap = new HashMap&lt;String, String&gt;();</span>
+<span class="nc" id="L137">			conditionsMap.put(&quot;_id&quot;, key);</span>
+
+<span class="nc" id="L139">			Counter counter = mongoOperation.findAndModify(ProjectUtility.getQueryByKeyValue(conditionsMap), update,</span>
+					options, Counter.class);
+
+<span class="nc" id="L142">			mongoTemplate.save(counter);</span>
+
+<span class="nc" id="L144">			return counter.getSeq();</span>
+<span class="nc" id="L145">		} catch (Exception e) {</span>
+<span class="nc" id="L146">			LOGGER.warn(&quot;PROJECT COUNTER NOT UPDATED&quot;);</span>
+<span class="nc" id="L147">			throw new BadRequestException(&quot;Project counter could not be updated&quot;);</span>
+		}
+
+	}
+
+	/**
+	 * Method to add Requirements for the Project to the Mongo Database
+	 * @param the Project id and RequirementModel List is passed.
+	 * @return status and information of the Added Requirement .
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
+	public String addRequirement(List&lt;RequirementModel&gt; requirementModelList, String projectId) {
+
+<span class="nc" id="L161">		ProjectModel projectModel = getByProjectId(projectId);</span>
+
+<span class="nc bnc" id="L163" title="All 2 branches missed.">		for (int requirementIndex = 0; requirementIndex &lt; requirementModelList.size(); requirementIndex++) {</span>
+<span class="nc" id="L164">			RequirementModel requirementModel = requirementModelList.get(requirementIndex);</span>
+<span class="nc" id="L165">			requirementModel.setStatus(Constants.REQUIREMENT_VALID_STATUS);</span>
+<span class="nc" id="L166">			requirementModel.setProjectId(projectId);</span>
+<span class="nc" id="L167">			requirementModel.setRequirementId(</span>
+<span class="nc" id="L168">					Constants.REQUIREMENT_PREFIX + String.valueOf(projectModel.requirementCountIncrement()));</span>
+<span class="nc" id="L169">			requirementModel.setTestCaseCount(0);</span>
+
+<span class="nc bnc" id="L171" title="All 2 branches missed.">			if (mongoTemplate.insert(requirementModel) == null) {</span>
+<span class="nc" id="L172">				LOGGER.warn(&quot;REQUIREMENT of id &quot; + requirementModel.get_id() + &quot; IS NOT INSERTED&quot;);</span>
+			}
+		}
+
+<span class="nc bnc" id="L176" title="All 2 branches missed.">		if (mongoTemplate.save(projectModel) == null) {</span>
+<span class="nc" id="L177">			LOGGER.warn(&quot;REQUIREMENTS COULD NOT BE UPDATED&quot;);</span>
+		}
+
+<span class="nc" id="L180">		return &quot;requirements added&quot;;</span>
+	}
+
+	/**
+	 * Method to add Requirements for the Project to the Mongo Database
+	 * @param the Project id and RequirementModel List is passed.
+	 * @return status and information of the Added Requirement .
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
+	public String updateRequirement(RequirementModel requirementModel, String id, String rid, boolean remove) {
+
+<span class="nc" id="L192">		ProjectModel projectModel = getByProjectId(id);</span>
+
+<span class="nc" id="L194">		Map&lt;String, String&gt; conditionsMap = new HashMap&lt;String, String&gt;();</span>
+<span class="nc" id="L195">		conditionsMap.put(&quot;projectId&quot;, id);</span>
+<span class="nc" id="L196">		conditionsMap.put(&quot;id&quot;, rid);</span>
+
+		try {
+<span class="nc" id="L199">			RequirementModel requestedRequirement = mongoTemplate</span>
+<span class="nc" id="L200">					.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), RequirementModel.class);</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">			if (remove) {</span>
+<span class="nc" id="L202">				requestedRequirement.setStatus(Constants.REQUIREMENT_INVALID_STATUS);</span>
+<span class="nc" id="L203">				updateTestcaseStatus(requestedRequirement.getRequirementId(), requestedRequirement.getProjectId(),</span>
+						Constants.TESTCASE_STATUS_ONHOLD);
+			}
+
+<span class="nc bnc" id="L207" title="All 2 branches missed.">			if (requirementModel.getDescription() != null) {</span>
+<span class="nc" id="L208">				requestedRequirement.setDescription(requirementModel.getDescription());</span>
+			}
+
+<span class="nc bnc" id="L211" title="All 2 branches missed.">			if (requirementModel.getStatus() != null</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">					&amp;&amp; requirementModel.getStatus().equals(Constants.REQUIREMENT_VALID_STATUS)) {</span>
+<span class="nc" id="L213">				requestedRequirement.setStatus(requirementModel.getStatus());</span>
+<span class="nc" id="L214">				updateTestcaseStatus(requestedRequirement.getRequirementId(), requestedRequirement.getProjectId(),</span>
+						Constants.TESTCASE_STATUS_PASSED);
+			}
+<span class="nc bnc" id="L217" title="All 2 branches missed.">			if (requirementModel.getInputParameters() != null) {</span>
+<span class="nc" id="L218">				requestedRequirement.setInputParameters(requirementModel.getInputParameters());</span>
+			}
+<span class="nc" id="L220">			projectModel.addUpdateDate(&quot;Requirement &quot; + requestedRequirement.getRequirementId() + &quot; of project Id &quot;</span>
+<span class="nc" id="L221">					+ projectModel.getId() + &quot; is Updated&quot;);</span>
+
+<span class="nc bnc" id="L223" title="All 2 branches missed.">			if (mongoTemplate.save(projectModel) == null) {</span>
+<span class="nc" id="L224">				LOGGER.warn(&quot;COULD NOT ADD UPDATE HISTORY FOR CHANGED REQUIREMENTS&quot;);</span>
+			}
+
+<span class="nc bnc" id="L227" title="All 2 branches missed.">			if (mongoTemplate.save(requestedRequirement) == null) {</span>
+<span class="nc" id="L228">				LOGGER.warn(&quot;COULD NOT SAVE THE  REQUIREMENT&quot;);</span>
+<span class="nc" id="L229">				throw new BadRequestException(&quot;could not save the requirement&quot;);</span>
+			} else {
+<span class="nc" id="L231">				return &quot;Requirement Updated&quot;;</span>
+			}
+
+<span class="nc" id="L234">		} catch (Exception e) {</span>
+<span class="nc" id="L235">			LOGGER.warn(&quot;COULD NOT FIND THE REQUESTED REQUIREMENT&quot;);</span>
+<span class="nc" id="L236">			throw new BadRequestException(&quot;could not find the requested requirement&quot;);</span>
+		}
+
+	}
+
+	/**
+	 * Method to Update TestCase Status when requirement Status is altered
+	 * @param the Project id , Requirement id is passed and status to be changed.
+	 * @return Nothing .
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
+	private void updateTestcaseStatus(String requirementId, String projectId, String status) {
+<span class="nc" id="L249">		Map&lt;String, String&gt; conditionsMap = new HashMap&lt;String, String&gt;();</span>
+<span class="nc" id="L250">		conditionsMap.put(&quot;projectId&quot;, projectId);</span>
+<span class="nc" id="L251">		conditionsMap.put(&quot;requirementId&quot;, requirementId);</span>
+
+<span class="nc" id="L253">		List&lt;TestCaseModel&gt; testCaseList = mongoTemplate.find(ProjectUtility.getQueryByKeyValue(conditionsMap),</span>
+				TestCaseModel.class);
+<span class="nc bnc" id="L255" title="All 2 branches missed.">		for (int testCaseIndex = 0; testCaseIndex &lt; testCaseList.size(); testCaseIndex++) {</span>
+<span class="nc" id="L256">			TestCaseModel requestedTestCase = testCaseList.get(testCaseIndex);</span>
+<span class="nc" id="L257">			requestedTestCase.setStatus(status);</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">			if (mongoTemplate.save(requestedTestCase) == null) {</span>
+<span class="nc" id="L259">				LOGGER.warn(&quot;COULD NOT UPDATE &quot; + requestedTestCase.get_id() + &quot; TESTCASE&quot;);</span>
+			}
+		}
+<span class="nc" id="L262">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

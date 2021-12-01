@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefectController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EmpCrud</a> &gt; <a href="index.source.html" class="el_package">com.example.demo.controller.defect</a> &gt; <span class="el_source">DefectController.java</span></div><h1>DefectController.java</h1><pre class="source lang-java linenums">package com.example.demo.controller.defect;
+
+import java.util.List;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.model.defect.Comments;
+import com.example.demo.model.defect.Defect;
+import com.example.demo.service.defect.DefectService;
+import com.example.demo.service.defect.IdGen;
+import com.example.demo.service.defect.SequenceGenService;
+import com.example.demo.utilities.Dashboard;
+
+
+@RequestMapping(&quot;/api/defects&quot;)
+@RestController
+public class DefectController {
+	
+	@Autowired
+	private SequenceGenService service;
+	private DefectService defService;
+	
+<span class="fc" id="L33">	public DefectController(DefectService defService) {</span>
+<span class="fc" id="L34">		this.defService = defService;</span>
+<span class="fc" id="L35">	}</span>
+	
+	@PostMapping(&quot;/create&quot;)
+	public String createDefect(@RequestBody Defect defect) {
+<span class="nc" id="L39">		defect.setId(&quot;D&quot;+service.getCount(IdGen.getSequenceName()));</span>
+<span class="nc" id="L40">		return defService.addDefect(defect);</span>
+	}
+	
+	@GetMapping(&quot;/display&quot;)
+	public List&lt;Defect&gt; getAllDefects(){
+<span class="nc" id="L45">		return defService.getAllDefects();</span>
+	}
+	
+	@GetMapping(&quot;displayprojectdef/{pid}&quot;)
+	public List&lt;Defect&gt; getProjectDefects(@PathVariable(&quot;pid&quot;) String pid){
+<span class="nc" id="L50">		return defService.getDefectsByProjectId(pid);</span>
+	}
+	
+	@GetMapping(&quot;/display/{id}&quot;)
+	public Dashboard getDefectById(@PathVariable(&quot;id&quot;) String id){
+<span class="nc" id="L55">		return defService.getDefectById(id);</span>
+	}
+	
+	@PostMapping(&quot;/addComment&quot;)
+	public String addComment(@RequestBody Comments c) {
+<span class="nc" id="L60">		return defService.addComment(c);</span>
+	}
+	
+	@PutMapping(&quot;/update&quot;)
+	public String updateDefect(@RequestBody Map&lt;String,String&gt; defect) {
+<span class="nc" id="L65">		return defService.updateDefectByID(defect);</span>
+	}
+	
+	@PutMapping(&quot;/updateStatus&quot;)
+	public String updateDefectStatus(@PathVariable(&quot;id&quot;) String id, @RequestBody Map&lt;String,String&gt; defect) {
+<span class="nc" id="L70">		return defService.updateDefectStatus(defect);</span>
+	}
+	
+	@DeleteMapping(&quot;/delete/{id}&quot;)
+	public String deleteDefect(@PathVariable(&quot;id&quot;) String id) {
+<span class="nc" id="L75">		return defService.deleteDefect(id);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

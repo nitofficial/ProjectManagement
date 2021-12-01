@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.demo.model.defect.Defect;
-import com.example.demo.service.defect.DefectService;
+import com.example.demo.model.Defect;
+import com.example.demo.service.DefectService;
 import com.example.demo.utilities.Dashboard;
 
 @SpringBootTest
@@ -21,7 +21,7 @@ public class DefectTests {
 	
 	@Test
 	public void testCreateDefect() {
-		Defect defect = new Defect();
+		Defect defect = new com.example.demo.model.Defect();
 		defect.setDesc("Validation error");
 		defect.setExpResults("Invalid User");
 		defect.setProjectId("Prj-1");

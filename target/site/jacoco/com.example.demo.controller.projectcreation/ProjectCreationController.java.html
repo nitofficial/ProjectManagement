@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProjectCreationController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EmpCrud</a> &gt; <a href="index.source.html" class="el_package">com.example.demo.controller.projectcreation</a> &gt; <span class="el_source">ProjectCreationController.java</span></div><h1>ProjectCreationController.java</h1><pre class="source lang-java linenums">package com.example.demo.controller.projectcreation;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.model.projectcreation.ProjectModel;
+import com.example.demo.model.projectcreation.RequirementModel;
+import com.example.demo.constants.Constants;
+import com.example.demo.service.projectcreation.ProjectService;
+
+@RequestMapping(&quot;/api/v1&quot;)
+@RestController
+<span class="fc" id="L24">public class ProjectCreationController {</span>
+
+<span class="fc" id="L26">	private static final Logger LOGGER = LoggerFactory.getLogger(ProjectCreationController.class);</span>
+
+	@Autowired
+	private ProjectService projectService;
+
+	// Project Controller
+	@PostMapping(&quot;/project&quot;)
+	public String createProject(@RequestBody ProjectModel projectModel) {
+<span class="nc" id="L34">		LOGGER.info(&quot;IN CREATE PROJECT&quot;);</span>
+<span class="nc" id="L35">		projectModel.setId(Constants.PROJECT_PREFIX</span>
+<span class="nc" id="L36">				+ String.valueOf(projectService.uniqueValue(Constants.PROJECT_COUNTER_DOCUMENT_ID)));</span>
+
+<span class="nc" id="L38">		projectModel.setRequirementsCount(0);</span>
+<span class="nc" id="L39">		return projectService.addProject(projectModel);</span>
+	}
+
+	@GetMapping(&quot;/project&quot;)
+	public List&lt;ProjectModel&gt; allProjects() {
+<span class="nc" id="L44">		LOGGER.info(&quot;IN REQUESTING ALL PROJECTS&quot;);</span>
+<span class="nc" id="L45">		return projectService.getAllProjects();</span>
+	}
+
+	@GetMapping(&quot;/project/{id}&quot;)
+	public ProjectModel projectByID(@PathVariable(&quot;id&quot;) String id) {
+<span class="nc" id="L50">		LOGGER.info(&quot;IN REQUESTING SPECIFIC PROJECT&quot;);</span>
+<span class="nc" id="L51">		return projectService.getByProjectId(id);</span>
+
+	}
+
+	@PutMapping(&quot;/project/{id}&quot;)
+	public String updateProject(@PathVariable(&quot;id&quot;) String id, @RequestBody ProjectModel projectModel) {
+<span class="nc" id="L57">		LOGGER.info(&quot;IN UPDATING PROJECT&quot;);</span>
+<span class="nc" id="L58">		return projectService.updateProject(projectModel, id);</span>
+	}
+
+	// Requirement controller
+
+	@PostMapping(&quot;/project/requirement/{id}&quot;)
+	public String createRequirement(@PathVariable(&quot;id&quot;) String id,
+			@RequestBody List&lt;RequirementModel&gt; requirementModelList) {
+<span class="nc" id="L66">		LOGGER.info(&quot;IN CREATE/ADD REQUIREMENTS&quot;);</span>
+<span class="nc" id="L67">		return projectService.addRequirement(requirementModelList, id);</span>
+	}
+
+	@PutMapping(&quot;/project/requirement/{id}/{rid}&quot;)
+	public String updateRequirement(@PathVariable(&quot;id&quot;) String id, @PathVariable(&quot;rid&quot;) String rid,
+			@RequestBody RequirementModel requirementModel) {
+<span class="nc" id="L73">		LOGGER.info(&quot;IN UPDATE REQUIREMENTS&quot;);</span>
+<span class="nc" id="L74">		return projectService.updateRequirement(requirementModel, id, rid, false);</span>
+	}
+
+	@DeleteMapping(&quot;/project/requirement/{id}/{rid}&quot;)
+	public String deleteRequirement(@PathVariable(&quot;id&quot;) String id, @PathVariable(&quot;rid&quot;) String rid,
+			@RequestBody RequirementModel requirementModel) {
+<span class="nc" id="L80">		LOGGER.info(&quot;IN DELETE REQUIREMENTS&quot;);</span>
+<span class="nc" id="L81">		projectService.updateRequirement(requirementModel, id, rid, true);</span>
+<span class="nc" id="L82">		return &quot;requirement Deleted&quot;;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

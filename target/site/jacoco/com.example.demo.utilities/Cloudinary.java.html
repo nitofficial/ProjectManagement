@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Cloudinary.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EmpCrud</a> &gt; <a href="index.source.html" class="el_package">com.example.demo.utilities</a> &gt; <span class="el_source">Cloudinary.java</span></div><h1>Cloudinary.java</h1><pre class="source lang-java linenums">package com.example.demo.utilities;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.demo.constants.Constants;
+import com.example.demo.model.filemanagement.FileModel;
+import com.example.demo.model.filemanagement.FileSubDocument;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+<span class="nc" id="L22">public class Cloudinary {</span>
+	
+		
+	public static FileModel uploadToCloudinary(MultipartFile file,String defect_id) throws IOException {
+<span class="fc" id="L26">		RestTemplate restTemplate = new RestTemplate();</span>
+<span class="fc" id="L27">		HttpHeaders headers = new HttpHeaders();</span>
+<span class="fc" id="L28">		headers.setContentType(MediaType.MULTIPART_FORM_DATA);</span>
+
+<span class="fc" id="L30">		LinkedMultiValueMap&lt;String, String&gt; HeaderMap = new LinkedMultiValueMap&lt;&gt;();</span>
+<span class="fc" id="L31">		HeaderMap.add(&quot;Content-disposition&quot;, &quot;form-data; name=file; filename=&quot; + file.getOriginalFilename());</span>
+<span class="fc" id="L32">		HeaderMap.add(&quot;Content-type&quot;, &quot;multipart/form-data&quot;);</span>
+<span class="fc" id="L33">		HttpEntity&lt;byte[]&gt; fileInBytes = new HttpEntity&lt;byte[]&gt;(file.getBytes(), HeaderMap);</span>
+
+<span class="fc" id="L35">		LinkedMultiValueMap&lt;String, Object&gt; body = new LinkedMultiValueMap&lt;&gt;();</span>
+<span class="fc" id="L36">		body.add(&quot;file&quot;, fileInBytes);</span>
+<span class="fc" id="L37">		body.add(&quot;upload_preset&quot;, Constants.CLOUDINARY_UPLOAD_PRESET);</span>
+
+<span class="fc" id="L39">		HttpEntity&lt;LinkedMultiValueMap&lt;String, Object&gt;&gt; reqEntity = new HttpEntity&lt;&gt;(body, headers);</span>
+
+<span class="fc" id="L41">		ResponseEntity&lt;String&gt; response = restTemplate.exchange(Constants.CLOUDINARY_URL, HttpMethod.POST, reqEntity,</span>
+				String.class);
+
+<span class="fc" id="L44">		FileSubDocument filesubdocument = new ObjectMapper()</span>
+<span class="fc" id="L45">				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)</span>
+<span class="fc" id="L46">				.readValue(response.getBody(), FileSubDocument.class);</span>
+<span class="fc" id="L47">		FileModel filemodel = new FileModel();</span>
+<span class="fc" id="L48">		filemodel.setDefect_id(defect_id);</span>
+
+<span class="fc" id="L50">		List&lt;FileSubDocument&gt; list = new ArrayList&lt;FileSubDocument&gt;();</span>
+<span class="fc" id="L51">		list.add(filesubdocument);</span>
+<span class="fc" id="L52">		filemodel.setFilesubdocument(list);</span>
+
+<span class="fc" id="L54">		return filemodel;</span>
+		
+		
+		
+	}
+	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

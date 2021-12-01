@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ValidationService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EmpCrud</a> &gt; <a href="index.source.html" class="el_package">com.example.demo.service.defect</a> &gt; <span class="el_source">ValidationService.java</span></div><h1>ValidationService.java</h1><pre class="source lang-java linenums">package com.example.demo.service.defect;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.model.defect.Defect;
+import com.example.demo.model.projectcreation.ProjectModel;
+import com.example.demo.model.rolemanagement.User;
+
+<span class="nc" id="L16">public class ValidationService {</span>
+	private MongoTemplate mongoTemplate;
+<span class="nc" id="L18">	Logger logger = LoggerFactory.getLogger(ValidationService.class);</span>
+	
+	public boolean validateDefId(String defId) {
+<span class="nc" id="L21">		Query q = new Query();</span>
+<span class="nc" id="L22">		q.addCriteria(Criteria.where(&quot;id&quot;).is(defId));</span>
+<span class="nc" id="L23">		List&lt;Defect&gt; a = mongoTemplate.find(q,Defect.class);</span>
+<span class="nc bnc" id="L24" title="All 2 branches missed.">		if(a.size()==0) {</span>
+<span class="nc" id="L25">			logger.warn(&quot;Validation failed&quot;);</span>
+<span class="nc" id="L26">			throw new BadRequestException(&quot;The entered Defect ID is invalid.&quot;);</span>
+		}
+<span class="nc" id="L28">		return true;</span>
+	}
+	public boolean validateProjectId(String projectId) {
+<span class="nc" id="L31">		Query q = new Query();</span>
+<span class="nc" id="L32">		q.addCriteria(Criteria.where(&quot;id&quot;).is(projectId));</span>
+<span class="nc" id="L33">		List&lt;ProjectModel&gt; a = mongoTemplate.find(q,ProjectModel.class);</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">		if(a.size()==0) {</span>
+<span class="nc" id="L35">			logger.warn(&quot;Validation failed&quot;);</span>
+<span class="nc" id="L36">			throw new BadRequestException(&quot;The entered Project ID is invalid.&quot;);</span>
+		}
+<span class="nc" id="L38">		return true;</span>
+	}
+	public boolean validateStatus(String status) {
+<span class="nc bnc" id="L41" title="All 10 branches missed.">		if(!(status.equals(&quot;New&quot;) || status.equals(&quot;Open&quot;) || status.equals(&quot;Retest failed&quot;) || status.equals(&quot;Closed&quot;) || status.equals(&quot;Cancelled&quot;))) {</span>
+<span class="nc" id="L42">			logger.warn(&quot;Validation failed&quot;);</span>
+<span class="nc" id="L43">			throw new BadRequestException(&quot;Invalid Status Type.&quot;);</span>
+		}
+<span class="nc" id="L45">		return true;</span>
+	}
+	public boolean validateUserId(String userId) {
+<span class="nc" id="L48">		Query q = new Query();</span>
+<span class="nc" id="L49">		q.addCriteria(Criteria.where(&quot;id&quot;).is(userId));</span>
+<span class="nc" id="L50">		List&lt;User&gt; a = mongoTemplate.find(q,User.class);</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">		if(a.size()==0) {</span>
+<span class="nc" id="L52">			logger.warn(&quot;Validation failed&quot;);</span>
+<span class="nc" id="L53">			throw new BadRequestException(&quot;The entered User ID is invalid.&quot;);</span>
+		}
+<span class="nc" id="L55">		return true;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

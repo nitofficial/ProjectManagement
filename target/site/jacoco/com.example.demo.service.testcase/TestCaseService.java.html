@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TestCaseService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EmpCrud</a> &gt; <a href="index.source.html" class="el_package">com.example.demo.service.testcase</a> &gt; <span class="el_source">TestCaseService.java</span></div><h1>TestCaseService.java</h1><pre class="source lang-java linenums">package com.example.demo.service.testcase;
+
+import java.util.HashMap;
+
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.model.dashboard.IdOnly;
+import com.example.demo.model.projectcreation.RequirementModel;
+import com.example.demo.model.testcase.TestCaseModel;
+import com.example.demo.constants.Constants;
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.utilities.ProjectUtility;
+
+@Service
+<span class="fc" id="L25">public class TestCaseService {</span>
+
+	@Autowired
+	private MongoTemplate mongoTemplate;
+
+<span class="fc" id="L30">	private static final Logger LOGGER = LoggerFactory.getLogger(TestCaseService.class);</span>
+
+	
+	public List&lt;IdOnly&gt; getOpenTests() {
+<span class="fc" id="L34">		Query q = new Query();</span>
+<span class="fc" id="L35">		q.addCriteria(Criteria.where(&quot;status&quot;).ne(&quot;Passed&quot;));</span>
+<span class="fc" id="L36">		q.fields().include(&quot;testcaseId&quot;);</span>
+<span class="fc" id="L37">		List&lt;IdOnly&gt; a = mongoTemplate.find(q, IdOnly.class, Constants.TESTCASE_COLLECTION);</span>
+<span class="fc" id="L38">		System.out.print(a);</span>
+<span class="fc" id="L39">		return a;</span>
+	}
+
+	public long getPassedTestsCount() {
+<span class="nc" id="L43">		Query query = new Query();</span>
+<span class="nc" id="L44">		query.addCriteria(Criteria.where(&quot;status&quot;).is(&quot;Passed&quot;));</span>
+<span class="nc" id="L45">		return mongoTemplate.count(query, TestCaseModel.class);</span>
+	}
+	
+	
+	
+	
+	
+	public TestCaseModel getByTestCaseId(String projectId, String requirementId, String testcaseId) {
+<span class="nc" id="L53">		Map&lt;String, String&gt; conditionsMap = new HashMap&lt;String, String&gt;();</span>
+<span class="nc" id="L54">		conditionsMap.put(&quot;projectId&quot;, projectId);</span>
+<span class="nc" id="L55">		conditionsMap.put(&quot;requirementId&quot;, requirementId);</span>
+<span class="nc" id="L56">		conditionsMap.put(&quot;id&quot;, testcaseId);</span>
+		try {
+<span class="nc" id="L58">			return mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), TestCaseModel.class);</span>
+<span class="nc" id="L59">		} catch (Exception e) {</span>
+<span class="nc" id="L60">			LOGGER.warn(&quot;SPECIFIC TESTCASE NOT FOUND&quot;);</span>
+<span class="nc" id="L61">			throw new BadRequestException(&quot;Specific TestCase Not Found&quot;);</span>
+		}
+
+	}
+
+	public List&lt;TestCaseModel&gt; getAllTestCase() {
+		try {
+<span class="nc" id="L68">			return mongoTemplate.findAll(TestCaseModel.class);</span>
+<span class="nc" id="L69">		} catch (Exception e) {</span>
+<span class="nc" id="L70">			LOGGER.warn(&quot;TESTCASES NOT FOUND&quot;);</span>
+<span class="nc" id="L71">			throw new BadRequestException(&quot;TestCases Not Found&quot;);</span>
+		}
+
+	}
+
+	public String addTestCase(List&lt;TestCaseModel&gt; testcaseModelList) {
+
+<span class="nc bnc" id="L78" title="All 2 branches missed.">		for (int testcaseIndex = 0; testcaseIndex &lt; testcaseModelList.size(); testcaseIndex++) {</span>
+<span class="nc" id="L79">			TestCaseModel testcaseModel = testcaseModelList.get(testcaseIndex);</span>
+<span class="nc" id="L80">			Map&lt;String, String&gt; conditionsMap = new HashMap&lt;String, String&gt;();</span>
+<span class="nc" id="L81">			conditionsMap.put(&quot;projectId&quot;, testcaseModel.getProjectId());</span>
+<span class="nc" id="L82">			conditionsMap.put(&quot;requirementId&quot;, testcaseModel.getRequirementId());</span>
+
+<span class="nc" id="L84">			testcaseModel.setStatus(Constants.TESTCASE_STATUS_PASSED);</span>
+<span class="nc" id="L85">			RequirementModel requirementModel = mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap),</span>
+					RequirementModel.class);
+<span class="nc bnc" id="L87" title="All 2 branches missed.">			if (requirementModel != null) {</span>
+<span class="nc" id="L88">				testcaseModel.setTestcaseId(</span>
+<span class="nc" id="L89">						Constants.TESTCASE_PREFIX + String.valueOf(requirementModel.incrementTestCaseCount()));</span>
+
+<span class="nc bnc" id="L91" title="All 2 branches missed.">				if (mongoTemplate.insert(testcaseModel) == null) {</span>
+<span class="nc" id="L92">					LOGGER.warn(&quot;FEW TESTCASES ARE NOT INSERTED SUCCESSFULLY &quot;);</span>
+				}
+<span class="nc bnc" id="L94" title="All 2 branches missed.">				if (mongoTemplate.save(requirementModel) == null) {</span>
+<span class="nc" id="L95">					LOGGER.warn(&quot;TESTCASE COUNT IS NOT UPDATED&quot;);</span>
+				}
+			} else {
+<span class="nc" id="L98">				LOGGER.warn(&quot;REQUIREMENT ID DOESNT EXIST&quot;);</span>
+<span class="nc" id="L99">				throw new BadRequestException(&quot;Requirement id Doesnt exist&quot;);</span>
+			}
+
+		}
+<span class="nc" id="L103">		return &quot;Inserted&quot;;</span>
+
+	}
+
+	public String updateProject(TestCaseModel testCaseModel, String projectId, String requirementId,
+			String testcaseId) {
+<span class="nc" id="L109">		TestCaseModel requestedTestCase = getByTestCaseId(projectId, requirementId, testcaseId);</span>
+
+<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (testCaseModel == null) {</span>
+<span class="nc" id="L112">			requestedTestCase.setStatus(Constants.TESTCASE_STATUS_ONHOLD);</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">			if (mongoTemplate.save(requestedTestCase) == null) {</span>
+<span class="nc" id="L114">				LOGGER.warn(&quot;TESTCASE COULD NOT BE DELETED&quot;);</span>
+<span class="nc" id="L115">				throw new BadRequestException(&quot;Testcase could not be deleted&quot;);</span>
+			}
+<span class="nc" id="L117">			return &quot;testCase Deleted&quot;;</span>
+		}
+
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (testCaseModel.getName() != null) {</span>
+<span class="nc" id="L121">			requestedTestCase.setName(testCaseModel.getName());</span>
+		}
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (testCaseModel.getDescription() != null) {</span>
+<span class="nc" id="L124">			requestedTestCase.setDescription(testCaseModel.getDescription());</span>
+		}
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (testCaseModel.getExpectedResults() != null) {</span>
+<span class="nc" id="L127">			requestedTestCase.setExpectedResults(testCaseModel.getExpectedResults());</span>
+		}
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (testCaseModel.getInputParameters() != null) {</span>
+<span class="nc" id="L130">			requestedTestCase.setInputParameters(testCaseModel.getInputParameters());</span>
+		}
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (testCaseModel.getActualResults() != null) {</span>
+<span class="nc" id="L133">			requestedTestCase.setActualResults(testCaseModel.getActualResults());</span>
+		}
+<span class="nc bnc" id="L135" title="All 4 branches missed.">		if (testCaseModel.getStatus() != null &amp;&amp; !testCaseModel.getStatus().equals(Constants.TESTCASE_STATUS_ONHOLD)) {</span>
+<span class="nc" id="L136">			requestedTestCase.setStatus(testCaseModel.getStatus());</span>
+		}
+
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		if (mongoTemplate.save(requestedTestCase) == null) {</span>
+<span class="nc" id="L140">			LOGGER.warn(&quot;TESTCASE COULD NOT BE UPDATED&quot;);</span>
+<span class="nc" id="L141">			throw new BadRequestException(&quot;Testcase could not be updated&quot;);</span>
+
+		} else {
+<span class="nc" id="L144">			return &quot;TestCase &quot; + requestedTestCase.getTestcaseId() + &quot; Updated&quot;;</span>
+		}
+
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

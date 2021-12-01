@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileSubDocument.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EmpCrud</a> &gt; <a href="index.source.html" class="el_package">com.example.demo.model.filemanagement</a> &gt; <span class="el_source">FileSubDocument.java</span></div><h1>FileSubDocument.java</h1><pre class="source lang-java linenums">package com.example.demo.model.filemanagement;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+//import lombok.AllArgsConstructor;
+//import lombok.Data;
+//import lombok.Getter;
+//import lombok.Setter;
+
+@JsonIgnoreProperties
+//@Data
+//@AllArgsConstructor
+//@Getter
+//@Setter
+public class FileSubDocument {
+
+	private String asset_id;
+	private String url;
+	private String secure_url;
+	private String resource_type;
+	private String original_filename;
+	
+
+	
+	public FileSubDocument() {
+<span class="fc" id="L26">		super();</span>
+		// TODO Auto-generated constructor stub
+<span class="fc" id="L28">	}</span>
+	public FileSubDocument(String asset_id, String url, String secure_url, String resource_type,
+			String original_filename) {
+<span class="nc" id="L31">		super();</span>
+<span class="nc" id="L32">		this.asset_id = asset_id;</span>
+<span class="nc" id="L33">		this.url = url;</span>
+<span class="nc" id="L34">		this.secure_url = secure_url;</span>
+<span class="nc" id="L35">		this.resource_type = resource_type;</span>
+<span class="nc" id="L36">		this.original_filename = original_filename;</span>
+<span class="nc" id="L37">	}</span>
+	public String getAsset_id() {
+<span class="nc" id="L39">		return asset_id;</span>
+	}
+	public void setAsset_id(String asset_id) {
+<span class="fc" id="L42">		this.asset_id = asset_id;</span>
+<span class="fc" id="L43">	}</span>
+
+	
+	public String getUrl() {
+<span class="nc" id="L47">		return url;</span>
+	}
+	public void setUrl(String url) {
+<span class="fc" id="L50">		this.url = url;</span>
+<span class="fc" id="L51">	}</span>
+	public String getSecure_url() {
+<span class="nc" id="L53">		return secure_url;</span>
+	}
+	public void setSecure_url(String secure_url) {
+<span class="fc" id="L56">		this.secure_url = secure_url;</span>
+<span class="fc" id="L57">	}</span>
+	public String getResource_type() {
+<span class="nc" id="L59">		return resource_type;</span>
+	}
+	public void setResource_type(String resource_type) {
+<span class="fc" id="L62">		this.resource_type = resource_type;</span>
+<span class="fc" id="L63">	}</span>
+	public String getOriginal_filename() {
+<span class="nc" id="L65">		return original_filename;</span>
+	}
+	public void setOriginal_filename(String original_filename) {
+<span class="fc" id="L68">		this.original_filename = original_filename;</span>
+<span class="fc" id="L69">	}</span>
+	
+	
+
+	
+	
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

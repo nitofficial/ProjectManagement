@@ -1,3 +1,6 @@
+/**
+	 * @author Nithish	
+*/
 package com.example.demo.utilities;
 
 import java.io.IOException;
@@ -14,8 +17,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.constants.Constants;
-import com.example.demo.model.filemanagement.FileModel;
-import com.example.demo.model.filemanagement.FileSubDocument;
+import com.example.demo.model.FileModel;
+import com.example.demo.model.FileSubDocument;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
