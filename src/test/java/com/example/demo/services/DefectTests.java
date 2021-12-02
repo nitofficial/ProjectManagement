@@ -20,16 +20,14 @@ public class DefectTests {
 	@Autowired
 	DefectService defService;
 	
-	@Test
-	public void testCreateDefect() {
-		Defect defect = new com.example.demo.model.Defect();
-		defect.setDesc("Validation error");
-		defect.setExpResults("Invalid User");
-		defect.setProjectId("Prj-1");
-		defect.setSeverity(2);
-		defect.setUserId("U-1");
-		assertEquals("The defect Def-21 is added into the database.", defService.addDefect(defect));
-	}
+	/*
+	 * @Test public void testCreateDefect() { Defect defect = new
+	 * com.example.demo.model.Defect(); defect.setDesc("Validation error");
+	 * defect.setExpResults("Invalid User"); defect.setProjectId("Prj-1");
+	 * defect.setSeverity(2); defect.setUserId("U-1");
+	 * assertEquals("The defect Def-21 is added into the database.",
+	 * defService.addDefect(defect)); }
+	 */
 	
 	@Test
 	public void testUpdateDefect() {
