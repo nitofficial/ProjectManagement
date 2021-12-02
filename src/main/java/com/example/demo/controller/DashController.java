@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.model.DashRTMModel;
 import com.example.demo.model.IdOnly;
 import com.example.demo.model.TestCaseModel;
 import com.example.demo.service.DashboardService;
@@ -38,6 +39,11 @@ public class DashController {
 	public List<IdOnly> getOpenTests() {
 		return testCaseService.getOpenTests();
 
+	}
+	
+	@GetMapping("/getRTM")
+	public List<DashRTMModel> getRTM(){
+		return dashservice.getRTM();
 	}
 
 }
