@@ -95,6 +95,9 @@ public class TestCaseService {
 	 */
 	public String addTestCase(List<TestCaseModel> testcaseModelList) {
 
+		try {
+			
+		
 		for (int testcaseIndex = 0; testcaseIndex < testcaseModelList.size(); testcaseIndex++) {
 			TestCaseModel testcaseModel = testcaseModelList.get(testcaseIndex);
 			Map<String, String> conditionsMap = new HashMap<String, String>();
@@ -104,7 +107,7 @@ public class TestCaseService {
 			testcaseModel.setStatus(Constants.TESTCASE_STATUS_PASSED);
 			RequirementModel requirementModel = mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap),
 					RequirementModel.class);
-			if (requirementModel != null) {
+			if(requirementModel != null) {
 				testcaseModel.setTestcaseId(
 						Constants.TESTCASE_PREFIX + String.valueOf(requirementModel.incrementTestCaseCount()));
 
@@ -121,6 +124,12 @@ public class TestCaseService {
 
 		}
 		return "Inserted";
+		}
+		catch(Exception e)
+		{
+			LOGGER.warn("TESTCASE NOT INSERTED SUCCESSFULL");
+			throw new BadRequestException("TestCases where not inserted Successfully");
+		}
 
 	}
 
@@ -133,6 +142,7 @@ public class TestCaseService {
 	 */
 	public String updateTestCase(TestCaseModel testCaseModel, String projectId, String requirementId,
 			String testcaseId) {
+		try {
 		TestCaseModel requestedTestCase = getByTestCaseId(projectId, requirementId, testcaseId);
 
 		if (testCaseModel == null) {
@@ -169,6 +179,11 @@ public class TestCaseService {
 
 		} else {
 			return "TestCase " + requestedTestCase.getTestcaseId() + " Updated";
+		}
+		}
+		catch(Exception e)
+		{
+			throw new BadRequestException(" Could not Update testCase ");
 		}
 
 	}

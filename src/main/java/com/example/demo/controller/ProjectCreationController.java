@@ -28,7 +28,13 @@ public class ProjectCreationController {
 	@Autowired
 	private ProjectService projectService;
 
-	// Project Controller
+	/**
+	 * Method to create project
+	 *
+	 * 
+	 * @param ProjectModel
+	 * @return FileModel with respective status and information.
+	 */
 	@PostMapping("/project")
 	public String createProject(@RequestBody ProjectModel projectModel) {
 		LOGGER.info("IN CREATE PROJECT");
@@ -39,6 +45,7 @@ public class ProjectCreationController {
 		return projectService.addProject(projectModel);
 	}
 
+	
 	@GetMapping("/project")
 	public List<ProjectModel> allProjects() {
 		LOGGER.info("IN REQUESTING ALL PROJECTS");

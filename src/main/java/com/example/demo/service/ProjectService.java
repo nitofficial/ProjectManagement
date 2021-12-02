@@ -91,6 +91,7 @@ public class ProjectService {
 
 	 */
 	public String updateProject(ProjectModel projectModel, String id) {
+		try {
 		ProjectModel requestedProject = getByProjectId(id);
 		if (projectModel.getName() != null) {
 			requestedProject.setName(projectModel.getName());
@@ -113,6 +114,11 @@ public class ProjectService {
 			LOGGER.info("PROJECT UPDATED SUCCESSFULLY");
 			return "Project " + requestedProject.getId() + " Updated";
 		} else {
+			LOGGER.warn("PROJECT NOT UPDATED");
+			throw new BadRequestException("Project could not be updated");
+		}
+		}catch(Exception e)
+		{
 			LOGGER.warn("PROJECT NOT UPDATED");
 			throw new BadRequestException("Project could not be updated");
 		}
