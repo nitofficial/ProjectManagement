@@ -159,7 +159,10 @@ public class ProjectService {
 	public String addRequirement(List<RequirementModel> requirementModelList, String projectId) {
 
 		ProjectModel projectModel = getByProjectId(projectId);
-
+        
+		try {
+			
+		
 		for (int requirementIndex = 0; requirementIndex < requirementModelList.size(); requirementIndex++) {
 			RequirementModel requirementModel = requirementModelList.get(requirementIndex);
 			requirementModel.setStatus(Constants.REQUIREMENT_VALID_STATUS);
@@ -175,6 +178,11 @@ public class ProjectService {
 
 		if (mongoTemplate.save(projectModel) == null) {
 			LOGGER.warn("REQUIREMENTS COULD NOT BE UPDATED");
+		}
+		}
+		catch(Exception e)
+		{
+			throw new BadRequestException("there is no requirements found to be added");
 		}
 
 		return "requirements added";
@@ -245,7 +253,7 @@ public class ProjectService {
 	 * @throws  Handles Exception from Database read,write.
 
 	 */
-	private void updateTestcaseStatus(String requirementId, String projectId, String status) {
+	public void updateTestcaseStatus(String requirementId, String projectId, String status) {
 		Map<String, String> conditionsMap = new HashMap<String, String>();
 		conditionsMap.put("projectId", projectId);
 		conditionsMap.put("requirementId", requirementId);
