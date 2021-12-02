@@ -50,14 +50,14 @@ public class TestCaseController {
 	public String updateTestCase(@PathVariable("pid") String projectId, @PathVariable("rid") String requirementId,
 			@PathVariable("tid") String testcaseId, @RequestBody TestCaseModel testCaseModel) {
 		LOGGER.info("IN UPDATE TESTCASES");
-		return testCaseService.updateProject(testCaseModel, projectId, requirementId, testcaseId);
+		return testCaseService.updateTestCase(testCaseModel, projectId, requirementId, testcaseId);
 	}
 
 	@DeleteMapping("/testcase/{pid}/{rid}/{tid}")
 	public String deleteTestCase(@PathVariable("pid") String projectId, @PathVariable("rid") String requirementId,
 			@PathVariable("tid") String testcaseId) {
 		LOGGER.info("IN DELETE TESTCASES");
-		return testCaseService.updateProject(null, projectId, requirementId, testcaseId);
+		return testCaseService.updateTestCase(null, projectId, requirementId, testcaseId);
 
 	}
 
