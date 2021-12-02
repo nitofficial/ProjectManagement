@@ -275,4 +275,13 @@ public class ProjectService {
 		}
 	}
 
+	public List<RequirementModel> getAllRequirements() {
+		try {
+			return mongoTemplate.findAll(RequirementModel.class);
+		} catch (Exception e) {
+			LOGGER.warn("REQUIREMENTS NOT FOUND");
+			throw new BadRequestException("Requirements Not Found");
+		}
+	}
+
 }

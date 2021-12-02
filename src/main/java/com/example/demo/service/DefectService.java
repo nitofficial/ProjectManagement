@@ -104,6 +104,7 @@ public class DefectService {
 		return mongoTemplate.count(q, Defect.class);
 		
 	}
+	
 	public List<Defect> getOpenDefects(){
 		Query q = new Query();
 		q.addCriteria(Criteria.where("status").ne("Closed"));
