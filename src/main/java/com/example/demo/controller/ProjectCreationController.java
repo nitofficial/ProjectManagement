@@ -33,7 +33,7 @@ public class ProjectCreationController {
 	 *
 	 * 
 	 * @param ProjectModel
-	 * @return FileModel with respective status and information.
+	 * @return  Respective status and information of ProjectModel.
 	 */
 	@PostMapping("/project")
 	public String createProject(@RequestBody ProjectModel projectModel) {

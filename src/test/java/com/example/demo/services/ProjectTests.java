@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.example.demo.exception.BadRequestException;
@@ -26,10 +26,8 @@ import com.example.demo.utilities.ProjectUtility;
 @SpringBootTest
 public class ProjectTests {
 
-	@Mock
+	@SpyBean
 	private MongoTemplate mongoTemplate;
-
-	MongoTemplate template = spy(this.template);
 
 	@Autowired
 	ProjectService service;
@@ -39,7 +37,7 @@ public class ProjectTests {
 
 		ProjectModel projectModel = new ProjectModel();
 
-		when(template.insert(projectModel)).thenReturn(projectModel);
+		when(mongoTemplate.insert(projectModel)).thenReturn(projectModel);
 
 		assertEquals("Project Created with ID ", service.addProject(projectModel).substring(0, 24));
 	}
