@@ -137,7 +137,7 @@ public class ProjectService {
 
 	 */
 	public int uniqueValue(String key) {
-		try {
+//		try {
 			Update update = new Update();
 			update.inc(Constants.PROJECT_COUNTER_DOCUMENT_SEQUENCE_COLUMN, 1);
 			FindAndModifyOptions options = new FindAndModifyOptions();
@@ -152,10 +152,10 @@ public class ProjectService {
 			mongoTemplate.save(counter);
 
 			return counter.getSeq();
-		} catch (Exception e) {
-			LOGGER.warn("PROJECT COUNTER NOT UPDATED");
-			throw new BadRequestException("Project counter could not be updated");
-		}
+//		} catch (Exception e) {
+//			LOGGER.warn("PROJECT COUNTER NOT UPDATED");
+//			throw new BadRequestException("Project counter could not be updated");
+//		}
 
 	}
 

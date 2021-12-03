@@ -1,3 +1,6 @@
+/**
+	 * @author Sanjay	
+*/
 package com.example.demo.controller;
 
 import java.util.HashMap;
@@ -96,7 +99,7 @@ public class TestController {
 	}
 
 	// API specific for Administrator to add new role to the application
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_MANAGER')")
 	@PostMapping("/addnewrole")
 	public ResponseEntity<?> addNewRole(@Valid @RequestBody HashMap<String, String> dataHashMap) {
 		return ResponseEntity.ok(adminServices.addNewRole(dataHashMap.get("rolename")));

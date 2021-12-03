@@ -1,3 +1,6 @@
+/**
+	 * @author Sanjay	
+*/
 package com.example.demo.service;
 
 import java.util.List;
@@ -41,6 +44,9 @@ public class UserServices {
 
 	@Autowired
 	JwtUtils jwtUtils;
+	
+	@Autowired
+	ProjectService projectService;
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
@@ -56,7 +62,9 @@ public class UserServices {
 		}
 
 		// Create new user's account
-		User user = new User(username, email, encoder.encode(password));
+		User user = new User(username, encoder.encode(email), password);
+		user.setId("USR_"+String.valueOf(projectService.uniqueValue(User.SEQUENCE_NAME)));
+		user.setIsuserStatusActive(true);
 		userRepository.save(user);
 		return new MessageResponse("User registered successfully!");
 	}
