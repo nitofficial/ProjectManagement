@@ -8,11 +8,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.model.rolemanagement.*;
+import com.example.demo.model.User;
+import com.example.demo.model.*;
 import com.example.demo.repository.UserRepository;
 
 @Service
-<span class="fc" id="L15">public class UserDetailsServiceImpl implements UserDetailsService{</span>
+<span class="fc" id="L16">public class UserDetailsServiceImpl implements UserDetailsService{</span>
 	
 	@Autowired
 	UserRepository userRepository;
@@ -20,9 +21,9 @@ import com.example.demo.repository.UserRepository;
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-<span class="nc" id="L23">		User user = userRepository.findByUsername(username)</span>
-<span class="nc" id="L24">				.orElseThrow(() -&gt; new UsernameNotFoundException(&quot;User Not Found with username: &quot;+ username));</span>
-<span class="nc" id="L25">		return UserDetailsImpl.build(user);</span>
+<span class="nc" id="L24">		User user = userRepository.findByUsername(username)</span>
+<span class="nc" id="L25">				.orElseThrow(() -&gt; new UsernameNotFoundException(&quot;User Not Found with username: &quot;+ username));</span>
+<span class="nc" id="L26">		return UserDetailsImpl.build(user);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
