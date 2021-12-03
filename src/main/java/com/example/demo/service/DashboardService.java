@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.DashRTMModel;
 import com.example.demo.model.DashReqModel;
 import com.example.demo.model.DashTestModel;
@@ -42,6 +43,13 @@ public class DashboardService {
 	@Autowired
 	private DefectService defectservice;
 
+	/**
+	 * Method to add File into db
+	 * @param FileModel which contains the file details.
+	 * @return FileModel with respective status and information.
+	 * @throws BadRequestException handles Exception.
+
+	 */
 	public List<IdOnly> getPrevDayListAndUpdate(String historyType, List<IdOnly> currTestLists) {
 		Query q = new Query(Criteria.where("historyType").is(historyType));
 		PrevDayCount prevdaycount = mongoTemplate.findOne(q, PrevDayCount.class);
@@ -85,10 +93,11 @@ public class DashboardService {
 
 				List<DashTestModel> tempTests = new ArrayList<DashTestModel>();
 
-				if (requirement.getProjectId().equals(projects.get(i).getId())) {
+				if (requirement.getProjectId() != null && requirement.getProjectId().equals(projects.get(i).getId())) {
 					DashReqModel reqModel = new DashReqModel();
 					for (TestCaseModel test : testcases) {
-						if (test.getRequirementId().equals(requirement.getRequirementId())
+						if (test.getProjectId() != null
+								&& test.getRequirementId().equals(requirement.getRequirementId())
 								&& test.getProjectId().equals(projects.get(i).getId())) {
 							DashTestModel testModel = new DashTestModel();
 							testModel.setName(test.getName());

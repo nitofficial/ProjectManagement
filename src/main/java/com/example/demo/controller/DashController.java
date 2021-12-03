@@ -34,12 +34,20 @@ public class DashController {
 //		return dashservice.getPrevDayListAndUpdate(dataHashMap.get("historyType"),
 //				Long.parseLong(dataHashMap.get("currCount")));
 //	}
+	/**
+	 * Method to get all open tests with only its id.
+	 * @return List<IdOnly> with respective status and information.
+	 */
 
 	@GetMapping("/getopentests")
 	public List<IdOnly> getOpenTests() {
 		return testCaseService.getOpenTests();
 
 	}
+	/**
+	 * Method to get RTM of all projects in db
+	 * @return  List<DashRTMModel> with respective status and information.
+	 */
 	
 	@GetMapping("/getRTM")
 	public List<DashRTMModel> getRTM(){

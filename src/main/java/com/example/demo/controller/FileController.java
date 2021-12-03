@@ -52,8 +52,6 @@ public class FileController {
 
 	/**
 	 * Method to get all files by defect_id
-	 *
-	 * 
 	 * @param defect_id as HashMap.
 	 * @return FileModel with respective status and information.
 	 */

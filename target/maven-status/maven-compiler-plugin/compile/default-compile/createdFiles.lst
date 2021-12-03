@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 com\example\demo\service\SequenceGenService.class
 com\example\demo\service\DashboardService.class
 com\example\demo\controller\TestCaseController.class
@@ -11,16 +10,11 @@ com\example\demo\model\DefectHistory.class
 com\example\demo\controller\AuthController.class
 com\example\demo\model\ERole.class
 com\example\demo\model\FileStorageProperties.class
-=======
-com\example\demo\utilities\Cloudinary.class
-com\example\demo\security\jwt\JwtUtils.class
->>>>>>> e43f1d230dc99f0e2340b50b74a9805a916de8e0
 com\example\demo\exception\ExceptionResponse.class
 com\example\demo\payload\response\JwtResponse.class
 com\example\demo\service\DefectService.class
 com\example\demo\utilities\Dashboard.class
 com\example\demo\exception\BadRequestException.class
-<<<<<<< HEAD
 com\example\demo\service\FileService.class
 com\example\demo\model\IdOnly.class
 com\example\demo\model\ProjectModel.class
@@ -62,27 +56,10 @@ com\example\demo\security\jwt\AuthEntryPointJwt.class
 com\example\demo\model\TestHistory.class
 com\example\demo\controller\DashController.class
 com\example\demo\model\Counter.class
-=======
-com\example\demo\utilities\Timestamp.class
-com\example\demo\constants\Constants.class
-com\example\demo\security\jwt\AuthTokenFilter.class
-com\example\demo\security\WebSecurityConfig.class
-com\example\demo\security\services\UserDetailsImpl.class
-com\example\demo\repository\UserRepository.class
-com\example\demo\payload\request\LoginRequest.class
-com\example\demo\exception\GlobalExceptionHandler.class
-com\example\demo\repository\RoleRepository.class
-com\example\demo\payload\request\SignupRequest.class
-com\example\demo\security\services\UserDetailsServiceImpl.class
-com\example\demo\security\jwt\AuthEntryPointJwt.class
->>>>>>> e43f1d230dc99f0e2340b50b74a9805a916de8e0
 com\example\demo\payload\response\MessageResponse.class
 com\example\demo\model\PrevDayCount.class
 com\example\demo\utilities\ProjectUtility.class
 com\example\demo\model\Status.class
 com\example\demo\schedulers\ScheduledTasks.class
-<<<<<<< HEAD
 com\example\demo\controller\ProjectCreationController.class
 com\example\demo\model\Role.class
-=======
->>>>>>> e43f1d230dc99f0e2340b50b74a9805a916de8e0
