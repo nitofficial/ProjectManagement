@@ -10,7 +10,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.demo.model.rolemanagement.*;
+import com.example.demo.model.User;
+import com.example.demo.model.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserDetailsImpl implements UserDetails {
@@ -27,72 +28,72 @@ public class UserDetailsImpl implements UserDetails {
 	private Collection&lt;? extends GrantedAuthority&gt; authorities;
 
 	public UserDetailsImpl(String id, String username, String email, String password,
-<span class="nc" id="L30">			Collection&lt;? extends GrantedAuthority&gt; authorities) {</span>
-<span class="nc" id="L31">		this.id = id;</span>
-<span class="nc" id="L32">		this.username = username;</span>
-<span class="nc" id="L33">		this.email = email;</span>
-<span class="nc" id="L34">		this.password = password;</span>
-<span class="nc" id="L35">		this.authorities = authorities;</span>
-<span class="nc" id="L36">	}</span>
+<span class="nc" id="L31">			Collection&lt;? extends GrantedAuthority&gt; authorities) {</span>
+<span class="nc" id="L32">		this.id = id;</span>
+<span class="nc" id="L33">		this.username = username;</span>
+<span class="nc" id="L34">		this.email = email;</span>
+<span class="nc" id="L35">		this.password = password;</span>
+<span class="nc" id="L36">		this.authorities = authorities;</span>
+<span class="nc" id="L37">	}</span>
 
 	public static UserDetailsImpl build(User user) {
-<span class="nc" id="L39">		List&lt;GrantedAuthority&gt; authorities = user.getRoles().stream()</span>
-<span class="nc" id="L40">				.map(role -&gt; new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());</span>
+<span class="nc" id="L40">		List&lt;GrantedAuthority&gt; authorities = user.getRoles().stream()</span>
+<span class="nc" id="L41">				.map(role -&gt; new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());</span>
 
-<span class="nc" id="L42">		return new UserDetailsImpl(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), authorities);</span>
+<span class="nc" id="L43">		return new UserDetailsImpl(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), authorities);</span>
 	}
 
 	@Override
 	public Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {
-<span class="nc" id="L47">		return authorities;</span>
+<span class="nc" id="L48">		return authorities;</span>
 	}
 
 	public String getId() {
-<span class="nc" id="L51">		return id;</span>
+<span class="nc" id="L52">		return id;</span>
 	}
 
 	public String getEmail() {
-<span class="nc" id="L55">		return email;</span>
+<span class="nc" id="L56">		return email;</span>
 	}
 
 	@Override
 	public String getPassword() {
-<span class="nc" id="L60">		return password;</span>
+<span class="nc" id="L61">		return password;</span>
 	}
 
 	@Override
 	public String getUsername() {
-<span class="nc" id="L65">		return username;</span>
+<span class="nc" id="L66">		return username;</span>
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-<span class="nc" id="L70">		return true;</span>
+<span class="nc" id="L71">		return true;</span>
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-<span class="nc" id="L75">		return true;</span>
+<span class="nc" id="L76">		return true;</span>
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-<span class="nc" id="L80">		return true;</span>
+<span class="nc" id="L81">		return true;</span>
 	}
 
 	@Override
 	public boolean isEnabled() {
-<span class="nc" id="L85">		return true;</span>
+<span class="nc" id="L86">		return true;</span>
 	}
 
 	@Override
 	public boolean equals(Object o) {
-<span class="nc bnc" id="L90" title="All 2 branches missed.">		if (this == o)</span>
-<span class="nc" id="L91">			return true;</span>
-<span class="nc bnc" id="L92" title="All 4 branches missed.">		if (o == null || getClass() != o.getClass())</span>
-<span class="nc" id="L93">			return false;</span>
-<span class="nc" id="L94">		UserDetailsImpl user = (UserDetailsImpl) o;</span>
-<span class="nc" id="L95">		return Objects.equals(id, user.id);</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">		if (this == o)</span>
+<span class="nc" id="L92">			return true;</span>
+<span class="nc bnc" id="L93" title="All 4 branches missed.">		if (o == null || getClass() != o.getClass())</span>
+<span class="nc" id="L94">			return false;</span>
+<span class="nc" id="L95">		UserDetailsImpl user = (UserDetailsImpl) o;</span>
+<span class="nc" id="L96">		return Objects.equals(id, user.id);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

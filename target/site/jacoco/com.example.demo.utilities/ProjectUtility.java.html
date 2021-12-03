@@ -9,11 +9,11 @@ import org.springframework.data.mongodb.core.query.Query;
 
 	public static Query getQueryByKeyValue(Map&lt;String,String&gt; conditionsValuePair)
 	{
-<span class="nc" id="L12">		Query query = new Query();</span>
-<span class="nc bnc" id="L13" title="All 2 branches missed.">		for (Map.Entry&lt;String, String&gt; queries :conditionsValuePair.entrySet())</span>
-<span class="nc" id="L14">		query.addCriteria(Criteria.where(queries.getKey()).is(queries.getValue()));</span>
+<span class="fc" id="L12">		Query query = new Query();</span>
+<span class="fc bfc" id="L13" title="All 2 branches covered.">		for (Map.Entry&lt;String, String&gt; queries :conditionsValuePair.entrySet())</span>
+<span class="fc" id="L14">		query.addCriteria(Criteria.where(queries.getKey()).is(queries.getValue()));</span>
 		
-<span class="nc" id="L16">		return query;</span>
+<span class="fc" id="L16">		return query;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
