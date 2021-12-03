@@ -1,7 +1,7 @@
+/**
+	 * @author Sriram	
+*/
 package com.example.demo.model;
-
-
-
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,12 +14,10 @@ public class Counter {
 	@Id
 	private String id;
 	private int seq;
-	
+
 	public Counter() {
 		super();
 	}
-	
-	
 
 	public String getId() {
 		return id;
@@ -32,8 +30,9 @@ public class Counter {
 	public int getSeq() {
 		return seq;
 	}
+
 	public void setSeq(int seq) {
 		this.seq = seq;
 	}
-	
+
 }

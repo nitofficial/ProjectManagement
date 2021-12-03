@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 -------------------------------------------------------------------------------
 Test set: com.example.demo.services.FileManagementTests
 -------------------------------------------------------------------------------
 Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.061 s - in com.example.demo.services.FileManagementTests
+=======
+-------------------------------------------------------------------------------
+Test set: com.example.demo.services.FileManagementTests
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.475 s - in com.example.demo.services.FileManagementTests
+>>>>>>> e43f1d230dc99f0e2340b50b74a9805a916de8e0
