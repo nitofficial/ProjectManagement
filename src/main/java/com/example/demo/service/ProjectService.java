@@ -279,6 +279,11 @@ public class ProjectService {
 		}
 	}
 
+	/**
+	 * Method to get all requirements from db
+	 * @return List<RequirementModel> with respective status and information.
+	 * @throws BadRequestException handles Exception.
+	 */
 	public List<RequirementModel> getAllRequirements() {
 		try {
 			return mongoTemplate.findAll(RequirementModel.class);
