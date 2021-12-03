@@ -19,6 +19,8 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.example.demo.exception.BadRequestException;
+import com.example.demo.model.ProjectModel;
+import com.example.demo.model.RequirementModel;
 import com.example.demo.model.TestCaseModel;
 import com.example.demo.service.TestCaseService;
 import com.example.demo.utilities.ProjectUtility;
@@ -33,6 +35,8 @@ public class TestCaseTests {
 	@Autowired
 	TestCaseService service;
 	
+
+	
 	
 	@Test
 	public void getByTestCaseIdTest() {
@@ -40,7 +44,7 @@ public class TestCaseTests {
 		Map<String, String> conditionsMap = new HashMap<String, String>();
 		conditionsMap.put("projectId","");
 		conditionsMap.put("requirementId", "");
-		conditionsMap.put("id", "");
+		conditionsMap.put("testcaseId", "");
 
 		TestCaseModel testCaseModel=new TestCaseModel();
 
@@ -61,8 +65,27 @@ public class TestCaseTests {
 	
 	
 	  @Test 
-	  public void addprojectTest() {
+	  public void addTestCaseTest() {
 		  Assertions.assertThrows(BadRequestException.class, () -> service.addTestCase(null));
+	 
+	  }
+	  @Test 
+	  public void addTestCaseTest_2() {
+		  
+		  TestCaseModel testCaseModel=new TestCaseModel();
+		  RequirementModel requirementModel=new RequirementModel();
+		  Map<String, String> conditionsMap = new HashMap<String, String>();
+			conditionsMap.put("projectId","");
+			conditionsMap.put("requirementId", "");
+		  when(mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap),
+					RequirementModel.class))
+			.thenReturn(requirementModel);
+		  when(mongoTemplate.insert(testCaseModel))
+			.thenReturn(testCaseModel);
+		  when(mongoTemplate.save(requirementModel))
+			.thenReturn(requirementModel);
+		  
+		  assertEquals("Inserted",service.addTestCase(Stream.of(new TestCaseModel()).collect(Collectors.toList())));
 	 
 	  }
 	  
@@ -73,6 +96,23 @@ public class TestCaseTests {
 		 // Assertions.assertThrows(BadRequestException.class, () ->service.updateTestCase(new TestCaseModel(),null,null,null));
 		  
 		  }
+		  
+		  @Test 
+		  public void updateTestCaseTest_3() {
+			  TestCaseModel testCaseModel=new TestCaseModel();
+			  testCaseModel.setName("test");
+			  testCaseModel.setDescription("test");
+			  testCaseModel.setExpectedResults("test");
+			  testCaseModel.setInputParameters("test");
+			  testCaseModel.setActualResults("test");
+			  testCaseModel.setStatus("test");
+			  when(mongoTemplate.save(testCaseModel))
+				.thenReturn(testCaseModel);
+			  assertEquals("TestCase",service.updateTestCase(testCaseModel, "Prj-test", "Req-test", "Test-test").substring(0, 8));
+		 // Assertions.assertThrows(BadRequestException.class, () ->service.updateTestCase(new TestCaseModel(),null,null,null));
+		  
+		  }
+		  
 		 
 	  
 	  @Test 

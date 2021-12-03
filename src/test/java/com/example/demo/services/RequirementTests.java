@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.cassandra.cli.CliParser.newColumnFamily_return;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.example.demo.exception.BadRequestException;
+import com.example.demo.model.ProjectModel;
+import com.example.demo.model.RequirementModel;
 import com.example.demo.model.TestCaseModel;
 import com.example.demo.service.ProjectService;
 import com.example.demo.utilities.ProjectUtility;
@@ -32,10 +35,21 @@ public class RequirementTests {
 	@Autowired
 	ProjectService service;
 
+	
+	  @Test public void addRequirementTest() {
+	  
+	  Assertions.assertThrows(BadRequestException.class, () ->
+	  service.addRequirement(null, "project test id"));
+	  
+	  }
+	 
+	
 	@Test
-	public void addRequirementTest() {
-
-		Assertions.assertThrows(BadRequestException.class, () -> service.addRequirement(null, "project test id"));
+	public void addRequirementTest_2() {
+        
+		
+		RequirementModel requirementModel=new RequirementModel();
+		assertEquals("requirements added",service.addRequirement(Stream.of(requirementModel).collect(Collectors.toList()), "Prj-test") );
 
 	}
 

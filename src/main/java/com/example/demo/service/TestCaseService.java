@@ -62,7 +62,7 @@ public class TestCaseService {
 		Map<String, String> conditionsMap = new HashMap<String, String>();
 		conditionsMap.put("projectId", projectId);
 		conditionsMap.put("requirementId", requirementId);
-		conditionsMap.put("id", testcaseId);
+		conditionsMap.put("testcaseId", testcaseId);
 		try {
 			return mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), TestCaseModel.class);
 		} catch (Exception e) {
@@ -145,7 +145,7 @@ public class TestCaseService {
 	 */
 	public String updateTestCase(TestCaseModel testCaseModel, String projectId, String requirementId,
 			String testcaseId) {
-		try {
+		/*try {*/
 		TestCaseModel requestedTestCase = getByTestCaseId(projectId, requirementId, testcaseId);
 
 		if (testCaseModel == null) {
@@ -182,12 +182,12 @@ public class TestCaseService {
 
 		} else {
 			return "TestCase " + requestedTestCase.getTestcaseId() + " Updated";
+			/* } */
 		}
-		}
-		catch(Exception e)
+		/*catch(Exception e)
 		{
 			throw new BadRequestException(" Could not Update testCase ");
-		}
+		}*/
 
 	}
 
