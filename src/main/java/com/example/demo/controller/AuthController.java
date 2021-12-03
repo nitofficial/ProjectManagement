@@ -22,14 +22,16 @@ public class AuthController {
 	@Autowired
 	UserServices userServices;
 
-	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-		return ResponseEntity.ok(userServices.registerUser(loginRequest.getUsername(), loginRequest.getPassword()));
-	}
-
+	// API for new users to register in the application
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-		return ResponseEntity.ok(userServices.userSignIn(signUpRequest.getUsername(), signUpRequest.getEmail(),
+		return ResponseEntity.ok(userServices.registerUser(signUpRequest.getUsername(), signUpRequest.getEmail(),
 				signUpRequest.getPassword()));
+	}
+
+	// API for users to sign in with the user-name and password
+	@PostMapping("/signin")
+	public ResponseEntity<?> userSignIn(@Valid @RequestBody LoginRequest loginRequest) {
+		return ResponseEntity.ok(userServices.userSignIn(loginRequest.getUsername(), loginRequest.getPassword()));
 	}
 }

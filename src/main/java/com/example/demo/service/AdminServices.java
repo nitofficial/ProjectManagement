@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.payload.response.MessageResponse;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.result.UpdateResult;
 
 @Service
 public class AdminServices {
@@ -26,6 +24,7 @@ public class AdminServices {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
+	// Service that allows administrator to add requested roles to a specific user
 	public User addRoleToUser(String username, String roleRequested) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("username").is(username));
@@ -37,6 +36,7 @@ public class AdminServices {
 		return mongoOperations.findAndModify(query, update, options().returnNew(true).upsert(false), User.class);
 	}
 
+	// Service that allows administrator to remove a role from a specific user
 	public MessageResponse deleteRoleFromUser(String username, String roleRequested) {
 		Role role = mongoTemplate.findOne(
 				new Query().addCriteria(Criteria.where("name").is("ROLE_" + roleRequested.toUpperCase())), Role.class);
@@ -44,11 +44,12 @@ public class AdminServices {
 		Query query2 = Query.query(Criteria.where("$id").is(new ObjectId(role.getId())));
 		Update update = new Update().pull("roles", query2);
 		mongoTemplate.updateMulti(query, update, User.class);
-		return new MessageResponse(roleRequested+" Role has been successful removed from the user "+ username);
+		return new MessageResponse(roleRequested + " Role has been successful removed from the user " + username);
 	}
 
+	// Service that allows administrator to add new role to the application
 	public MessageResponse addNewRole(String rolename) {
-		Role role = new Role(rolename);
+		Role role = new Role("ROLE_"+rolename.toUpperCase());
 		mongoTemplate.save(role);
 		return new MessageResponse("Role added successfully");
 	}
