@@ -1,3 +1,6 @@
+/**
+	 * @author Sanjay	
+*/
 package com.example.demo.security.services;
 
 import java.util.Collection;
@@ -11,7 +14,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.demo.model.User;
-import com.example.demo.model.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserDetailsImpl implements UserDetails {
@@ -21,6 +23,7 @@ public class UserDetailsImpl implements UserDetails {
 	private String id;
 	private String username;
 	private String email;
+	
 
 	@JsonIgnore
 	private String password;
