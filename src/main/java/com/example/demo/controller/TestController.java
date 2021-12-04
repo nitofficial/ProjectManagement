@@ -77,8 +77,15 @@ public class TestController {
 	@PreAuthorize("#pendingRequest.getUsername() == authentication.principal.username")
 	@PostMapping("/requestrole")
 	public ResponseEntity<?> requestRole(@Valid @RequestBody PendingRequest pendingRequest) {
-		return ResponseEntity.ok(userServices.addRoletoUser(pendingRequest.getUsername(),
-				pendingRequest.getRoleRequested(), pendingRequest.getRequestType()));
+		return ResponseEntity
+				.ok(userServices.addRoletoUser(pendingRequest.getUserid(), pendingRequest.getRequestedroleid()));
+	}
+
+	// API specific for Administrator to view all the users in the system
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@GetMapping("/alluserinfo")
+	public ResponseEntity<?> displayAllUserDetail() {
+		return ResponseEntity.ok(adminServices.displayAllUserDetail());
 	}
 
 	// API specific for Administrator to grant requested roles to the appropriate
@@ -103,5 +110,34 @@ public class TestController {
 	@PostMapping("/addnewrole")
 	public ResponseEntity<?> addNewRole(@Valid @RequestBody HashMap<String, String> dataHashMap) {
 		return ResponseEntity.ok(adminServices.addNewRole(dataHashMap.get("rolename")));
+	}
+
+	// API specific for Administrator to view all the users in the system
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@GetMapping("/allroleinfo")
+	public ResponseEntity<?> displayAllRoleDetail() {
+		return ResponseEntity.ok(adminServices.displayAllRoleDetail());
+	}
+
+	// API specific for Administrator to view all the users in the system
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@GetMapping("/allactiveroleinfo")
+	public ResponseEntity<?> displayAllActiveRoleDetail() {
+		return ResponseEntity.ok(adminServices.displayAllActiveRoleDetail());
+	}
+
+	// API specific for Administrator to delete a role to the application
+	@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_MANAGER')")
+	@PostMapping("/deleterole")
+	public ResponseEntity<?> deleteRole(@Valid @RequestBody HashMap<String, String> dataHashMap) {
+		return ResponseEntity.ok(adminServices.deleteRole(dataHashMap.get("roleid")));
+	}
+
+	// API specific for Administrator to delete a role to the application
+	@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_MANAGER')")
+	@PostMapping("/updaterole")
+	public ResponseEntity<?> updateRole(@Valid @RequestBody HashMap<String, String> dataHashMap) {
+		return ResponseEntity.ok(adminServices.updateRole(dataHashMap.get("roleid"), dataHashMap.get("rolename"),
+				Boolean.valueOf(dataHashMap.get("rolestatus"))));
 	}
 }
