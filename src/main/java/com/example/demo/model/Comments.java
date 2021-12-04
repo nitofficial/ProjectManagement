@@ -1,3 +1,6 @@
+/**
+* 	@author Vijay
+*/
 package com.example.demo.model;
 
 import javax.validation.constraints.NotNull;

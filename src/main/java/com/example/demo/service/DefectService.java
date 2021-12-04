@@ -1,3 +1,6 @@
+/**
+* 	@author Vijay
+*/
 package com.example.demo.service;
 
 import org.slf4j.LoggerFactory;
@@ -37,11 +40,15 @@ public class DefectService {
 		logger.info("Constructor to class DefectService initialized");
 	}
 	
+	/**
+	 * Method to create a new defect
+	 *
+	 * 
+	 * @param Defect object
+	 * @return  The ID of the newly created Defect.
+	 */
 	public String addDefect(Defect defect) {
-		logger.info("Validation starts");
-//		valSer.validateProjectId(defect.getProjectId());
-//		valSer.validateUserId(defect.getUserId());
-		logger.info("Validation done!");
+		logger.info("Inside Add Defect");
 		defect.setStatus("New");
 		defect.setId("Def-"+service.getCount(IdGen.getSequenceName()));
 		mongoTemplate.insert(defect);
@@ -53,10 +60,17 @@ public class DefectService {
 		Status s = mongoTemplate.insert(status);
 		this.addStatus(defect.getId(),"New");
 		logger.info("AddDefect Successful");
-		return "The defect "+defect.getId()+" is added into the database.";
+		return defect.getId();
 	}
 	
-	public String addStatus(String defectId, String status_string) {
+	/**
+	 * Method to create a new entry in the StatusHistory collection
+	 *
+	 * 
+	 * @param defectId(String), status(String)
+	 * @return  Respective status and information of ProjectModel.
+	 */
+	public void addStatus(String defectId, String status_string) {
 		logger.info("Inside Add Status service");
 		Status status = new Status();
 		status.setDefectId(defectId);
@@ -65,10 +79,15 @@ public class DefectService {
 		status.setDateTime(t);
 		mongoTemplate.insert(status);
 		logger.info("Status insertion successful");
-		return "abc";
 	}
 	
-
+	/**
+	 * Method to retrieve all the defects
+	 *
+	 * 
+	 * @param Filters for search if any, as a hashmap
+	 * @return  A list of all the defects in the collection
+	 */
 	public List<Defect> getAllDefects(Map <String,String> filters){
 		logger.info("Inside GetAllDefects Service");
 		Query query = new Query();
@@ -90,20 +109,28 @@ public class DefectService {
 		logger.info("Defects Retrival Successful");
 		return resultSet;
 	}
-	public List<Defect> getAllDefects(){
-		Query q = new Query();
-		q.addCriteria(Criteria.where("status").ne("Cancelled"));
-		List<Defect> a = mongoTemplate.find(q,Defect.class);
-		System.out.print(a);
-		return a;
-	}
 	
+	/**
+	 * Method to return the number of active defects
+	 *
+	 * 
+	 * @param 
+	 * @return  The number of unclosed defects in the collection
+	 */
 	public long getDefectCount() {
 		Query q = new Query();
 		q.addCriteria(Criteria.where("status").ne("Closed"));
 		return mongoTemplate.count(q, Defect.class);
 		
 	}
+	
+	/**
+	 * Method to return the objects of active defects
+	 *
+	 * 
+	 * @param
+	 * @return  A list of all the unclosed defects in the collection
+	 */
 	public List<Defect> getOpenDefects(){
 		Query q = new Query();
 		q.addCriteria(Criteria.where("status").ne("Closed"));
@@ -112,6 +139,13 @@ public class DefectService {
 		return a;
 	}
 	
+	/**
+	 * Method to return the objects of closed defects
+	 *
+	 * 
+	 * @param
+	 * @return  A list of all the closed defects in the collection
+	 */
 	public List<Defect> getClosedDefects(){
 		Query q = new Query();
 		q.fields().include("id");
@@ -121,7 +155,13 @@ public class DefectService {
 		return a;
 	}
 	
-	
+	/**
+	 * Method to return the count of closed defects in the collection
+	 *
+	 * 
+	 * @param
+	 * @return  A list of all the closed defects in the collection
+	 */
 	public long getClosedDefectCount() {
 		Query q = new Query();
 		q.addCriteria(Criteria.where("status").is("Closed"));
@@ -129,9 +169,14 @@ public class DefectService {
 		
 	}
 	
-	
+	/**
+	 * Method to return the objects of the defects associated with a project ID
+	 *
+	 * 
+	 * @param Project ID as a string
+	 * @return  A list of all the defects of a particular project
+	 */
 	public List<Defect> getDefectsByProjectId(String pid){
-		valSer.validateProjectId(pid);
 		Query q = new Query();
 		q.addCriteria(Criteria.where("status").ne("Cancelled"));
 		q.addCriteria(Criteria.where("projectId").is(pid));
@@ -140,16 +185,23 @@ public class DefectService {
 		return a;
 	}
 	
-	
+	/**
+	 * Method to update defect parameters using their ID
+	 *
+	 * 
+	 * @param Defect ID and the parameters to be updated as a hashmap
+	 * @return A string of acknowledgement
+	 * @throws BadRequestException handles Exception.
+	 */
 	public String updateDefectByID(Map<String, String> update_request) {
-		logger.info("Validation for update request starts");
-		//valSer.validateDefId(update_request.get("defectId"));
-		logger.info("Validation for update request done!");
+		logger.info("Inside update Defect");
+		valSer.validateDefId(update_request.get("defectId"));
 		Query select = Query.query(Criteria.where("id").is(update_request.get("defectId")));
 		Update update = new Update();
 		if(update_request.containsKey("comment")) {
 			for(Map.Entry parameter:update_request.entrySet()){
 				if(parameter.getKey().equals("status")) {
+					valSer.validateStatus((String)parameter.getValue());
 					addStatus(update_request.get("defectId"),(String) parameter.getValue());
 				}
 				else if(parameter.getKey().equals("comment")) {
@@ -171,8 +223,16 @@ public class DefectService {
 		}
 	}
 	
+	/**
+	 * Method to delete a particular defect
+	 * 
+	 * @param The ID of the defect as a string
+	 * @return  A string of acknowledgement
+	 * @throws BadRequestException handles Exception.
+	 */
 	public String deleteDefect(String id) {
-		//valSer.validateDefId(id);
+		logger.info("Validation for deleteDefect Service");
+		valSer.validateDefId(id);
 		Query select = Query.query(Criteria.where("id").is(id));
 		Update update = new Update();
 		update.set("status", "Cancelled");
@@ -180,7 +240,17 @@ public class DefectService {
 		addStatus(id,"Cancelled");
 		return "The defect "+id+" is deleted successfully";
 	}
+	
+	/**
+	 * Method to return all the details associated with a particular defect
+	 *
+	 * 
+	 * @param defect ID as a string
+	 * @return  A dashboard object with all the details of the string
+	 */
 	public Dashboard getDefectById(String id) {
+		logger.info("Validation for getDefectById Service");
+		valSer.validateDefId(id);
 		logger.info("Dashboard initation");
 		Query query = new Query();
 		query.addCriteria(Criteria.where("id").is(id));
@@ -199,10 +269,6 @@ public class DefectService {
 		logger.info("Information retrieval for dashboard successful");
 		return dashboard;
 	}
-	
-	
-	
-
 	
 	
 	

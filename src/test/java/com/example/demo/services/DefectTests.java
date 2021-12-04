@@ -1,3 +1,7 @@
+/**
+* 	@author Vijay
+*/
+
 package com.example.demo.services;
 
 import static org.junit.Assert.assertEquals;
@@ -19,6 +23,13 @@ public class DefectTests {
 	@Autowired
 	DefectService defService;
 	
+	/**
+	 * Method to test the create defect Service
+	 *
+	 * 
+	 * @param
+	 * @return
+	 */
 	@Test
 	public void testCreateDefect() {
 		Defect defect = new com.example.demo.model.Defect();
@@ -27,7 +38,7 @@ public class DefectTests {
 		defect.setProjectId("Prj-1");
 		defect.setSeverity(2);
 		defect.setUserId("U-1");
-		assertEquals("The defect Def-21 is added into the database.", defService.addDefect(defect));
+		assertTrue(defService.addDefect(defect) instanceof String);
 	}
 	
 	@Test
@@ -39,18 +50,37 @@ public class DefectTests {
 		assertEquals("Update successful",defService.updateDefectByID(parameters));
 	}
 	
+	/**
+	 * Method to test the getAllDefects Service
+	 *
+	 * 
+	 * @param
+	 * @return
+	 */
 	@Test
 	public void testGetAllDefects() {
-		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("status", "Open");
-		assertTrue(defService.getAllDefects(parameters).get(0) instanceof Defect);
+		assertTrue(defService.getAllDefects(new HashMap<String,String>()).get(0) instanceof Defect);
 	}
 	
+	/**
+	 * Method to test the getDefectByID Service
+	 *
+	 * 
+	 * @param
+	 * @return
+	 */
 	@Test
 	public void testGetDefectById() {
 		assertTrue(defService.getDefectById("Def-1") instanceof Dashboard);
 	}
 	
+	/**
+	 * Method to test the DeleteDefect Service
+	 *
+	 * 
+	 * @param
+	 * @return
+	 */
 	@Test
 	public void testDeleteDefect() {
 		assertEquals("The defect Def-14 is deleted successfully", defService.deleteDefect("Def-14"));
