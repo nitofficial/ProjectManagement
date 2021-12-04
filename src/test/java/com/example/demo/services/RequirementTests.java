@@ -59,6 +59,7 @@ public class RequirementTests {
 		Assertions.assertThrows(BadRequestException.class, () -> service.updateRequirement(null, null, null, false));
 
 	}
+	
 
 	@Test
 	public void updateRequirementTest_2() {
