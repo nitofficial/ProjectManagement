@@ -90,7 +90,20 @@ public class ProjectTests {
 		when(mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), ProjectModel.class))
 				.thenReturn(new ProjectModel());
 
-		Assertions.assertThrows(BadRequestException.class, () -> service.updateProject(projectModel, "Prd-1"));
+		Assertions.assertThrows(BadRequestException.class, () -> service.updateProject(projectModel, "Prj"));
+	}
+	
+	@Test
+	public void updateProjectTest_1() {
+
+		ProjectModel projectModel = service.getByProjectId("Prj-test");
+		Map<String, String> conditionsMap = new HashMap<String, String>();
+
+		when(mongoTemplate.save(projectModel)).thenReturn(null);
+		when(mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), ProjectModel.class))
+				.thenReturn(new ProjectModel());
+        assertEquals("Project", service.updateProject(projectModel, "Prj-test").substring(0, 7));
+		//Assertions.assertThrows(BadRequestException.class, () -> service.updateProject(projectModel, "Prj-test"));
 	}
 
 	@Test
