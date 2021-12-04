@@ -1,5 +1,6 @@
 com\example\demo\services\RequirementTests.class
 com\example\demo\services\TestCaseTests.class
+com\example\demo\services\ConstantsTests.class
 com\example\demo\services\DashboardTests.class
 com\example\demo\services\ProjectTests.class
 com\example\demo\services\DefectTests.class
