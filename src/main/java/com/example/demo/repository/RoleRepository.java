@@ -13,4 +13,6 @@ import com.example.demo.model.Role;
 
 public interface RoleRepository extends MongoRepository<Role, String>{
 	Optional<Role> findByName(ERole name);
+	Boolean existsByName(String rolename);
+	boolean existsById(String roleid);
 }

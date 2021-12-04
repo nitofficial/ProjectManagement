@@ -44,7 +44,7 @@ public class UserServices {
 
 	@Autowired
 	JwtUtils jwtUtils;
-	
+
 	@Autowired
 	ProjectService projectService;
 
@@ -63,7 +63,7 @@ public class UserServices {
 
 		// Create new user's account
 		User user = new User(username, encoder.encode(email), password);
-		user.setId("USR_"+String.valueOf(projectService.uniqueValue(User.SEQUENCE_NAME)));
+		user.setId("USR_" + String.valueOf(projectService.uniqueValue(User.SEQUENCE_NAME)));
 		user.setIsuserStatusActive(true);
 		userRepository.save(user);
 		return new MessageResponse("User registered successfully!");
@@ -84,9 +84,10 @@ public class UserServices {
 	}
 
 	// Service that allow users to request roles
-	public MessageResponse addRoletoUser(String username, String roleRequested, String requestType) {
+	public MessageResponse addRoletoUser(String userid, String roleRequested) {
 
-		PendingRequest pendingRequest = new PendingRequest(username, roleRequested, requestType);
+		PendingRequest pendingRequest = new PendingRequest(userid, roleRequested);
+		pendingRequest.setRequestid("REQ_" + String.valueOf(projectService.uniqueValue(PendingRequest.SEQUENCE_NAME)));
 		mongoTemplate.save(pendingRequest);
 		return new MessageResponse("Request has been sent to the admin");
 	}
@@ -108,5 +109,4 @@ public class UserServices {
 		mongoTemplate.updateMulti(query, update, User.class);
 		return null;
 	}
-
 }

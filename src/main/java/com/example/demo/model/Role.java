@@ -15,7 +15,17 @@ public class Role {
 
 	@Id
 	private String id;
+
 	private String name;
+	private boolean isrolestatusactive;
+
+	public boolean getIsRolestatusactive() {
+		return isrolestatusactive;
+	}
+
+	public void setIsRolestatusactive(boolean isrolestatusactive) {
+		this.isrolestatusactive = isrolestatusactive;
+	}
 
 	public Role() {
 	}
@@ -34,5 +44,9 @@ public class Role {
 
 	public String getName() {
 		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

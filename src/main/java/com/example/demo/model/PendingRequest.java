@@ -1,48 +1,61 @@
 package com.example.demo.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "pending_requests")
 public class PendingRequest {
-
-	private String username;
-	private String roleRequested;
-	private String requestType;
-
-	public PendingRequest(String username, String roleRequested, String requestType) {
+	
+	@Transient
+	public static final String SEQUENCE_NAME = "request_seq";
+	
+	@Id
+	private String requestid;
+	private String userid;
+	private String requestedroleid;
+	private boolean isrequestgranted;
+	
+	public PendingRequest(String userid, String requestedroleid) {
 		super();
-		this.username = username;
-		this.roleRequested = roleRequested;
-		this.requestType = requestType;
+		this.userid = userid;
+		this.requestedroleid = requestedroleid;
+		this.isrequestgranted = false;
 	}
 
 	public PendingRequest() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public String getUsername() {
-		return username;
+	public String getRequestid() {
+		return requestid;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setRequestid(String requestid) {
+		this.requestid = requestid;
 	}
 
-	public String getRoleRequested() {
-		return roleRequested;
+	public String getUserid() {
+		return userid;
 	}
 
-	public void setRoleRequested(String roleRequested) {
-		this.roleRequested = roleRequested;
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
 
-	public String getRequestType() {
-		return requestType;
+	public String getRequestedroleid() {
+		return requestedroleid;
 	}
 
-	public void setRequestType(String requestType) {
-		this.requestType = requestType;
+	public void setRequestedroleid(String requestedroleid) {
+		this.requestedroleid = requestedroleid;
 	}
 
+	public boolean isIsrequestgranted() {
+		return isrequestgranted;
+	}
+
+	public void setIsrequestgranted(boolean isrequestgranted) {
+		this.isrequestgranted = isrequestgranted;
+	}
 }
