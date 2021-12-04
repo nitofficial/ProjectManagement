@@ -19,9 +19,11 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.exception.BadRequestException;
+import com.example.demo.model.PendingRequest;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.payload.response.MessageResponse;
+import com.example.demo.repository.PendingRequestRepository;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 
@@ -41,6 +43,8 @@ public class AdminServices {
 	RoleRepository roleRepository;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	PendingRequestRepository pendingRequestRepository;
 
 	// Service that displays all the users in the application
 	public Object displayAllUserDetail() {
@@ -53,22 +57,27 @@ public class AdminServices {
 	}
 
 	// Service that allows administrator to add requested roles to a specific user
-	public Object addRoleToUser(String username, String roleRequested) {
+	public Object addRoleToUser(String requestid, String userid, String requestedroleid) {
 		try {
-			roleRequested = "ROLE_" + roleRequested.toUpperCase();
-			if (!roleRepository.existsByName(roleRequested)) {
+			if (!pendingRequestRepository.existsByRequestid(requestid)) {
+				return new MessageResponse("Error: Request never made");
+			}
+			if (!roleRepository.existsById(requestedroleid)) {
 				return new MessageResponse("Error: Role is not available");
 			}
 			Query query = new Query();
-			query.addCriteria(Criteria.where("username").is(username));
-			Role role = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("name").is(roleRequested)),
+			query.addCriteria(Criteria.where("id").is(userid));
+			Role role = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("id").is(requestedroleid)),
 					Role.class);
 //			User user = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("username").is(username)), User.class);
 //			if (userRepository.existByRoles(role, user)) {
 //				return new MessageResponse("Error: Role already exist");
 //			}
 			Update update = new Update().addToSet("roles", role);
-
+			PendingRequest pendingRequest= mongoTemplate.findOne(new Query().addCriteria(Criteria.where("requestid").is(requestid)),
+					PendingRequest.class);
+			pendingRequest.setIsrequestgranted(true);
+			mongoTemplate.save(pendingRequest, "pending_requests");
 			return mongoOperations.findAndModify(query, update, options().returnNew(true).upsert(false), User.class);
 		} catch (Exception e) {
 			LOGGER.warn(e.getMessage());

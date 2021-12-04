@@ -87,6 +87,7 @@ public class UserServices {
 	public MessageResponse addRoletoUser(String userid, String roleRequested) {
 
 		PendingRequest pendingRequest = new PendingRequest(userid, roleRequested);
+		pendingRequest.setRequestid("REQ_" + String.valueOf(projectService.uniqueValue(PendingRequest.SEQUENCE_NAME)));
 		mongoTemplate.save(pendingRequest);
 		return new MessageResponse("Request has been sent to the admin");
 	}

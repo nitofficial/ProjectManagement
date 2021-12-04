@@ -1,10 +1,16 @@
 package com.example.demo.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "pending_requests")
 public class PendingRequest {
-
+	
+	@Transient
+	public static final String SEQUENCE_NAME = "request_seq";
+	
+	@Id
 	private String requestid;
 	private String userid;
 	private String requestedroleid;

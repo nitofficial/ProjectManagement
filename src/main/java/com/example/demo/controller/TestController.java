@@ -74,7 +74,7 @@ public class TestController {
 	}
 
 	// API for registered users to request roles from the Administrator
-	@PreAuthorize("#pendingRequest.getUsername() == authentication.principal.username")
+	@PreAuthorize("#pendingRequest.getUserid() == authentication.principal.id")
 	@PostMapping("/requestrole")
 	public ResponseEntity<?> requestRole(@Valid @RequestBody PendingRequest pendingRequest) {
 		return ResponseEntity
@@ -94,7 +94,7 @@ public class TestController {
 	@PostMapping("/addroletouser")
 	public ResponseEntity<?> addRoleToUser(@Valid @RequestBody HashMap<String, String> dataHashMap) {
 		return ResponseEntity
-				.ok(adminServices.addRoleToUser(dataHashMap.get("username"), dataHashMap.get("roleRequested")));
+				.ok(adminServices.addRoleToUser(dataHashMap.get("requestid"),dataHashMap.get("userid"), dataHashMap.get("requestedroleid")));
 	}
 
 	// API specific for Administrator to remove a role from a particular user
