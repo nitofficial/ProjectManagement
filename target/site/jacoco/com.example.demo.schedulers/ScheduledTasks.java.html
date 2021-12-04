@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.model.Defect;
 import com.example.demo.model.DefectHistory;
 import com.example.demo.model.FileCount;
 import com.example.demo.model.IdOnly;
@@ -25,18 +26,18 @@ import com.example.demo.service.DefectService;
 import com.example.demo.service.TestCaseService;
 
 @Component
-<span class="fc" id="L28">public class ScheduledTasks {</span>
-<span class="fc" id="L29">	private static final Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);</span>
-<span class="fc" id="L30">	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(&quot;HH:mm:ss&quot;);</span>
+<span class="fc" id="L29">public class ScheduledTasks {</span>
+<span class="fc" id="L30">	private static final Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);</span>
+<span class="fc" id="L31">	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(&quot;HH:mm:ss&quot;);</span>
 	
 	@PostConstruct
     public void onStartup() {
-//		long currDefectCount = defectservice.getDefectCount();
-<span class="fc" id="L35">		List&lt;IdOnly&gt; currTestLists = testCaseService.getOpenTests();</span>
+//		List&lt;Defect&gt; currDefectLists = defectservice.getAllDefects(null);
+<span class="fc" id="L36">		List&lt;IdOnly&gt; currTestLists = testCaseService.getOpenTests();</span>
 //		dashboardService.getPrevDayListAndUpdate(&quot;defect&quot;, currDefectCount);
-<span class="fc" id="L37">		dashboardService.getPrevDayListAndUpdate(&quot;test&quot;, currTestLists);</span>
+<span class="fc" id="L38">		dashboardService.getPrevDayListAndUpdate(&quot;test&quot;, currTestLists);</span>
 		
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L40">    }</span>
 
 	@Autowired
 	private DashService dashservice;
@@ -53,16 +54,16 @@ import com.example.demo.service.TestCaseService;
 	@Scheduled(cron = &quot;0 19 21 * * *&quot;)
 	public void scheduleTaskWithFixedRate() {
 
-<span class="nc" id="L56">		long files_count = dashservice.countFiles();</span>
-<span class="nc" id="L57">		FileCount entry = new FileCount();</span>
-<span class="nc" id="L58">		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(&quot;yyyy/MM/dd HH:mm:ss&quot;);</span>
-<span class="nc" id="L59">		LocalDateTime now = LocalDateTime.now();</span>
+<span class="fc" id="L57">		long files_count = dashservice.countFiles();</span>
+<span class="fc" id="L58">		FileCount entry = new FileCount();</span>
+<span class="fc" id="L59">		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(&quot;yyyy/MM/dd HH:mm:ss&quot;);</span>
+<span class="fc" id="L60">		LocalDateTime now = LocalDateTime.now();</span>
 
-<span class="nc" id="L61">		entry.setFilesCount(files_count);</span>
-<span class="nc" id="L62">		entry.setTime(dtf.format(now));</span>
+<span class="fc" id="L62">		entry.setFilesCount(files_count);</span>
+<span class="fc" id="L63">		entry.setTime(dtf.format(now));</span>
 
-<span class="nc" id="L64">		logger.info(dashservice.addEntry(entry));</span>
-<span class="nc" id="L65">	}</span>
+<span class="fc" id="L65">		logger.info(dashservice.addEntry(entry));</span>
+<span class="fc" id="L66">	}</span>
 
 //	@Scheduled(cron = &quot;0/60 * * * * ?&quot;)
 //	public void defectHistory() {
@@ -87,26 +88,26 @@ import com.example.demo.service.TestCaseService;
 	@Scheduled(cron = &quot;0/60 * * * * ?&quot;)
 	public void testHistory() {
 
-<span class="nc" id="L90">		List&lt;IdOnly&gt; currTestsList = testCaseService.getOpenTests();</span>
-<span class="nc" id="L91">		TestHistory entry = new TestHistory();</span>
+<span class="fc" id="L91">		List&lt;IdOnly&gt; currTestsList = testCaseService.getOpenTests();</span>
+<span class="fc" id="L92">		TestHistory entry = new TestHistory();</span>
 
-<span class="nc" id="L93">		List&lt;IdOnly&gt; prevTestList = dashboardService.getPrevDayListAndUpdate(&quot;test&quot;, currTestsList);</span>
+<span class="fc" id="L94">		List&lt;IdOnly&gt; prevTestList = dashboardService.getPrevDayListAndUpdate(&quot;test&quot;, currTestsList);</span>
 
-<span class="nc" id="L95">		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(&quot;yyyy/MM/dd HH:mm:ss&quot;);</span>
-<span class="nc" id="L96">		LocalDateTime now = LocalDateTime.now();</span>
+<span class="fc" id="L96">		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(&quot;yyyy/MM/dd HH:mm:ss&quot;);</span>
+<span class="fc" id="L97">		LocalDateTime now = LocalDateTime.now();</span>
 
-<span class="nc" id="L98">		entry.setTime(dtf.format(now));</span>
-<span class="nc" id="L99">		entry.setTestCountEndOfDay(currTestsList.size());</span>
-<span class="nc" id="L100">		entry.setTestCountStartOfDay(prevTestList.size());</span>
+<span class="fc" id="L99">		entry.setTime(dtf.format(now));</span>
+<span class="fc" id="L100">		entry.setTestCountEndOfDay(currTestsList.size());</span>
+<span class="fc" id="L101">		entry.setTestCountStartOfDay(prevTestList.size());</span>
 		
-<span class="nc" id="L102">		entry.setTestListDayStart(prevTestList);</span>
-<span class="nc" id="L103">		entry.setTestListDayEnd(currTestsList);</span>
+<span class="fc" id="L103">		entry.setTestListDayStart(prevTestList);</span>
+<span class="fc" id="L104">		entry.setTestListDayEnd(currTestsList);</span>
 		
-<span class="nc" id="L105">		entry.setTestPassCount(testCaseService.getPassedTestsCount());</span>
+<span class="fc" id="L106">		entry.setTestPassCount(testCaseService.getPassedTestsCount());</span>
 
-<span class="nc" id="L107">		logger.info(dashboardService.addEntryToTestHistory(entry));</span>
+<span class="fc" id="L108">		logger.info(dashboardService.addEntryToTestHistory(entry));</span>
 
-<span class="nc" id="L109">	}</span>
+<span class="fc" id="L110">	}</span>
 	
 	
 	

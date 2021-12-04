@@ -7,18 +7,18 @@ public class DashRTMModel {
 	private String id;
 	private String name;
 	private List<DashReqModel> requirements;
-	private List<DashDefectModel> defects;
+//	private List<DashDefectModel> defects;
 
 	public DashRTMModel() {
 		super();
 	}
 
-	public DashRTMModel(String id, String name, List<DashReqModel> requirements, List<DashDefectModel> defects) {
+	public DashRTMModel(String id, String name, List<DashReqModel> requirements) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.requirements = requirements;
-		this.defects = defects;
+//		this.defects = defects;
 	}
 
 	public String getId() {
@@ -45,12 +45,12 @@ public class DashRTMModel {
 		this.requirements = requirements;
 	}
 
-	public List<DashDefectModel> getDefects() {
-		return defects;
-	}
-
-	public void setDefects(List<DashDefectModel> defects) {
-		this.defects = defects;
-	}
+//	public List<DashDefectModel> getDefects() {
+//		return defects;
+//	}
+//
+//	public void setDefects(List<DashDefectModel> defects) {
+//		this.defects = defects;
+//	}
 
 }

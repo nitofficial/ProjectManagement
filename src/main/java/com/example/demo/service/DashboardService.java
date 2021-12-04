@@ -45,11 +45,9 @@ public class DashboardService {
 	private DefectService defectservice;
 
 	/**
-	 * Method to add File into db
-	 * @param FileModel which contains the file details.
-	 * @return FileModel with respective status and information.
-	 * @throws BadRequestException handles Exception.
-
+	 * Method to get previous Day defects or testcases from db
+	 * @param String historyType, List<IdOnly> currTestLists.
+	 * @return List<IdOnly> with respective status and information.
 	 */
 	public List<IdOnly> getPrevDayListAndUpdate(String historyType, List<IdOnly> currTestLists) {
 		Query q = new Query(Criteria.where("historyType").is(historyType));
@@ -60,6 +58,13 @@ public class DashboardService {
 		return (prevdaycount != null) ? prevdaycount.getHistoryTypeLists() : Collections.emptyList();
 
 	}
+	
+	/**
+	 * Method to add a new entry to defect history
+	 * @param DefectHistory entry.
+	 * @return String with respective status and information.
+	 */
+	
 
 	public String addEntryToDefectHistory(DefectHistory entry) {
 		mongoTemplate.save(entry);
@@ -67,6 +72,12 @@ public class DashboardService {
 				+ " added";
 
 	}
+	
+	/**
+	 * Method to add a new entry to TestCases history
+	 * @param TestHistory entry.
+	 * @return String with respective status and information.
+	 */
 
 	public String addEntryToTestHistory(TestHistory entry) {
 		mongoTemplate.save(entry);
@@ -74,6 +85,11 @@ public class DashboardService {
 				+ " added";
 
 	}
+	
+	/**
+	 * Method to Requirements tracability matrix of all the projects
+	 * @return List<DashRTMModel> with respective status and information.
+	 */
 
 	public List<DashRTMModel> getRTM() {
 
@@ -126,4 +142,5 @@ public class DashboardService {
 		return response;
 	}
 
+	
 }

@@ -129,6 +129,13 @@ public class FileManagementTests {
 
 		Assertions.assertThrows(BadRequestException.class, () -> service.deleteAllFiles("DEF_2"));
 	}
+	
+	@Test
+	public void deleteFileByAssetIdTest() {
+
+		Assertions.assertThrows(BadRequestException.class, () -> service.deleteFileByAssetId("DEF_2","invalid"));
+	}
+
 
 	@Test
 	void FileCountTest() {
