@@ -37,4 +37,5 @@ public class AuthController {
 	public ResponseEntity<?> userSignIn(@Valid @RequestBody LoginRequest loginRequest) {
 		return ResponseEntity.ok(userServices.userSignIn(loginRequest.getUsername(), loginRequest.getPassword()));
 	}
+	
 }
