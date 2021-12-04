@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.model.Defect;
 import com.example.demo.model.DefectHistory;
 import com.example.demo.model.FileCount;
 import com.example.demo.model.IdOnly;
@@ -31,7 +32,7 @@ public class ScheduledTasks {
 	
 	@PostConstruct
     public void onStartup() {
-//		long currDefectCount = defectservice.getDefectCount();
+//		List<Defect> currDefectLists = defectservice.getAllDefects(null);
 		List<IdOnly> currTestLists = testCaseService.getOpenTests();
 //		dashboardService.getPrevDayListAndUpdate("defect", currDefectCount);
 		dashboardService.getPrevDayListAndUpdate("test", currTestLists);
