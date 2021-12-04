@@ -10,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Transient;
 
-import com.example.demo.service.ValidationService;
-
 public class Timestamp {
 	private int date;
 	private int month;
@@ -19,7 +17,7 @@ public class Timestamp {
 	private int hour;
 	private int min;
 	@Transient
-	Logger logger = LoggerFactory.getLogger(ValidationService.class);
+	Logger logger = LoggerFactory.getLogger(Timestamp.class);
 	
 	public Timestamp() {
 		logger.info("Constructor to TimeStamp class initiated");

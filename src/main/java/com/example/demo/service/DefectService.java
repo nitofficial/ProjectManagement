@@ -33,7 +33,6 @@ public class DefectService {
 	private static Logger logger = LoggerFactory.getLogger(DefectService.class);
 	@Autowired
 	private MongoTemplate mongoTemplate;
-	private ValidationService valSer = new ValidationService();
 	
 	
 	public DefectService(MongoTemplate mongoTemplate) {
@@ -197,13 +196,12 @@ public class DefectService {
 	 */
 	public String updateDefectByID(Map<String, String> update_request) {
 		logger.info("Inside update Defect");
-		valSer.validateDefId(update_request.get("defectId"));
 		Query select = Query.query(Criteria.where("id").is(update_request.get("defectId")));
 		Update update = new Update();
 		if(update_request.containsKey("comment")) {
 			for(Map.Entry parameter:update_request.entrySet()){
 				if(parameter.getKey().equals("status")) {
-					valSer.validateStatus((String)parameter.getValue());
+					validateStatus((String)parameter.getValue());
 					addStatus(update_request.get("defectId"),(String) parameter.getValue());
 				}
 				else if(parameter.getKey().equals("comment")) {
@@ -233,8 +231,7 @@ public class DefectService {
 	 * @throws BadRequestException handles Exception.
 	 */
 	public String deleteDefect(String id) {
-		logger.info("Validation for deleteDefect Service");
-		valSer.validateDefId(id);
+		logger.info("Inside Delete Defect");
 		Query select = Query.query(Criteria.where("id").is(id));
 		Update update = new Update();
 		update.set("status", "Cancelled");
@@ -251,8 +248,6 @@ public class DefectService {
 	 * @return  A dashboard object with all the details of the string
 	 */
 	public Dashboard getDefectById(String id) {
-		logger.info("Validation for getDefectById Service");
-		valSer.validateDefId(id);
 		logger.info("Dashboard initation");
 		Query query = new Query();
 		query.addCriteria(Criteria.where("id").is(id));
@@ -270,6 +265,21 @@ public class DefectService {
 		dashboard.setComments(comments);
 		logger.info("Information retrieval for dashboard successful");
 		return dashboard;
+	}
+	
+	/**
+	 * Method to validate the Status String
+	 *
+	 * 
+	 * @param Status as a string
+	 * @return  Boolean value
+	 */
+	public boolean validateStatus(String status) {
+		if(!(status.equals("New") || status.equals("Open") || status.equals("Retest failed") || status.equals("Closed") || status.equals("Cancelled"))) {
+			logger.warn("Validation failed");
+			throw new BadRequestException("Invalid Status Type.");
+		}
+		return true;
 	}
 	
 	
