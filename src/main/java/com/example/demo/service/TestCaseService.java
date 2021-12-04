@@ -1,3 +1,6 @@
+/**
+	 * @author Sriram	
+*/
 package com.example.demo.service;
 
 import java.util.HashMap;
@@ -48,12 +51,18 @@ public class TestCaseService {
 	
 	
 	
-	
+	/**
+	 * Method to get specific TestCase by project Id ,Requirement id and testcase id from the Mongo Database
+	 * @param the Project id ,Requirement id and testCase id is passed.
+	 * @return requested TestCase.
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
 	public TestCaseModel getByTestCaseId(String projectId, String requirementId, String testcaseId) {
 		Map<String, String> conditionsMap = new HashMap<String, String>();
 		conditionsMap.put("projectId", projectId);
 		conditionsMap.put("requirementId", requirementId);
-		conditionsMap.put("id", testcaseId);
+		conditionsMap.put("testcaseId", testcaseId);
 		try {
 			return mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), TestCaseModel.class);
 		} catch (Exception e) {
@@ -63,6 +72,13 @@ public class TestCaseService {
 
 	}
 
+	/**
+	 * Method to get all TestCases  from the Mongo Database
+	 * @param Nothing.
+	 * @return All TestCase List.
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
 	public List<TestCaseModel> getAllTestCase() {
 		try {
 			return mongoTemplate.findAll(TestCaseModel.class);
@@ -73,8 +89,18 @@ public class TestCaseService {
 
 	}
 
+	/**
+	 * Method to add List of TestCases into the Mongo Database
+	 * @param the List of TestCases to be inserted is passes.
+	 * @return Status and Information about the TestCase Insertion.
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
 	public String addTestCase(List<TestCaseModel> testcaseModelList) {
 
+		try {
+			
+		
 		for (int testcaseIndex = 0; testcaseIndex < testcaseModelList.size(); testcaseIndex++) {
 			TestCaseModel testcaseModel = testcaseModelList.get(testcaseIndex);
 			Map<String, String> conditionsMap = new HashMap<String, String>();
@@ -84,7 +110,7 @@ public class TestCaseService {
 			testcaseModel.setStatus(Constants.TESTCASE_STATUS_PASSED);
 			RequirementModel requirementModel = mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap),
 					RequirementModel.class);
-			if (requirementModel != null) {
+			if(requirementModel != null) {
 				testcaseModel.setTestcaseId(
 						Constants.TESTCASE_PREFIX + String.valueOf(requirementModel.incrementTestCaseCount()));
 
@@ -101,11 +127,25 @@ public class TestCaseService {
 
 		}
 		return "Inserted";
+		}
+		catch(Exception e)
+		{
+			LOGGER.warn("TESTCASE NOT INSERTED SUCCESSFULL");
+			throw new BadRequestException("TestCases where not inserted Successfully");
+		}
 
 	}
 
-	public String updateProject(TestCaseModel testCaseModel, String projectId, String requirementId,
+	/**
+	 * Method to update TestCase with specific project id,requirement id and testcase id from the Mongo Database
+	 * @param the Project id ,Requirement id , testCase id and testcase Model is passed.
+	 * @return status and Information about the TestCase Update.
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
+	public String updateTestCase(TestCaseModel testCaseModel, String projectId, String requirementId,
 			String testcaseId) {
+		/*try {*/
 		TestCaseModel requestedTestCase = getByTestCaseId(projectId, requirementId, testcaseId);
 
 		if (testCaseModel == null) {
@@ -142,7 +182,12 @@ public class TestCaseService {
 
 		} else {
 			return "TestCase " + requestedTestCase.getTestcaseId() + " Updated";
+			/* } */
 		}
+		/*catch(Exception e)
+		{
+			throw new BadRequestException(" Could not Update testCase ");
+		}*/
 
 	}
 

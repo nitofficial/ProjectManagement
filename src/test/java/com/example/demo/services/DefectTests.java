@@ -1,7 +1,6 @@
 /**
 * 	@author Vijay
 */
-
 package com.example.demo.services;
 
 import static org.junit.Assert.assertEquals;
@@ -85,5 +84,4 @@ public class DefectTests {
 	public void testDeleteDefect() {
 		assertEquals("The defect Def-14 is deleted successfully", defService.deleteDefect("Def-14"));
 	}
-	
 }

@@ -1,3 +1,6 @@
+/**
+	 * @author Sriram	
+*/
 package com.example.demo.controller;
 
 import java.util.List;
@@ -28,7 +31,13 @@ public class ProjectCreationController {
 	@Autowired
 	private ProjectService projectService;
 
-	// Project Controller
+	/**
+	 * Method to create project
+	 *
+	 * 
+	 * @param ProjectModel
+	 * @return  Respective status and information of ProjectModel.
+	 */
 	@PostMapping("/project")
 	public String createProject(@RequestBody ProjectModel projectModel) {
 		LOGGER.info("IN CREATE PROJECT");
@@ -39,12 +48,22 @@ public class ProjectCreationController {
 		return projectService.addProject(projectModel);
 	}
 
+	/**
+	 * Method to Get all projects
+	 * @param nothing
+	 * @return  List of ProjectModels form the database.
+	 */
 	@GetMapping("/project")
 	public List<ProjectModel> allProjects() {
 		LOGGER.info("IN REQUESTING ALL PROJECTS");
 		return projectService.getAllProjects();
 	}
 
+	/**
+	 * Method to get specific project
+	 * @param Project Id
+	 * @return Project model of the respective project Id is passed.
+	 */
 	@GetMapping("/project/{id}")
 	public ProjectModel projectByID(@PathVariable("id") String id) {
 		LOGGER.info("IN REQUESTING SPECIFIC PROJECT");
@@ -52,14 +71,27 @@ public class ProjectCreationController {
 
 	}
 
+	/**
+	 * Method to Update project
+	 *
+	 * 
+	 * @param ProjectModel and project Id is passed
+	 * @return  Respective status and information of ProjectModel Update.
+	 */
 	@PutMapping("/project/{id}")
 	public String updateProject(@PathVariable("id") String id, @RequestBody ProjectModel projectModel) {
 		LOGGER.info("IN UPDATING PROJECT");
 		return projectService.updateProject(projectModel, id);
 	}
 
-	// Requirement controller
-
+	
+	
+	/**
+	 * Method to add list of  Requirement
+	 *
+	 * @param Project Id,Requirements List
+	 * @return  Respective status and information of added Requirements.
+	 */
 	@PostMapping("/project/requirement/{id}")
 	public String createRequirement(@PathVariable("id") String id,
 			@RequestBody List<RequirementModel> requirementModelList) {
@@ -67,6 +99,13 @@ public class ProjectCreationController {
 		return projectService.addRequirement(requirementModelList, id);
 	}
 
+	/**
+	 * Method to update Requirements
+	 *
+	 * 
+	 * @param Requirement Id,Project Id and Requirement Model
+	 * @return  Respective status and information of RequirementModel update.
+	 */
 	@PutMapping("/project/requirement/{id}/{rid}")
 	public String updateRequirement(@PathVariable("id") String id, @PathVariable("rid") String rid,
 			@RequestBody RequirementModel requirementModel) {
@@ -74,6 +113,13 @@ public class ProjectCreationController {
 		return projectService.updateRequirement(requirementModel, id, rid, false);
 	}
 
+	/**
+	 * Method to Delete Requirement
+	 *
+	 * 
+	 * @param Project Id,Requirement id and Requirement model 
+	 * @return  Respective status and information of  RequirementModel Deletion.
+	 */
 	@DeleteMapping("/project/requirement/{id}/{rid}")
 	public String deleteRequirement(@PathVariable("id") String id, @PathVariable("rid") String rid,
 			@RequestBody RequirementModel requirementModel) {

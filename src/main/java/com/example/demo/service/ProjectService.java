@@ -1,3 +1,6 @@
+/**
+	 * @author Sriram	
+*/
 package com.example.demo.service;
 
 import java.util.HashMap;
@@ -36,7 +39,7 @@ public class ProjectService {
 	 *
 	 * @param ProjectModel which contains Project details
 	 * @return Status and information of the Project Creation.
-
+	 * 
 	 */
 	public String addProject(ProjectModel projectModel) {
 		if (mongoTemplate.insert(projectModel) != null) {
@@ -50,9 +53,10 @@ public class ProjectService {
 
 	/**
 	 * Method to get every Projects from the Mongo database
+	 * 
 	 * @return List of Projects from the Mongo Database.
-	 * @throws  Handles Exception from Database read,write .
-
+	 * @throws Handles Exception from Database read,write .
+	 * 
 	 */
 	public List<ProjectModel> getAllProjects() {
 		try {
@@ -66,13 +70,14 @@ public class ProjectService {
 
 	/**
 	 * Method to get specific Project by project Id from the Mongo Database
+	 * 
 	 * @param the Project id is passed.
 	 * @return ProjectModel which contains Details of the project.
-	 * @throws  Handles Exception from Database read,write.
-
+	 * @throws Handles Exception from Database read,write.
+	 * 
 	 */
 	public ProjectModel getByProjectId(String id) {
-		try {
+		 try { 
 			Map<String, String> conditionsMap = new HashMap<String, String>();
 			conditionsMap.put("id", id);
 			return mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), ProjectModel.class);
@@ -85,34 +90,40 @@ public class ProjectService {
 
 	/**
 	 * Method to update specific Project by project Id from the Mongo Database
+	 * 
 	 * @param the Project id and Projectmodel is passed.
 	 * @return Status and information of the Project Update.
-	 * @throws  Handles Exception from Database read,write.
-
+	 * @throws Handles Exception from Database read,write.
+	 * 
 	 */
 	public String updateProject(ProjectModel projectModel, String id) {
-		ProjectModel requestedProject = getByProjectId(id);
-		if (projectModel.getName() != null) {
-			requestedProject.setName(projectModel.getName());
-		}
-		if (projectModel.getDescription() != null) {
-			requestedProject.setDescription(projectModel.getDescription());
-		}
-		if (projectModel.getStartDate() != null) {
-			requestedProject.setStartDate(projectModel.getStartDate());
-		}
-		if (projectModel.getEndDate() != null) {
-			requestedProject.setEndDate(projectModel.getEndDate());
-		}
-		if (projectModel.getTargetedRelease() != null) {
-			requestedProject.setTargetedRelease(projectModel.getTargetedRelease());
-		}
-		requestedProject.addUpdateDate(requestedProject.getId() + " is Updated");
+		try {
+			ProjectModel requestedProject = getByProjectId(id);
+			if (projectModel.getName() != null) {
+				requestedProject.setName(projectModel.getName());
+			}
+			if (projectModel.getDescription() != null) {
+				requestedProject.setDescription(projectModel.getDescription());
+			}
+			if (projectModel.getStartDate() != null) {
+				requestedProject.setStartDate(projectModel.getStartDate());
+			}
+			if (projectModel.getEndDate() != null) {
+				requestedProject.setEndDate(projectModel.getEndDate());
+			}
+			if (projectModel.getTargetedRelease() != null) {
+				requestedProject.setTargetedRelease(projectModel.getTargetedRelease());
+			}
+			requestedProject.addUpdateDate(requestedProject.getId() + " is Updated");
 
-		if (mongoTemplate.save(requestedProject) != null) {
-			LOGGER.info("PROJECT UPDATED SUCCESSFULLY");
-			return "Project " + requestedProject.getId() + " Updated";
-		} else {
+			if (mongoTemplate.save(requestedProject) != null) {
+				LOGGER.info("PROJECT UPDATED SUCCESSFULLY");
+				return "Project " + requestedProject.getId() + " Updated";
+			} else {
+				LOGGER.warn("PROJECT NOT UPDATED");
+				throw new BadRequestException("Project could not be updated");
+			}
+		} catch (Exception e) {
 			LOGGER.warn("PROJECT NOT UPDATED");
 			throw new BadRequestException("Project could not be updated");
 		}
@@ -121,13 +132,14 @@ public class ProjectService {
 
 	/**
 	 * Method to generate Unique value for Created Projects
+	 * 
 	 * @param the key of the Counter Document is passed.
 	 * @return the unique Value of String dataType.
-	 * @throws  Handles Exception from Database read,write.
-
+	 * @throws Handles Exception from Database read,write.
+	 * 
 	 */
 	public int uniqueValue(String key) {
-		try {
+//		try {
 			Update update = new Update();
 			update.inc(Constants.PROJECT_COUNTER_DOCUMENT_SEQUENCE_COLUMN, 1);
 			FindAndModifyOptions options = new FindAndModifyOptions();
@@ -142,23 +154,26 @@ public class ProjectService {
 			mongoTemplate.save(counter);
 
 			return counter.getSeq();
-		} catch (Exception e) {
-			LOGGER.warn("PROJECT COUNTER NOT UPDATED");
-			throw new BadRequestException("Project counter could not be updated");
-		}
+//		} catch (Exception e) {
+//			LOGGER.warn("PROJECT COUNTER NOT UPDATED");
+//			throw new BadRequestException("Project counter could not be updated");
+//		}
 
 	}
 
 	/**
 	 * Method to add Requirements for the Project to the Mongo Database
+	 * 
 	 * @param the Project id and RequirementModel List is passed.
 	 * @return status and information of the Added Requirement .
-	 * @throws  Handles Exception from Database read,write.
-
+	 * @throws Handles Exception from Database read,write.
+	 * 
 	 */
 	public String addRequirement(List<RequirementModel> requirementModelList, String projectId) {
 
 		ProjectModel projectModel = getByProjectId(projectId);
+
+		 try { 
 
 		for (int requirementIndex = 0; requirementIndex < requirementModelList.size(); requirementIndex++) {
 			RequirementModel requirementModel = requirementModelList.get(requirementIndex);
@@ -176,16 +191,21 @@ public class ProjectService {
 		if (mongoTemplate.save(projectModel) == null) {
 			LOGGER.warn("REQUIREMENTS COULD NOT BE UPDATED");
 		}
+		
+		  } catch(Exception e) { throw new
+		  BadRequestException("there is no requirements found to be added"); }
+		 
 
 		return "requirements added";
 	}
 
 	/**
 	 * Method to add Requirements for the Project to the Mongo Database
+	 * 
 	 * @param the Project id and RequirementModel List is passed.
 	 * @return status and information of the Added Requirement .
-	 * @throws  Handles Exception from Database read,write.
-
+	 * @throws Handles Exception from Database read,write.
+	 * 
 	 */
 	public String updateRequirement(RequirementModel requirementModel, String id, String rid, boolean remove) {
 
@@ -240,12 +260,13 @@ public class ProjectService {
 
 	/**
 	 * Method to Update TestCase Status when requirement Status is altered
+	 * 
 	 * @param the Project id , Requirement id is passed and status to be changed.
 	 * @return Nothing .
-	 * @throws  Handles Exception from Database read,write.
-
+	 * @throws Handles Exception from Database read,write.
+	 * 
 	 */
-	private void updateTestcaseStatus(String requirementId, String projectId, String status) {
+	public void updateTestcaseStatus(String requirementId, String projectId, String status) {
 		Map<String, String> conditionsMap = new HashMap<String, String>();
 		conditionsMap.put("projectId", projectId);
 		conditionsMap.put("requirementId", requirementId);
@@ -258,6 +279,21 @@ public class ProjectService {
 			if (mongoTemplate.save(requestedTestCase) == null) {
 				LOGGER.warn("COULD NOT UPDATE " + requestedTestCase.get_id() + " TESTCASE");
 			}
+		}
+	}
+
+	/**
+	 * Method to get all requirements from db
+	 * 
+	 * @return List<RequirementModel> with respective status and information.
+	 * @throws BadRequestException handles Exception.
+	 */
+	public List<RequirementModel> getAllRequirements() {
+		try {
+			return mongoTemplate.findAll(RequirementModel.class);
+		} catch (Exception e) {
+			LOGGER.warn("REQUIREMENTS NOT FOUND");
+			throw new BadRequestException("Requirements Not Found");
 		}
 	}
 

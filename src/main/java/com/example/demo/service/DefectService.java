@@ -124,6 +124,7 @@ public class DefectService {
 		
 	}
 	
+
 	/**
 	 * Method to return the objects of active defects
 	 *
@@ -131,6 +132,7 @@ public class DefectService {
 	 * @param
 	 * @return  A list of all the unclosed defects in the collection
 	 */
+
 	public List<Defect> getOpenDefects(){
 		Query q = new Query();
 		q.addCriteria(Criteria.where("status").ne("Closed"));

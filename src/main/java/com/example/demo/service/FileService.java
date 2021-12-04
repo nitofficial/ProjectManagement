@@ -38,13 +38,10 @@ public class FileService {
 	}
 	
 	/**
-	 * Method to Route the process to corresponding handler to get the complete
-	 * response
-	 *
-	 * @param context APIContext with the request details.
-	 * @param view    contains the request body.
-	 * @return ResponseEntity with respective status and information.
-	 * @throws APIException handles Exception from Handler class.
+	 * Method to add File into db
+	 * @param FileModel which contains the file details.
+	 * @return FileModel with respective status and information.
+	 * @throws BadRequestException handles Exception.
 
 	 */
 
@@ -65,15 +62,13 @@ public class FileService {
 	}
 
 	/**
-	 * Method to Route the process to corresponding handler to get the complete
-	 * response
-	 *
-	 * @param context APIContext with the request details.
-	 * @param view    contains the request body.
-	 * @return ResponseEntity with respective status and information.
-	 * @throws APIException handles Exception from Handler class.
+	 * Method to update a existing File in db
+	 * @param FileModel which contains the new file details.
+	 * @param String defect_id, String asset_id of file to be replaced.
+	 * @return FileModel with respective status and information.
+	 * @throws BadRequestException handles Exception.
 
-	 */	
+	 */
 	public FileModel updateFileByIdAndAssetId(FileModel filemodel, String defect_id, String asset_id) {
 		try {
 			Query query = new Query();
@@ -91,14 +86,9 @@ public class FileService {
 	}
 	
 	/**
-	 * Method to Route the process to corresponding handler to get the complete
-	 * response
-	 *
-	 * @param context APIContext with the request details.
-	 * @param view    contains the request body.
-	 * @return ResponseEntity with respective status and information.
-	 * @throws APIException handles Exception from Handler class.
-
+	 * Method to get all Files from db
+	 * @return List<FileModel> with respective status and information.
+	 * @throws BadRequestException handles Exception.
 	 */
 	public List<FileModel> getAllFiles() {
 
@@ -106,14 +96,9 @@ public class FileService {
 	}
 
 	/**
-	 * Method to Route the process to corresponding handler to get the complete
-	 * response
-	 *
-	 * @param context APIContext with the request details.
-	 * @param view    contains the request body.
-	 * @return ResponseEntity with respective status and information.
-	 * @throws APIException handles Exception from Handler class.
-
+	 * Method to get all Files for a defect_id from db
+	 * @return FileModel with respective status and information.
+	 * @throws BadRequestException handles Exception.
 	 */
 	public FileModel getFileById(String defect_id) {
 
@@ -130,16 +115,10 @@ public class FileService {
 	}
 	
 	/**
-	 * Method to Route the process to corresponding handler to get the complete
-	 * response
-	 *
-	 * @param context APIContext with the request details.
-	 * @param view    contains the request body.
-	 * @return ResponseEntity with respective status and information.
-	 * @throws APIException handles Exception from Handler class.
-
+	 * Method to get a file with defect_id and unique asset_id.
+	 * @return FileModel with respective status and information.
+	 * @throws BadRequestException handles Exception.
 	 */
-
 	public FileModel getFileByAssetId(String defect_id, String asset_id) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where(Constants.DEFECT_ID).is(defect_id));
@@ -155,16 +134,11 @@ public class FileService {
 	}
 	
 	/**
-	 * Method to Route the process to corresponding handler to get the complete
-	 * response
-	 *
-	 * @param context APIContext with the request details.
-	 * @param view    contains the request body.
-	 * @return ResponseEntity with respective status and information.
-	 * @throws APIException handles Exception from Handler class.
-
+	 * Method to delete all files with defect_id.
+	 * @return String with respective status and information.
+	 * @throws BadRequestException handles Exception.
 	 */
-
+	
 	public String deleteAllFiles(String defect_id) {
 
 		Query q = new Query();
@@ -180,15 +154,11 @@ public class FileService {
 	}
 	
 	/**
-	 * Method to Route the process to corresponding handler to get the complete
-	 * response
-	 *
-	 * @param context APIContext with the request details.
-	 * @param view    contains the request body.
-	 * @return ResponseEntity with respective status and information.
-	 * @throws APIException handles Exception from Handler class.
-
+	 * Method to delete a files with defect_id and unique asser_id.
+	 * @return String with respective status and information.
+	 * @throws BadRequestException handles Exception.
 	 */
+	
 
 	public String deleteFileByAssetId(String defect_id, String asset_id) {
 

@@ -5,8 +5,9 @@ import java.time.format.DateTimeFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.annotation.Transient;
 
-import com.example.demo.service.defect.ValidationService;
+import com.example.demo.service.ValidationService;
 
 public class Timestamp {
 	private int date;
@@ -14,62 +15,63 @@ public class Timestamp {
 	private int year;
 	private int hour;
 	private int min;
-<span class="nc" id="L17">	Logger logger = LoggerFactory.getLogger(ValidationService.class);</span>
+<span class="fc" id="L18">	@Transient</span>
+<span class="fc" id="L19">	Logger logger = LoggerFactory.getLogger(ValidationService.class);</span>
 	
-<span class="nc" id="L19">	public Timestamp() {</span>
-<span class="nc" id="L20">		logger.info(&quot;Constructor to TimeStamp class initiated&quot;);</span>
-<span class="nc" id="L21">		LocalDateTime d = LocalDateTime.now();</span>
-<span class="nc" id="L22">		DateTimeFormatter f = DateTimeFormatter.ofPattern(&quot;dd&quot;);</span>
-<span class="nc" id="L23">		this.date = Integer.parseInt((d.format(f)));</span>
-<span class="nc" id="L24">		f = DateTimeFormatter.ofPattern(&quot;MM&quot;);</span>
-<span class="nc" id="L25">		this.month = Integer.parseInt((d.format(f)));</span>
-<span class="nc" id="L26">		f = DateTimeFormatter.ofPattern(&quot;yyyy&quot;);</span>
-<span class="nc" id="L27">		this.year = Integer.parseInt((d.format(f)));</span>
-<span class="nc" id="L28">		f = DateTimeFormatter.ofPattern(&quot;HH&quot;);</span>
-<span class="nc" id="L29">		this.hour = Integer.parseInt((d.format(f)));</span>
-<span class="nc" id="L30">		f = DateTimeFormatter.ofPattern(&quot;mm&quot;);</span>
-<span class="nc" id="L31">		this.min = Integer.parseInt((d.format(f)));</span>
-<span class="nc" id="L32">	}</span>
+<span class="fc" id="L21">	public Timestamp() {</span>
+<span class="fc" id="L22">		logger.info(&quot;Constructor to TimeStamp class initiated&quot;);</span>
+<span class="fc" id="L23">		LocalDateTime d = LocalDateTime.now();</span>
+<span class="fc" id="L24">		DateTimeFormatter f = DateTimeFormatter.ofPattern(&quot;dd&quot;);</span>
+<span class="fc" id="L25">		this.date = Integer.parseInt((d.format(f)));</span>
+<span class="fc" id="L26">		f = DateTimeFormatter.ofPattern(&quot;MM&quot;);</span>
+<span class="fc" id="L27">		this.month = Integer.parseInt((d.format(f)));</span>
+<span class="fc" id="L28">		f = DateTimeFormatter.ofPattern(&quot;yyyy&quot;);</span>
+<span class="fc" id="L29">		this.year = Integer.parseInt((d.format(f)));</span>
+<span class="fc" id="L30">		f = DateTimeFormatter.ofPattern(&quot;HH&quot;);</span>
+<span class="fc" id="L31">		this.hour = Integer.parseInt((d.format(f)));</span>
+<span class="fc" id="L32">		f = DateTimeFormatter.ofPattern(&quot;mm&quot;);</span>
+<span class="fc" id="L33">		this.min = Integer.parseInt((d.format(f)));</span>
+<span class="fc" id="L34">	}</span>
 
 	public int getDate() {
-<span class="nc" id="L35">		return date;</span>
+<span class="nc" id="L37">		return date;</span>
 	}
 
 	public void setDate(int date) {
-<span class="nc" id="L39">		this.date = date;</span>
-<span class="nc" id="L40">	}</span>
+<span class="nc" id="L41">		this.date = date;</span>
+<span class="nc" id="L42">	}</span>
 
 	public int getMonth() {
-<span class="nc" id="L43">		return month;</span>
+<span class="nc" id="L45">		return month;</span>
 	}
 
 	public void setMonth(int month) {
-<span class="nc" id="L47">		this.month = month;</span>
-<span class="nc" id="L48">	}</span>
+<span class="nc" id="L49">		this.month = month;</span>
+<span class="nc" id="L50">	}</span>
 
 	public int getYear() {
-<span class="nc" id="L51">		return year;</span>
+<span class="nc" id="L53">		return year;</span>
 	}
 
 	public void setYear(int year) {
-<span class="nc" id="L55">		this.year = year;</span>
-<span class="nc" id="L56">	}</span>
+<span class="nc" id="L57">		this.year = year;</span>
+<span class="nc" id="L58">	}</span>
 
 	public int getHour() {
-<span class="nc" id="L59">		return hour;</span>
+<span class="nc" id="L61">		return hour;</span>
 	}
 
 	public void setHour(int hour) {
-<span class="nc" id="L63">		this.hour = hour;</span>
-<span class="nc" id="L64">	}</span>
+<span class="nc" id="L65">		this.hour = hour;</span>
+<span class="nc" id="L66">	}</span>
 
 	public int getMin() {
-<span class="nc" id="L67">		return min;</span>
+<span class="nc" id="L69">		return min;</span>
 	}
 
 	public void setMin(int min) {
-<span class="nc" id="L71">		this.min = min;</span>
-<span class="nc" id="L72">	}</span>
+<span class="nc" id="L73">		this.min = min;</span>
+<span class="nc" id="L74">	}</span>
 	
 	
 }

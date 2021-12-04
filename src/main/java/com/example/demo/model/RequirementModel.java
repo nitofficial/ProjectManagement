@@ -1,12 +1,19 @@
+/**
+	 * @author Sriram	
+*/
 package com.example.demo.model;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.example.demo.constants.Constants;
 
 @Document(collection = Constants.REQUIREMENT_COLLECTION)
 public class RequirementModel {
+	
+	@Id
 	private String _id;
+	
 	private String requirementId;
 	private String projectId;
 	private String description;
