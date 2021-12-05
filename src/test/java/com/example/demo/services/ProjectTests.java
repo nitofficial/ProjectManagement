@@ -102,9 +102,8 @@ public class ProjectTests {
 		when(mongoTemplate.save(projectModel)).thenReturn(null);
 		when(mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), ProjectModel.class))
 				.thenReturn(new ProjectModel());
-		assertEquals("Project", service.updateProject(projectModel, "Prj-test").substring(0, 7)); //
-		Assertions.assertThrows(BadRequestException.class, () -> //
-		service.updateProject(projectModel, "Prj-test"));
+		assertEquals("Project", service.updateProject(projectModel, "Prj-test").substring(0, 7)); 
+		
 	}
 
 	@Test
