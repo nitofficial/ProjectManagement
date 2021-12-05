@@ -17,12 +17,15 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.Counter;
+import com.example.demo.model.FileSubDocument;
 import com.example.demo.model.ProjectModel;
 import com.example.demo.model.RequirementModel;
 import com.example.demo.model.TestCaseModel;
 import com.example.demo.constants.Constants;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.utilities.ProjectUtility;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ProjectService {
@@ -42,7 +45,8 @@ public class ProjectService {
 	 * 
 	 */
 	public String addProject(ProjectModel projectModel) {
-		if (mongoTemplate.insert(projectModel) != null) {
+		projectModel=mongoTemplate.insert(projectModel);
+		if (projectModel!= null) {
 			return "Project Created with ID " + projectModel.getId();
 		} else {
 			LOGGER.warn("PROJECT NOT CREATED");
@@ -98,7 +102,8 @@ public class ProjectService {
 	 */
 	public String updateProject(ProjectModel projectModel, String id) {
 		try {
-			ProjectModel requestedProject = getByProjectId(id);
+			ProjectModel requestedProject= getByProjectId(id);
+			
 			if (projectModel.getName() != null) {
 				requestedProject.setName(projectModel.getName());
 			}
@@ -139,7 +144,7 @@ public class ProjectService {
 	 * 
 	 */
 	public int uniqueValue(String key) {
-//		try {
+		try {
 			Update update = new Update();
 			update.inc(Constants.PROJECT_COUNTER_DOCUMENT_SEQUENCE_COLUMN, 1);
 			FindAndModifyOptions options = new FindAndModifyOptions();
@@ -154,10 +159,10 @@ public class ProjectService {
 			mongoTemplate.save(counter);
 
 			return counter.getSeq();
-//		} catch (Exception e) {
-//			LOGGER.warn("PROJECT COUNTER NOT UPDATED");
-//			throw new BadRequestException("Project counter could not be updated");
-//		}
+		} catch (Exception e) {
+			LOGGER.warn("PROJECT COUNTER NOT UPDATED");
+			throw new BadRequestException("Project counter could not be updated");
+		}
 
 	}
 
@@ -210,6 +215,7 @@ public class ProjectService {
 	public String updateRequirement(RequirementModel requirementModel, String id, String rid, boolean remove) {
 
 		ProjectModel projectModel = getByProjectId(id);
+	
 
 		Map<String, String> conditionsMap = new HashMap<String, String>();
 		conditionsMap.put("projectId", id);

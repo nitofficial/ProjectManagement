@@ -36,13 +36,14 @@ public class FileService {
 		this.mongoTemplate = mongoTemplate;
 
 	}
-	
+
 	/**
 	 * Method to add File into db
+	 * 
 	 * @param FileModel which contains the file details.
 	 * @return FileModel with respective status and information.
 	 * @throws BadRequestException handles Exception.
-
+	 * 
 	 */
 
 	public FileModel addFile(FileModel filemodel) {
@@ -51,23 +52,31 @@ public class FileService {
 			throw new BadRequestException("Could not read any file");
 		} else {
 
-			Update update = new Update().addToSet(Constants.FILE_SUB_DOCUMENT, filemodel.getFilesubdocument().get(0));
+			try {
+				Update update = new Update().addToSet(Constants.FILE_SUB_DOCUMENT,
+						filemodel.getFilesubdocument().get(0));
 
-			Query q = new Query();
-			q.addCriteria(Criteria.where(Constants.DEFECT_ID).is(filemodel.getDefect_id()));
+				Query q = new Query();
+				q.addCriteria(Criteria.where(Constants.DEFECT_ID).is(filemodel.getDefect_id()));
 
-			return mongoOperations.findAndModify(q, update, options().returnNew(true).upsert(true), FileModel.class);
+				return mongoOperations.findAndModify(q, update, options().returnNew(true).upsert(true),
+						FileModel.class);
+			} catch (Exception e) {
+				throw new BadRequestException("File not found");
+
+			}
 
 		}
 	}
 
 	/**
 	 * Method to update a existing File in db
+	 * 
 	 * @param FileModel which contains the new file details.
-	 * @param String defect_id, String asset_id of file to be replaced.
+	 * @param String    defect_id, String asset_id of file to be replaced.
 	 * @return FileModel with respective status and information.
 	 * @throws BadRequestException handles Exception.
-
+	 * 
 	 */
 	public FileModel updateFileByIdAndAssetId(FileModel filemodel, String defect_id, String asset_id) {
 		try {
@@ -84,9 +93,10 @@ public class FileService {
 
 		}
 	}
-	
+
 	/**
 	 * Method to get all Files from db
+	 * 
 	 * @return List<FileModel> with respective status and information.
 	 * @throws BadRequestException handles Exception.
 	 */
@@ -97,6 +107,7 @@ public class FileService {
 
 	/**
 	 * Method to get all Files for a defect_id from db
+	 * 
 	 * @return FileModel with respective status and information.
 	 * @throws BadRequestException handles Exception.
 	 */
@@ -113,9 +124,10 @@ public class FileService {
 		}
 
 	}
-	
+
 	/**
 	 * Method to get a file with defect_id and unique asset_id.
+	 * 
 	 * @return FileModel with respective status and information.
 	 * @throws BadRequestException handles Exception.
 	 */
@@ -132,13 +144,14 @@ public class FileService {
 			throw new BadRequestException("File not found");
 		}
 	}
-	
+
 	/**
 	 * Method to delete all files with defect_id.
+	 * 
 	 * @return String with respective status and information.
 	 * @throws BadRequestException handles Exception.
 	 */
-	
+
 	public String deleteAllFiles(String defect_id) {
 
 		Query q = new Query();
@@ -152,13 +165,13 @@ public class FileService {
 		}
 
 	}
-	
+
 	/**
 	 * Method to delete a files with defect_id and unique asser_id.
+	 * 
 	 * @return String with respective status and information.
 	 * @throws BadRequestException handles Exception.
 	 */
-	
 
 	public String deleteFileByAssetId(String defect_id, String asset_id) {
 

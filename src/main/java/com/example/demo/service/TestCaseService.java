@@ -145,7 +145,7 @@ public class TestCaseService {
 	 */
 	public String updateTestCase(TestCaseModel testCaseModel, String projectId, String requirementId,
 			String testcaseId) {
-		/*try {*/
+		try {
 		TestCaseModel requestedTestCase = getByTestCaseId(projectId, requirementId, testcaseId);
 
 		if (testCaseModel == null) {
@@ -182,12 +182,12 @@ public class TestCaseService {
 
 		} else {
 			return "TestCase " + requestedTestCase.getTestcaseId() + " Updated";
-			/* } */
+			 } 
 		}
-		/*catch(Exception e)
+		catch(Exception e)
 		{
 			throw new BadRequestException(" Could not Update testCase ");
-		}*/
+		}
 
 	}
 

@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -35,16 +36,15 @@ public class ProjectTests {
 	@Autowired
 	ProjectService service;
 
-	/*
-	 * @Test public void addprojectTest() {
-	 * 
-	 * ProjectModel projectModel = new ProjectModel();
-	 * 
-	 * when(mongoTemplate.insert(projectModel)).thenReturn(projectModel);
-	 * 
-	 * assertEquals("Project Created with ID ",
-	 * service.addProject(projectModel).substring(0, 24)); }
-	 */
+	@Test
+	public void addprojectTest() {
+
+		ProjectModel projectModel = new ProjectModel();
+
+		when(mongoTemplate.insert(projectModel)).thenReturn(projectModel);
+
+		assertEquals("Project Created with ID ", service.addProject(projectModel).substring(0, 24));
+	}
 
 	@Test
 	public void addprojectTest_2() {
@@ -92,7 +92,7 @@ public class ProjectTests {
 
 		Assertions.assertThrows(BadRequestException.class, () -> service.updateProject(projectModel, "Prj"));
 	}
-	
+
 	@Test
 	public void updateProjectTest_1() {
 
@@ -102,8 +102,8 @@ public class ProjectTests {
 		when(mongoTemplate.save(projectModel)).thenReturn(null);
 		when(mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(conditionsMap), ProjectModel.class))
 				.thenReturn(new ProjectModel());
-        assertEquals("Project", service.updateProject(projectModel, "Prj-test").substring(0, 7));
-		//Assertions.assertThrows(BadRequestException.class, () -> service.updateProject(projectModel, "Prj-test"));
+		assertEquals("Project", service.updateProject(projectModel, "Prj-test").substring(0, 7)); 
+		
 	}
 
 	@Test
