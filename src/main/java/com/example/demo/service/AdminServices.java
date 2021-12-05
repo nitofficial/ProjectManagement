@@ -86,12 +86,15 @@ public class AdminServices {
 	}
 
 	// Service that allows administrator to remove a role from a specific user
+	
 	public MessageResponse deleteRoleFromUser(String username, String roleRequested) {
 		try {
 			Role role = mongoTemplate.findOne(
 					new Query().addCriteria(Criteria.where("name").is("ROLE_" + roleRequested.toUpperCase())),
 					Role.class);
 			Query query = Query.query(Criteria.where("username").is(username));
+//			Criteria regex = Criteria.where("username").regex(".*ab.*", "i");
+//			Query query3 = Query.query()
 			Query query2 = Query.query(Criteria.where("$id").is(new ObjectId(role.getId())));
 			Update update = new Update().pull("roles", query2);
 			mongoTemplate.updateMulti(query, update, User.class);
