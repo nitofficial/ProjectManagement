@@ -2,5 +2,5 @@ projectKey=com.example:EmpCrud
 serverUrl=http://localhost:9000
 serverVersion=9.2.1.49989
 dashboardUrl=http://localhost:9000/dashboard?id=com.example%3AEmpCrud
-ceTaskId=AX2KK_2-lbqLlLpxp1RY
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AX2KK_2-lbqLlLpxp1RY
+ceTaskId=AX2KfCLulbqLlLpxp1Wj
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AX2KfCLulbqLlLpxp1Wj

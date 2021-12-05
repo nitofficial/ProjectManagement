@@ -188,6 +188,8 @@
 				<!-- Optional URL to server. Default value is http://localhost:9000 -->
 
 				<jacoco.version>0.8.6</jacoco.version>
+				<sonar.projectName>Project Management</sonar.projectName>
+				
 				<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 				<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 				<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>

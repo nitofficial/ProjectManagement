@@ -73,15 +73,15 @@ public class UserManagementTests {
 	}
 	
 	@Test
-	public void displayUserDetailTest() throws IOException {
-		String username = "TESTUSR_SANJAY";
-		Query query = new Query();
-		query.addCriteria(Criteria.where("username").is(username));
-		query.fields().exclude("password");
-		Mockito.when(mongoTemplate.findOne(query, User.class))
-		.thenReturn((new User("TESTUSR_SANJAY", "12345678", "TEST1@GMAIL.COM", "1234567890")));
-		assertTrue(userServices.displayUserDetail(username) instanceof User);
-	}
+    public void displayUserDetailTest() throws IOException {
+        String userid = "TESTUSR_1";
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(userid));
+        query.fields().exclude("password");
+        Mockito.when(mongoTemplate.findOne(query, User.class))
+        .thenReturn((new User("TESTUSR_1","TESTUSR_SANJAY", "12345678", "TEST1@GMAIL.COM", "1234567890")));
+        assertTrue(userServices.displayUserDetail(userid) instanceof User);
+    }
 
 	// JUnit test for displayAllUserDetail service
 	@SuppressWarnings("unchecked")
