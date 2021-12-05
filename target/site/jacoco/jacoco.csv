@@ -21,7 +21,7 @@ EmpCrud,com.example.demo.payload.request,SignupRequest,31,0,0,0,13,0,9,0,9,0
 EmpCrud,com.example.demo.constants,Constants,0,3,0,0,0,1,0,1,0,1
 EmpCrud,com.example.demo.schedulers,ScheduledTasks,0,101,0,0,0,27,0,5,0,5
 EmpCrud,com.example.demo.service,UserServices,172,3,4,0,31,1,8,1,6,1
-EmpCrud,com.example.demo.service,ProjectService,110,305,16,22,30,73,10,20,0,11
+EmpCrud,com.example.demo.service,ProjectService,142,329,16,22,34,76,10,20,0,11
 EmpCrud,com.example.demo.service,DashService,0,27,0,0,0,7,0,3,0,3
 EmpCrud,com.example.demo.service,IdGen,11,8,0,0,5,3,3,3,3,3
 EmpCrud,com.example.demo.service,FileService,44,202,7,5,8,39,6,8,0,8
