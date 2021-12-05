@@ -16,6 +16,14 @@ public class PendingRequest {
 	private String requestedroleid;
 	private boolean isrequestgranted;
 	
+	public PendingRequest(String requestid, String userid, String requestedroleid, boolean isrequestgranted) {
+		super();
+		this.requestid = requestid;
+		this.userid = userid;
+		this.requestedroleid = requestedroleid;
+		this.isrequestgranted = isrequestgranted;
+	}
+
 	public PendingRequest(String userid, String requestedroleid) {
 		super();
 		this.userid = userid;

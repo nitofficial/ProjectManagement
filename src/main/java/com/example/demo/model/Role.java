@@ -17,13 +17,13 @@ public class Role {
 	private String id;
 
 	private String name;
+
 	private boolean isrolestatusactive;
 
-	public boolean getIsRolestatusactive() {
-		return isrolestatusactive;
-	}
-
-	public void setIsRolestatusactive(boolean isrolestatusactive) {
+	public Role(String id, String name, boolean isrolestatusactive) {
+		super();
+		this.id = id;
+		this.name = name;
 		this.isrolestatusactive = isrolestatusactive;
 	}
 
@@ -48,5 +48,13 @@ public class Role {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean getIsRolestatusactive() {
+		return isrolestatusactive;
+	}
+
+	public void setIsRolestatusactive(boolean isrolestatusactive) {
+		this.isrolestatusactive = isrolestatusactive;
 	}
 }

@@ -63,6 +63,14 @@ public class User {
 		this.email = email;
 	}
 
+	public User(String id, String username, String password, String phonenumber, String email) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.phonenumber = phonenumber;
+		this.email = email;
+	}
+
 	public String getId() {
 		return id;
 	}

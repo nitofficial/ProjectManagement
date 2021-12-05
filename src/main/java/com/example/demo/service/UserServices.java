@@ -101,12 +101,12 @@ public class UserServices {
 	}
 
 	// Service to update current user information in the database
-	public Object updateUserDetails(UserDetailsImpl userN, User user) {
-		Query query = Query.query(Criteria.where("username").is(userN.getUsername()));
+	public User updateUserDetails(String username, User user) {
+		Query query = Query.query(Criteria.where("username").is(username));
 		Update update = new Update();
 		update.set("email", user.getEmail());
 		update.set("phonenumber", user.getPhonenumber());
 		mongoTemplate.updateMulti(query, update, User.class);
-		return null;
+		return user;
 	}
 }

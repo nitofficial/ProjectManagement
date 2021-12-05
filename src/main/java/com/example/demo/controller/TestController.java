@@ -70,7 +70,8 @@ public class TestController {
 	public ResponseEntity<?> updateEmployee(@RequestBody User user) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetailsImpl userN = (UserDetailsImpl) auth.getPrincipal();
-		return ResponseEntity.ok(userServices.updateUserDetails(userN, user));
+		String username = userN.getUsername();
+		return ResponseEntity.ok(userServices.updateUserDetails(username, user));
 	}
 
 	// API for registered users to request roles from the Administrator
