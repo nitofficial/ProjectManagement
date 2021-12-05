@@ -55,6 +55,19 @@ public class AdminServices {
 			return new MessageResponse("No user is available in the system");
 		return allUsers;
 	}
+	
+	//Service that deletes an user from the user collection
+	public MessageResponse deleteUser(String userid) {
+		try {
+			if(!userRepository.existsById(userid))
+				return new MessageResponse(userid + "does not exist!"); 
+			mongoTemplate.findAndRemove(new Query().addCriteria(Criteria.where("id").is(userid)), User.class);
+			return new MessageResponse(userid+ " has been successfully removed from the system.");
+		} catch(Exception e) {
+			LOGGER.warn(e.getMessage());
+			throw new BadRequestException("Request format is wrong!");
+		}
+	}
 
 	// Service that allows administrator to add requested roles to a specific user
 	public Object addRoleToUser(String requestid, String userid, String requestedroleid) {
@@ -81,40 +94,43 @@ public class AdminServices {
 			return mongoOperations.findAndModify(query, update, options().returnNew(true).upsert(false), User.class);
 		} catch (Exception e) {
 			LOGGER.warn(e.getMessage());
-			throw new BadRequestException("Role does not exist");
+			throw new BadRequestException("Request format is wrong!");
 		}
 	}
 
 	// Service that allows administrator to remove a role from a specific user
 	
-	public MessageResponse deleteRoleFromUser(String username, String roleRequested) {
+	public MessageResponse deleteRoleFromUser(String userid, String roleid) {
 		try {
 			Role role = mongoTemplate.findOne(
-					new Query().addCriteria(Criteria.where("name").is("ROLE_" + roleRequested.toUpperCase())),
+					new Query().addCriteria(Criteria.where("id").is(roleid)),
 					Role.class);
-			Query query = Query.query(Criteria.where("username").is(username));
-//			Criteria regex = Criteria.where("username").regex(".*ab.*", "i");
-//			Query query3 = Query.query()
-			Query query2 = Query.query(Criteria.where("$id").is(new ObjectId(role.getId())));
+			Query query = Query.query(Criteria.where("id").is(userid));
+			Query query2 = Query.query(Criteria.where("$id").is(new ObjectId(roleid)));
 			Update update = new Update().pull("roles", query2);
 			mongoTemplate.updateMulti(query, update, User.class);
-			return new MessageResponse(roleRequested + " Role has been successful removed from the user " + username);
+			return new MessageResponse(role.getName() + " Role has been successful removed from the user " + userid);
 		} catch (Exception e) {
 			LOGGER.warn(e.getMessage());
-			throw new BadRequestException("Role was not assigned to this user");
+			throw new BadRequestException("Request format is wrong!");
 		}
 	}
 
 	// Service that allows administrator to add new role to the application
 	public MessageResponse addNewRole(String rolename) {
-		if (roleRepository.existsByName("ROLE_" + rolename.toUpperCase())) {
-			return new MessageResponse("Error: Role is already in use!");
+		try {
+			if (roleRepository.existsByName("ROLE_" + rolename.toUpperCase())) {
+				return new MessageResponse("Error: Role is already in use!");
+			}
+			Role role = new Role("ROLE_" + rolename.toUpperCase());
+			role.setId("ROLE_" + String.valueOf(projectService.uniqueValue(Role.SEQUENCE_NAME)));
+			role.setIsRolestatusactive(true);
+			mongoTemplate.save(role);
+			return new MessageResponse("Role added successfully");
+		} catch (Exception e) {
+			LOGGER.warn(e.getMessage());
+			throw new BadRequestException("Request format is wrong!");
 		}
-		Role role = new Role("ROLE_" + rolename.toUpperCase());
-		role.setId("ROLE_" + String.valueOf(projectService.uniqueValue(Role.SEQUENCE_NAME)));
-		role.setIsRolestatusactive(true);
-		mongoTemplate.save(role);
-		return new MessageResponse("Role added successfully");
 	}
 
 	// Service that allows administrator to delete role from the application
@@ -126,8 +142,11 @@ public class AdminServices {
 		Role role = mongoTemplate.findOne(query, Role.class);
 		role.setIsRolestatusactive(false);
 		mongoTemplate.save(role);
-//		Update update = new Update().pull("roles", query);
-//		mongoTemplate.updateMulti(new Query(), update, User.class);
+
+		Query query2 = Query.query(Criteria.where("id").exists(true));
+		Query query3 = Query.query(Criteria.where("$id").is(role.getId()));
+		Update update = new Update().pull("roles", query3);
+		mongoTemplate.updateMulti(query2, update, User.class);
 		return new MessageResponse("Role is set inactive");
 	}
 
@@ -149,7 +168,7 @@ public class AdminServices {
 			return mongoTemplate.findAll(Role.class);
 		} catch (Exception e) {
 			LOGGER.warn(e.getMessage());
-			throw new BadRequestException("No roles are available in the system");
+			throw new BadRequestException("Request format is wrong!");
 		}
 	}
 
@@ -160,7 +179,7 @@ public class AdminServices {
 					Role.class);
 		} catch (Exception e) {
 			LOGGER.warn(e.getMessage());
-			throw new BadRequestException("No active roles are available to display");
+			throw new BadRequestException("Request format is wrong!");
 		}
 	}
 }

@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -62,7 +63,7 @@ public class TestController {
 	public ResponseEntity<?> displayUserDetail() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetailsImpl user = (UserDetailsImpl) auth.getPrincipal();
-		return ResponseEntity.ok(userServices.displayUserDetail(user.getUsername()));
+		return ResponseEntity.ok(userServices.displayUserDetail(user.getId()));
 	}
 
 	// API to update the details of the currently logged in user
@@ -89,13 +90,20 @@ public class TestController {
 		return ResponseEntity.ok(adminServices.displayAllUserDetail());
 	}
 
+	// API specific for Administrator to delete an user from the system
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@DeleteMapping("/deleteuser")
+	public ResponseEntity<?> deleteUser(@Valid @RequestBody HashMap<String, String> dataHashMap) {
+		return ResponseEntity.ok(adminServices.deleteUser(dataHashMap.get("userid")));
+	}
+
 	// API specific for Administrator to grant requested roles to the appropriate
 	// user
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping("/addroletouser")
 	public ResponseEntity<?> addRoleToUser(@Valid @RequestBody HashMap<String, String> dataHashMap) {
-		return ResponseEntity
-				.ok(adminServices.addRoleToUser(dataHashMap.get("requestid"),dataHashMap.get("userid"), dataHashMap.get("requestedroleid")));
+		return ResponseEntity.ok(adminServices.addRoleToUser(dataHashMap.get("requestid"), dataHashMap.get("userid"),
+				dataHashMap.get("requestedroleid")));
 	}
 
 	// API specific for Administrator to remove a role from a particular user
@@ -103,7 +111,7 @@ public class TestController {
 	@PostMapping("/deleterolefromuser")
 	public ResponseEntity<?> deleteRoleFromUser(@Valid @RequestBody HashMap<String, String> dataHashMap) {
 		return ResponseEntity
-				.ok(adminServices.deleteRoleFromUser(dataHashMap.get("username"), dataHashMap.get("roleRequested")));
+				.ok(adminServices.deleteRoleFromUser(dataHashMap.get("userid"), dataHashMap.get("roleid")));
 	}
 
 	// API specific for Administrator to add new role to the application

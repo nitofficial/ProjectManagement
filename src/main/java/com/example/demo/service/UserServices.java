@@ -93,9 +93,9 @@ public class UserServices {
 	}
 
 	// Service to display the information of the current user
-	public User displayUserDetail(String username) {
+	public User displayUserDetail(String userid) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("username").is(username));
+		query.addCriteria(Criteria.where("id").is(userid));
 		query.fields().exclude("password");
 		return mongoTemplate.findOne(query, User.class);
 	}
