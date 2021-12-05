@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.Comments;
+import com.example.demo.model.Dashboard;
 import com.example.demo.model.Defect;
 import com.example.demo.service.DefectService;
 import com.example.demo.service.IdGen;
 import com.example.demo.service.SequenceGenService;
-import com.example.demo.utilities.Dashboard;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 

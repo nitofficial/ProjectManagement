@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -27,7 +28,9 @@ import com.example.demo.model.PrevDayCount;
 import com.example.demo.model.ProjectModel;
 import com.example.demo.model.RequirementModel;
 import com.example.demo.model.TestCaseModel;
+import com.example.demo.model.TestCaseTrackerModel;
 import com.example.demo.model.TestHistory;
+import com.example.demo.model.TicketGroupModel;
 
 @Service
 public class DashboardService {
@@ -46,6 +49,7 @@ public class DashboardService {
 
 	/**
 	 * Method to get previous Day defects or testcases from db
+	 * 
 	 * @param String historyType, List<IdOnly> currTestLists.
 	 * @return List<IdOnly> with respective status and information.
 	 */
@@ -58,13 +62,13 @@ public class DashboardService {
 		return (prevdaycount != null) ? prevdaycount.getHistoryTypeLists() : Collections.emptyList();
 
 	}
-	
+
 	/**
 	 * Method to add a new entry to defect history
+	 * 
 	 * @param DefectHistory entry.
 	 * @return String with respective status and information.
 	 */
-	
 
 	public String addEntryToDefectHistory(DefectHistory entry) {
 		mongoTemplate.save(entry);
@@ -72,9 +76,10 @@ public class DashboardService {
 				+ " added";
 
 	}
-	
+
 	/**
 	 * Method to add a new entry to TestCases history
+	 * 
 	 * @param TestHistory entry.
 	 * @return String with respective status and information.
 	 */
@@ -85,9 +90,10 @@ public class DashboardService {
 				+ " added";
 
 	}
-	
+
 	/**
-	 * Method to Requirements tracability matrix of all the projects
+	 * Method to get Requirements tracability matrix of all the projects
+	 * 
 	 * @return List<DashRTMModel> with respective status and information.
 	 */
 
@@ -142,5 +148,76 @@ public class DashboardService {
 		return response;
 	}
 
-	
+	/**
+	 * Method to get current count of all defect types the projects
+	 * 
+	 * @return TicketGroupModel with respective status and information.
+	 */
+	public List<TestCaseTrackerModel> trackTests() {
+		List<RequirementModel> requirements = projectservice.getAllRequirements();
+		List<TestCaseModel> testcases = testcaseservice.getAllTestCase();
+
+		List<TestCaseTrackerModel> response = new ArrayList<TestCaseTrackerModel>();
+
+		for (RequirementModel requirement : requirements) {
+			TestCaseTrackerModel testcasetracker = new TestCaseTrackerModel();
+
+			int passedCount = 0;
+			int notPassedCount = 0;
+			for (TestCaseModel test : testcases) {
+				if (test.getProjectId() != null && requirement.getProjectId() != null
+						&& test.getRequirementId().equals(requirement.getRequirementId())
+						&& test.getProjectId().equals(requirement.getProjectId())) {
+
+					if (test.getStatus().equals("passed")) {
+						passedCount++;
+					} else {
+						notPassedCount++;
+					}
+
+				}
+
+			}
+
+			if (passedCount + notPassedCount != 0) {
+
+				testcasetracker.setRequirementId(requirement.getRequirementId());
+				testcasetracker.setPercentage((passedCount / (passedCount + notPassedCount)) * 100);
+				response.add(testcasetracker);
+			}
+
+		}
+		return response;
+
+	}
+
+	/**
+	 * Method to get current count of all defect types the projects
+	 * 
+	 * @return TicketGroupModel with respective status and information.
+	 */
+
+	public TicketGroupModel ticketGrouping() {
+		TicketGroupModel testGroupModel = new TicketGroupModel();
+
+		Map a = new HashMap<String, String>();
+		a.put("status", "Open");
+		testGroupModel.setOpenCount(defectservice.getAllDefects(a).size());
+		a.clear();
+		a.put("status", "Closed");
+		testGroupModel.setCloseCount(defectservice.getAllDefects(a).size());
+		a.clear();
+		a.put("status", "Failed");
+		testGroupModel.setFailedCount(defectservice.getAllDefects(a).size());
+		a.clear();
+		a.put("status", "Retest");
+		testGroupModel.setRetestCount(defectservice.getAllDefects(a).size());
+		a.clear();
+		a.put("status", "Fixed");
+		testGroupModel.setRetestCount(defectservice.getAllDefects(a).size());
+
+		return testGroupModel;
+
+	}
+
 }

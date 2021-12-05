@@ -3,18 +3,17 @@
 */
 package com.example.demo.controller;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.DashRTMModel;
 import com.example.demo.model.IdOnly;
-import com.example.demo.model.TestCaseModel;
+import com.example.demo.model.TestCaseTrackerModel;
+import com.example.demo.model.TicketGroupModel;
 import com.example.demo.service.DashboardService;
 import com.example.demo.service.TestCaseService;
 
@@ -28,12 +27,6 @@ public class DashController {
 	@Autowired
 	private TestCaseService testCaseService;
 
-//	@GetMapping("/getprevcount")
-//	public List<IdOnly> getPrevDayCount(@RequestBody HashMap<String, String> dataHashMap) {
-//
-//		return dashservice.getPrevDayListAndUpdate(dataHashMap.get("historyType"),
-//				Long.parseLong(dataHashMap.get("currCount")));
-//	}
 	/**
 	 * Method to get all open tests with only its id.
 	 * @return List<IdOnly> with respective status and information.
@@ -53,5 +46,21 @@ public class DashController {
 	public List<DashRTMModel> getRTM(){
 		return dashservice.getRTM();
 	}
+	
+	/**
+	 * Method to get current count of all defect types in db
+	 * @return  TicketGroupModel with respective status and information.
+	 */
+	
+	@GetMapping("/getticketgroups")
+	public TicketGroupModel getTicketGroupCounts(){
+		return dashservice.ticketGrouping();
+	}
+	
+	@GetMapping("/gettracking")
+	public List<TestCaseTrackerModel> getTracking(){
+		return dashservice.trackTests();
+	}
+	
 
 }

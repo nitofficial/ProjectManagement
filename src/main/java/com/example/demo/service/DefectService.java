@@ -14,10 +14,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.Comments;
+import com.example.demo.model.Dashboard;
 import com.example.demo.model.Defect;
 import com.example.demo.model.Status;
-
-import com.example.demo.utilities.Dashboard;
 import com.example.demo.utilities.Timestamp;
 import org.slf4j.Logger;
 

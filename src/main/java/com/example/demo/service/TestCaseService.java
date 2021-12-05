@@ -33,19 +33,45 @@ public class TestCaseService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestCaseService.class);
 
 	
+	
+	/**
+	 * Method to get Passed TestCase id from the Mongo Database
+	 * @param nothing.
+	 * @return List of Testcase Id.
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
 	public List<IdOnly> getOpenTests() {
+		try {
 		Query q = new Query();
 		q.addCriteria(Criteria.where("status").ne("Passed"));
 		q.fields().include("testcaseId");
 		List<IdOnly> a = mongoTemplate.find(q, IdOnly.class, Constants.TESTCASE_COLLECTION);
 		System.out.print(a);
 		return a;
+		} catch (Exception e) {
+			LOGGER.warn(" TESTCASE ID NOT FOUND");
+			throw new BadRequestException("TestCase id Not Found");
+		}
 	}
 
+	
+	/**
+	 * Method to get Passed TestCase Count from the Mpngo Database
+	 * @param nothing.
+	 * @return count of the passed Testcase.
+	 * @throws  Handles Exception from Database read,write.
+
+	 */
 	public long getPassedTestsCount() {
+		try {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("status").is("Passed"));
 		return mongoTemplate.count(query, TestCaseModel.class);
+		} catch (Exception e) {
+			LOGGER.warn(" COULDNT GET THE TESTCASE COUNT");
+			throw new BadRequestException("Coundnt get the testcase count");
+		}
 	}
 	
 	
