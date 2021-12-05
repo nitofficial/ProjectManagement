@@ -148,6 +148,11 @@ public class DashboardService {
 		return response;
 	}
 
+	/**
+	 * Method to get current count of all defect types the projects
+	 * 
+	 * @return TicketGroupModel with respective status and information.
+	 */
 	public List<TestCaseTrackerModel> trackTests() {
 		List<RequirementModel> requirements = projectservice.getAllRequirements();
 		List<TestCaseModel> testcases = testcaseservice.getAllTestCase();
