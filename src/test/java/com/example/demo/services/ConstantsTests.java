@@ -34,10 +34,6 @@ public class ConstantsTests {
 		assertEquals(Constants.REQUIREMENT_INVALID_STATUS,Constants.REQUIREMENT_INVALID_STATUS);
 		assertEquals(Constants.REQUIREMENT_PREFIX,Constants.REQUIREMENT_PREFIX);
 
-
-
-
-		
 	}
 	
 

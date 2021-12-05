@@ -13,9 +13,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.example.demo.model.Dashboard;
 import com.example.demo.model.Defect;
 import com.example.demo.service.DefectService;
-import com.example.demo.utilities.Dashboard;
 
 @SpringBootTest
 public class DefectTests {

@@ -1,13 +1,9 @@
 /**
 * 	@author Vijay
 */
-package com.example.demo.utilities;
+package com.example.demo.model;
 
 import java.util.List;
-
-import com.example.demo.model.Comments;
-import com.example.demo.model.Defect;
-import com.example.demo.model.Status;
 
 public class Dashboard {
 	private Defect defect;

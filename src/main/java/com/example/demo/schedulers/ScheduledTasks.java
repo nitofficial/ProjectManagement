@@ -52,7 +52,7 @@ public class ScheduledTasks {
 	private TestCaseService testCaseService;
 
 	@Scheduled(cron = "0 19 21 * * *")
-	public void scheduleTaskWithFixedRate() {
+	public String scheduleTaskWithFixedRate() {
 
 		long files_count = dashservice.countFiles();
 		FileCount entry = new FileCount();
@@ -63,6 +63,7 @@ public class ScheduledTasks {
 		entry.setTime(dtf.format(now));
 
 		logger.info(dashservice.addEntry(entry));
+		return "Scheduler Invoked";
 	}
 
 //	@Scheduled(cron = "0/60 * * * * ?")
@@ -86,7 +87,7 @@ public class ScheduledTasks {
 //	}
 	
 	@Scheduled(cron = "0/60 * * * * ?")
-	public void testHistory() {
+	public String testHistory() {
 
 		List<IdOnly> currTestsList = testCaseService.getOpenTests();
 		TestHistory entry = new TestHistory();
@@ -106,6 +107,8 @@ public class ScheduledTasks {
 		entry.setTestPassCount(testCaseService.getPassedTestsCount());
 
 		logger.info(dashboardService.addEntryToTestHistory(entry));
+		return "Scheduler Invoked";
+
 
 	}
 	

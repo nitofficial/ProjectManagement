@@ -3,7 +3,7 @@ EmpCrud,com.example.demo.security.jwt,JwtUtils,85,7,0,0,22,2,3,2,3,2
 EmpCrud,com.example.demo.security.jwt,AuthTokenFilter,69,7,8,0,16,2,6,2,2,2
 EmpCrud,com.example.demo.security.jwt,AuthEntryPointJwt,10,7,0,0,3,2,1,2,1,2
 EmpCrud,com.example.demo.controller,TestController,121,3,0,0,20,1,11,1,11,1
-EmpCrud,com.example.demo.controller,DashController,8,3,0,0,2,1,2,1,2,1
+EmpCrud,com.example.demo.controller,DashController,16,3,0,0,4,1,4,1,4,1
 EmpCrud,com.example.demo.controller,FileController,63,7,0,0,8,2,7,2,7,2
 EmpCrud,com.example.demo.controller,DefectController,45,14,0,0,10,6,5,1,5,1
 EmpCrud,com.example.demo.controller,TestCaseController,47,7,0,0,10,2,5,2,5,2
@@ -19,19 +19,19 @@ EmpCrud,com.example.demo.security.services,UserDetailsImpl,92,0,6,0,25,0,16,0,13
 EmpCrud,com.example.demo.payload.request,LoginRequest,17,0,0,0,7,0,5,0,5,0
 EmpCrud,com.example.demo.payload.request,SignupRequest,31,0,0,0,13,0,9,0,9,0
 EmpCrud,com.example.demo.constants,Constants,0,3,0,0,0,1,0,1,0,1
-EmpCrud,com.example.demo.schedulers,ScheduledTasks,0,101,0,0,0,27,0,5,0,5
+EmpCrud,com.example.demo.schedulers,ScheduledTasks,0,103,0,0,0,27,0,5,0,5
 EmpCrud,com.example.demo.service,UserServices,74,100,2,2,14,18,5,4,3,4
 EmpCrud,com.example.demo.service,ProjectService,115,309,15,23,32,74,9,21,0,11
 EmpCrud,com.example.demo.service,DashService,0,27,0,0,0,7,0,3,0,3
 EmpCrud,com.example.demo.service,IdGen,11,8,0,0,5,3,3,3,3,3
 EmpCrud,com.example.demo.service,FileService,44,202,7,5,8,39,6,8,0,8
 EmpCrud,com.example.demo.service,DefectService,176,354,16,12,33,80,16,12,5,9
-EmpCrud,com.example.demo.service,AdminServices,195,157,7,5,34,28,7,9,2,8
+EmpCrud,com.example.demo.service,AdminServices,223,129,8,4,39,23,8,8,2,8
 EmpCrud,com.example.demo.service,SequenceGenService,0,35,0,0,0,5,0,2,0,2
-EmpCrud,com.example.demo.service,DashboardService,14,207,1,17,2,40,2,12,1,4
-EmpCrud,com.example.demo.service,TestCaseService,55,227,6,22,16,52,6,16,0,8
+EmpCrud,com.example.demo.service,DashboardService,184,207,17,17,40,40,12,12,3,4
+EmpCrud,com.example.demo.service,TestCaseService,73,227,6,22,22,52,6,16,0,8
 EmpCrud,com.example.demo.security,WebSecurityConfig,0,95,0,0,0,15,0,6,0,6
-EmpCrud,com.example.demo.model,Role,4,38,0,0,2,17,1,8,1,8
+EmpCrud,com.example.demo.model,Role,14,28,0,0,7,12,3,6,3,6
 EmpCrud,com.example.demo.model,ProjectModel,18,67,0,0,8,23,5,14,5,14
 EmpCrud,com.example.demo.model,DefectHistory,56,0,0,0,24,0,12,0,12,0
 EmpCrud,com.example.demo.model,DashDefectModel,46,0,0,0,20,0,10,0,10,0
@@ -44,6 +44,7 @@ EmpCrud,com.example.demo.model,User,52,65,0,0,20,22,9,9,9,9
 EmpCrud,com.example.demo.model,FileStorageProperties,10,0,0,0,4,0,3,0,3,0
 EmpCrud,com.example.demo.model,DashTestModel,21,15,0,0,8,8,4,4,4,4
 EmpCrud,com.example.demo.model,DashReqModel,21,15,0,0,8,8,4,4,4,4
+EmpCrud,com.example.demo.model,TicketGroupModel,56,0,0,0,24,0,12,0,12,0
 EmpCrud,com.example.demo.model,FileModel,9,17,0,0,4,8,1,5,1,5
 EmpCrud,com.example.demo.model,IdOnly,7,3,0,0,3,1,2,1,2,1
 EmpCrud,com.example.demo.model,DashRTMModel,21,15,0,0,8,8,4,4,4,4
@@ -51,6 +52,8 @@ EmpCrud,com.example.demo.model,FileSubDocument,33,23,0,0,12,12,6,6,6,6
 EmpCrud,com.example.demo.model,Defect,18,34,0,0,6,16,6,9,6,9
 EmpCrud,com.example.demo.model,FileCount,0,26,0,0,0,12,0,6,0,6
 EmpCrud,com.example.demo.model,IdOnlyDefects,3,0,0,0,1,0,1,0,1,0
+EmpCrud,com.example.demo.model,Dashboard,9,15,0,0,3,7,3,4,3,4
+EmpCrud,com.example.demo.model,TestCaseTrackerModel,26,0,0,0,12,0,6,0,6,0
 EmpCrud,com.example.demo.model,Status,21,15,0,0,8,8,4,4,4,4
 EmpCrud,com.example.demo.model,ERole,0,21,0,0,0,2,0,1,0,1
 EmpCrud,com.example.demo.model,UpdateHistory,0,9,0,0,0,4,0,1,0,1
@@ -59,6 +62,5 @@ EmpCrud,com.example.demo.model,PendingRequest,58,0,0,0,25,0,11,0,11,0
 EmpCrud,com.example.demo.repository,UserRepository,20,0,4,0,5,0,3,0,1,0
 EmpCrud,com.example.demo.utilities,ProjectUtility,3,28,0,2,1,4,1,2,1,1
 EmpCrud,com.example.demo.utilities,Cloudinary,3,92,0,0,1,21,1,1,1,1
-EmpCrud,com.example.demo.utilities,Dashboard,9,15,0,0,3,7,3,4,3,4
 EmpCrud,com.example.demo.utilities,Timestamp,35,58,0,0,15,16,10,1,10,1
 EmpCrud,com.example.demo,ProjectManagement,5,7,0,0,2,2,1,2,1,2
