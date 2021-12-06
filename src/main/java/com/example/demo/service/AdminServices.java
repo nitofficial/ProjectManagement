@@ -47,12 +47,9 @@ public class AdminServices {
 	PendingRequestRepository pendingRequestRepository;
 	
 	/**
-	 * Method to add a new entry to defect history
-	 * 
-	 * @param DefectHistory entry.
-	 * @return String with respective status and information.
+	 * Service that displays all the users in the application.
+	 * @return MessageResponse with information about all the users.
 	 */
-	// Service that displays all the users in the application
 	public Object displayAllUserDetail() {
 		Query query = new Query();
 		query.fields().exclude("password");
@@ -63,12 +60,11 @@ public class AdminServices {
 	}
 	
 	/**
-	 * Method to add a new entry to defect history
+	 * Service that deletes an user from the user collection.
 	 * 
-	 * @param DefectHistory entry.
-	 * @return String with respective status and information.
+	 * @param user id
+	 * @return MessageResponse stating that the particular user has been successfully deleted.
 	 */
-	//Service that deletes an user from the user collection
 	public MessageResponse deleteUser(String userid) {
 		try {
 			if(!userRepository.existsById(userid))
@@ -82,12 +78,11 @@ public class AdminServices {
 	}
 	
 	/**
-	 * Method to add a new entry to defect history
+	 * Service that allows administrator to add requested roles to a specific user.
 	 * 
-	 * @param DefectHistory entry.
-	 * @return String with respective status and information.
+	 * @param request id, user id and role id.
+	 * @return User object.
 	 */
-	// Service that allows administrator to add requested roles to a specific user
 	public Object addRoleToUser(String requestid, String userid, String requestedroleid) {
 		try {
 			if (!pendingRequestRepository.existsByRequestid(requestid)) {
@@ -113,13 +108,11 @@ public class AdminServices {
 	}
 	
 	/**
-	 * Method to add a new entry to defect history
+	 * Service that allows administrator to remove a role from a specific user.
 	 * 
-	 * @param DefectHistory entry.
-	 * @return String with respective status and information.
+	 * @param user id and role id.
+	 * @return MessageResponse stating that the role is removed successfully from the particular user.
 	 */
-	// Service that allows administrator to remove a role from a specific user
-	
 	public MessageResponse deleteRoleFromUser(String userid, String roleid) {
 		try {
 			Role role = mongoTemplate.findOne(
@@ -137,12 +130,11 @@ public class AdminServices {
 	}
 	
 	/**
-	 * Method to add a new entry to defect history
+	 * Service that allows administrator to add new role to the application,
 	 * 
-	 * @param DefectHistory entry.
-	 * @return String with respective status and information.
+	 * @param role name.
+	 * @return MessageResponse stating the the new role has been add to the Role collection.
 	 */
-	// Service that allows administrator to add new role to the application
 	public MessageResponse addNewRole(String rolename) {
 		try {
 			if (roleRepository.existsByName("ROLE_" + rolename.toUpperCase())) {
@@ -160,12 +152,11 @@ public class AdminServices {
 	}
 	
 	/**
-	 * Method to add a new entry to defect history
+	 * Service that allows administrator to delete role from the application.
 	 * 
-	 * @param DefectHistory entry.
-	 * @return String with respective status and information.
+	 * @param role id.
+	 * @return MessageResponse stating that the role is successfully set inactive.
 	 */
-	// Service that allows administrator to delete role from the application
 	public MessageResponse deleteRole(String roleid) {
 		if (!roleRepository.existsById(roleid)) {
 			return new MessageResponse("Error: Role is not available");
@@ -183,12 +174,11 @@ public class AdminServices {
 	}
 	
 	/**
-	 * Method to add a new entry to defect history
+	 * Service that allows administrator to update a role in the application.
 	 * 
-	 * @param DefectHistory entry.
-	 * @return String with respective status and information.
+	 * @param role id, role name and role status.
+	 * @return MessageResponse stating that the role has been updated successfully.
 	 */
-	// Service that allows administrator to update a role in the application
 	public MessageResponse updateRole(String roleid, String rolename, Boolean rolestatus) {
 		if (!roleRepository.existsById(roleid)) {
 			return new MessageResponse("Error: Role is not available");
@@ -201,12 +191,9 @@ public class AdminServices {
 	}
 
 	/**
-	 * Method to add a new entry to defect history
-	 * 
-	 * @param DefectHistory entry.
-	 * @return String with respective status and information.
+	 * Service that allows administrator to delete role from the application.
+	 * @return  List<Role>.
 	 */
-	// Service that allows administrator to delete role from the application
 	public List<Role> displayAllRoleDetail() {
 		try {
 			return mongoTemplate.findAll(Role.class);
@@ -217,12 +204,9 @@ public class AdminServices {
 	}
 
 	/**
-	 * Method to add a new entry to defect history
-	 * 
-	 * @param DefectHistory entry.
-	 * @return String with respective status and information.
+	 * Service that allows administrator to delete role from the application.
+	 * @return List<Role>.
 	 */
-	// Service that allows administrator to delete role from the application
 	public List<Role> displayAllActiveRoleDetail() {
 		try {
 			return mongoTemplate.find(new Query().addCriteria(Criteria.where("isrolestatusactive").is(true)),

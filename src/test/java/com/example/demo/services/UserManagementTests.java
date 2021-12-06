@@ -74,7 +74,6 @@ public class UserManagementTests {
 	}
 	
 	@Test
-<<<<<<< HEAD
 	public void displayUserDetailTest() throws IOException {
 		String userid = "TESTUSR_1";
 		Query query = new Query();
@@ -84,33 +83,11 @@ public class UserManagementTests {
 		.thenReturn((new User("TESTUSR_1","TESTUSR_SANJAY", "12345678", "TEST1@GMAIL.COM", "1234567890")));
 		assertTrue(userServices.displayUserDetail(userid) instanceof User);
 	}
-||||||| merged common ancestors
-	public void displayUserDetailTest() throws IOException {
-		String username = "TESTUSR_SANJAY";
-		Query query = new Query();
-		query.addCriteria(Criteria.where("username").is(username));
-		query.fields().exclude("password");
-		Mockito.when(mongoTemplate.findOne(query, User.class))
-		.thenReturn((new User("TESTUSR_SANJAY", "12345678", "TEST1@GMAIL.COM", "1234567890")));
-		assertTrue(userServices.displayUserDetail(username) instanceof User);
-	}
-=======
-    public void displayUserDetailTest() throws IOException {
-        String userid = "TESTUSR_1";
-        Query query = new Query();
-        query.addCriteria(Criteria.where("id").is(userid));
-        query.fields().exclude("password");
-        Mockito.when(mongoTemplate.findOne(query, User.class))
-        .thenReturn((new User("TESTUSR_1","TESTUSR_SANJAY", "12345678", "TEST1@GMAIL.COM", "1234567890")));
-        assertTrue(userServices.displayUserDetail(userid) instanceof User);
-    }
->>>>>>> 69ca7d89dfc947f7b1cb2a150ea646263a03079b
 
 	// JUnit test for displayAllUserDetail service
 	@SuppressWarnings("unchecked")
 	@Test
 	public void displayAllUserDetailTest() throws IOException {
-		// UserRepository myObjectMock = mock(UserRepository.class);
 		Query query = new Query();
 		query.fields().exclude("password");
 		Mockito.when(mongoTemplate.find(query, User.class))
@@ -125,7 +102,6 @@ public class UserManagementTests {
 	
 	@Test
 	public void displayAllRoleDetailTest() throws IOException {
-		// UserRepository myObjectMock = mock(UserRepository.class);
 		Mockito.when(mongoTemplate.findAll(Role.class))
 				.thenReturn(Stream.of(new Role("TESTROLE_1", "TESTROLE_BATMAN", true),
 						new Role("TESTROLE_2", "TESTROLE_SUPERMAN", false),
@@ -135,7 +111,6 @@ public class UserManagementTests {
 
 	@Test
 	public void displayAllActiveRoleDetailTest() throws IOException {
-		// UserRepository myObjectMock = mock(UserRepository.class);
 		Query query = new Query().addCriteria(Criteria.where("isrolestatusactive").is(true));
 		Mockito.when(mongoTemplate.find(query, Role.class)).thenReturn(Stream
 				.of(new Role("TESTROLE_1", "TESTROLE_BATMAN", true))
@@ -146,7 +121,6 @@ public class UserManagementTests {
 	@Test
 	public void addNewRoleTest() throws IOException {
 		Role role = new Role("TESTROLE_1", "TESTROLE_THUNDERMAN", true);
-//		MessageResponse messageResponse = new MessageResponse("Error: Role is already in use!");
 		Mockito.when(mongoTemplate.save(role)).thenReturn(new Role("TESTROLE_2", "TESTROLE_SUPERMAN", true));
 		assertTrue(adminServices.addNewRole(role.getName()) instanceof MessageResponse);
 	}
@@ -154,7 +128,6 @@ public class UserManagementTests {
 	@Test
 	public void deleteRoleTest() throws IOException {
 		Role role = new Role("TESTROLE_1", "TESTROLE_BATMAN", true);
-//		MessageResponse messageResponse = new MessageResponse("Error: Role is already in use!");
 		Mockito.when(mongoTemplate.save(role)).thenReturn(role);
 		assertTrue(adminServices.deleteRole(role.getId()) instanceof MessageResponse);
 	}
@@ -162,18 +135,7 @@ public class UserManagementTests {
 	@Test
 	public void updateRoleTest() throws IOException {
 		Role role = new Role("TESTROLE_1", "TESTROLE_BATMAN", true);
-//		MessageResponse messageResponse = new MessageResponse("Error: Role is already in use!");
 		Mockito.when(mongoTemplate.save(role)).thenReturn(role);
 		assertTrue(adminServices.updateRole(role.getId(),role.getName(), role.getIsRolestatusactive()) instanceof MessageResponse);
 	}
-	
-//	@Test
-//	public void addRoleToUser() throws IOException {
-//		AdminServices adminServicesMock = new AdminServices();
-//		User user = new User("TESTUSR_1","TESTUSR_SRIRAM", "87654321", "TEST2@GMAIL.COM", "0987654321");
-//		Role role = new Role("ROLE_1", "TESTROLE_BATMAN", true);
-//		PendingRequest pendingRequest = new PendingRequest("TESTREQ_1", "TESTUSR_1", "TESTROLE_1", false);
-//		adminServicesMock.addRoleToUser(pendingRequest.getRequestid(), user.getId(), role.getId());
-//		verify(adminServicesMock, times(1)).addRoleToUser(pendingRequest.getRequestid(), user.getId(), role.getId());
-//	}
 }

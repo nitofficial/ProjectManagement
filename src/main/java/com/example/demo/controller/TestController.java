@@ -59,10 +59,9 @@ public class TestController {
 	AdminServices adminServices;
 	
 	/**
-	 * Method to get all open tests with only its id.
-	 * @return List<IdOnly> with respective status and information.
+	 * API to display the Logged in user's details.
+	 * @return ResponseEntity with the details of the currently logged in user
 	 */
-	// API to display the Logged in user's details
 	@GetMapping("/userinfo")
 	public ResponseEntity<?> displayUserDetail() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -71,10 +70,9 @@ public class TestController {
 	}
 	
 	/**
-	 * Method to get all open tests with only its id.
-	 * @return List<IdOnly> with respective status and information.
+	 * API to update the details of the currently logged in user.
+	 * @return ResponseEntity stating that the update operation is successful.
 	 */
-	// API to update the details of the currently logged in user
 	@PutMapping("/updateuser")
 	public ResponseEntity<?> updateEmployee(@RequestBody User user) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -84,10 +82,9 @@ public class TestController {
 	}
 
 	/**
-	 * Method to get all open tests with only its id.
-	 * @return List<IdOnly> with respective status and information.
+	 * API for registered users to request roles from the Administrator.
+	 * @return ResponseEntity stating that the request has been successfully initiated.
 	 */
-	// API for registered users to request roles from the Administrator
 	@PreAuthorize("#pendingRequest.getUserid() == authentication.principal.id")
 	@PostMapping("/requestrole")
 	public ResponseEntity<?> requestRole(@Valid @RequestBody PendingRequest pendingRequest) {
@@ -96,10 +93,9 @@ public class TestController {
 	}
 
 	/**
-	 * Method to get all open tests with only its id.
-	 * @return List<IdOnly> with respective status and information.
+	 * API specific for Administrator to view all the users in the system.
+	 * @return ResponseEntity with information about all the users.
 	 */
-	// API specific for Administrator to view all the users in the system
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@GetMapping("/alluserinfo")
 	public ResponseEntity<?> displayAllUserDetail() {
@@ -107,10 +103,9 @@ public class TestController {
 	}
 
 	/**
-	 * Method to get all open tests with only its id.
-	 * @return List<IdOnly> with respective status and information.
+	 * API specific for Administrator to delete an user from the system.
+	 * @return ResponseEntity stating that the particular user has been successfully deleted.
 	 */
-	// API specific for Administrator to delete an user from the system
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@DeleteMapping("/deleteuser")
 	public ResponseEntity<?> deleteUser(@Valid @RequestBody HashMap<String, String> dataHashMap) {
@@ -118,11 +113,9 @@ public class TestController {
 	}
 
 	/**
-	 * Method to get all open tests with only its id.
-	 * @return List<IdOnly> with respective status and information.
+	 * API specific for Administrator to grant requested roles to the appropriate user.
+	 * @return ResponseEntity contains the particular user detail appended with the requested role.
 	 */
-	// API specific for Administrator to grant requested roles to the appropriate
-	// user
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping("/addroletouser")
 	public ResponseEntity<?> addRoleToUser(@Valid @RequestBody HashMap<String, String> dataHashMap) {
@@ -131,10 +124,9 @@ public class TestController {
 	}
 
 	/**
-	 * Method to get all open tests with only its id.
-	 * @return List<IdOnly> with respective status and information.
+	 * API specific for Administrator to remove a role from a particular user.
+	 * @return ResponseEntity stating that the role is removed successfully from the particular user.
 	 */
-	// API specific for Administrator to remove a role from a particular user
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping("/deleterolefromuser")
 	public ResponseEntity<?> deleteRoleFromUser(@Valid @RequestBody HashMap<String, String> dataHashMap) {
@@ -143,10 +135,9 @@ public class TestController {
 	}
 
 	/**
-	 * Method to get all open tests with only its id.
-	 * @return List<IdOnly> with respective status and information.
+	 * API specific for Administrator to add new role to the application.
+	 * @return ResponseEntity stating the the new role has been add to the Role collection.
 	 */
-	// API specific for Administrator to add new role to the application
 	@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_MANAGER')")
 	@PostMapping("/addnewrole")
 	public ResponseEntity<?> addNewRole(@Valid @RequestBody HashMap<String, String> dataHashMap) {
@@ -154,10 +145,9 @@ public class TestController {
 	}
 
 	/**
-	 * Method to get all open tests with only its id.
-	 * @return List<IdOnly> with respective status and information.
+	 * API specific for Administrator to view all the roles in the system.
+	 * @return ResponseEntity with information about all the roles.
 	 */
-	// API specific for Administrator to view all the users in the system
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@GetMapping("/allroleinfo")
 	public ResponseEntity<?> displayAllRoleDetail() {
@@ -165,10 +155,9 @@ public class TestController {
 	}
 
 	/**
-	 * Method to get all open tests with only its id.
-	 * @return List<IdOnly> with respective status and information.
+	 * API specific for Administrator to view all active roles in the system.
+	 * @return ResponseEntity with information about all the active roles.
 	 */
-	// API specific for Administrator to view all the users in the system
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@GetMapping("/allactiveroleinfo")
 	public ResponseEntity<?> displayAllActiveRoleDetail() {
@@ -176,10 +165,9 @@ public class TestController {
 	}
 
 	/**
-	 * Method to get all open tests with only its id.
-	 * @return List<IdOnly> with respective status and information.
+	 * API specific for Administrator to delete a role to the application.
+	 * @return ResponseEntity stating that the role is successfully set inactive.
 	 */
-	// API specific for Administrator to delete a role to the application
 	@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_MANAGER')")
 	@PostMapping("/deleterole")
 	public ResponseEntity<?> deleteRole(@Valid @RequestBody HashMap<String, String> dataHashMap) {
@@ -187,10 +175,9 @@ public class TestController {
 	}
 
 	/**
-	 * Method to get all open tests with only its id.
-	 * @return List<IdOnly> with respective status and information.
+	 * API specific for Administrator to update a existing role in the application.
+	 * @return ResponseEntity stating that the role has been updated successfully.
 	 */
-	// API specific for Administrator to delete a role to the application
 	@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_MANAGER')")
 	@PostMapping("/updaterole")
 	public ResponseEntity<?> updateRole(@Valid @RequestBody HashMap<String, String> dataHashMap) {

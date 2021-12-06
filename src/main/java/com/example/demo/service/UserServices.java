@@ -52,12 +52,11 @@ public class UserServices {
 	private MongoTemplate mongoTemplate;
 	
 	/**
-	 * Method to add a new entry to defect history
+	 * Service to add new user to the application.
 	 * 
-	 * @param DefectHistory entry.
-	 * @return String with respective status and information.
+	 * @param user name, password and email.
+	 * @return MessageResponse stating that the user has been successfully registered.
 	 */
-	// Service to add new user to the application
 	public MessageResponse registerUser(String username, String password, String email) {
 		if (userRepository.existsByUsername(username)) {
 			return new MessageResponse("Error: Username is already in use!");
@@ -76,12 +75,11 @@ public class UserServices {
 	}
 	
 	/**
-	 * Method to add a new entry to defect history
+	 * MService to generate Bearer token for user to sign in the application.
 	 * 
-	 * @param DefectHistory entry.
-	 * @return String with respective status and information.
+	 * @param user name and password.
+	 * @return JWTResponse with user-name and access token.
 	 */
-	// Service to generate Bearer token for user to sign in the application
 	public JwtResponse userSignIn(String username, String password) {
 
 		Authentication authentication = authenticationManager
@@ -96,12 +94,11 @@ public class UserServices {
 	}
 	
 	/**
-	 * Method to add a new entry to defect history
+	 * Service that allow users to request roles.
 	 * 
-	 * @param DefectHistory entry.
-	 * @return String with respective status and information.
+	 * @param user id and requested role name.
+	 * @return MessageResponse stating that the request has been initiated successfully.
 	 */
-	// Service that allow users to request roles
 	public MessageResponse addRoletoUser(String userid, String roleRequested) {
 
 		PendingRequest pendingRequest = new PendingRequest(userid, roleRequested);
@@ -111,12 +108,11 @@ public class UserServices {
 	}
 	
 	/**
-	 * Method to add a new entry to defect history
+	 * Service to display the information of the current user
 	 * 
-	 * @param DefectHistory entry.
-	 * @return String with respective status and information.
+	 * @param user id.
+	 * @return MessageResponse with the details of the currently logged in user.
 	 */
-	// Service to display the information of the current user
 	public User displayUserDetail(String userid) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("id").is(userid));
@@ -125,12 +121,11 @@ public class UserServices {
 	}
 	
 	/**
-	 * Method to add a new entry to defect history
+	 * Service to update current user information in the database.
 	 * 
-	 * @param DefectHistory entry.
-	 * @return String with respective status and information.
+	 * @param user name and User object.
+	 * @return MessageResponse with the updated user object.
 	 */
-	// Service to update current user information in the database
 	public User updateUserDetails(String username, User user) {
 		Query query = Query.query(Criteria.where("username").is(username));
 		Update update = new Update();

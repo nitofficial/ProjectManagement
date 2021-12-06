@@ -27,7 +27,7 @@ public class AuthController {
 	
 	/**
 	 * API for new users to register in the application
-	 * @return MessageResponse stating that the user registration is successful.
+	 * @return ResponseEntity stating that the user registration is successful.
 	 */
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
@@ -37,7 +37,7 @@ public class AuthController {
 	
 	/**
 	 * API for users to sign in with the user-name and password
-	 * @return MessageResponse containing user name and access token.
+	 * @return ResponseEntity containing user name and access token.
 	 */ 
 	@PostMapping("/signin")
 	public ResponseEntity<?> userSignIn(@Valid @RequestBody LoginRequest loginRequest) {
