@@ -50,7 +50,13 @@ public class UserServices {
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
-
+	
+	/**
+	 * Method to add a new entry to defect history
+	 * 
+	 * @param DefectHistory entry.
+	 * @return String with respective status and information.
+	 */
 	// Service to add new user to the application
 	public MessageResponse registerUser(String username, String password, String email) {
 		if (userRepository.existsByUsername(username)) {
@@ -68,7 +74,13 @@ public class UserServices {
 		userRepository.save(user);
 		return new MessageResponse("User registered successfully!");
 	}
-
+	
+	/**
+	 * Method to add a new entry to defect history
+	 * 
+	 * @param DefectHistory entry.
+	 * @return String with respective status and information.
+	 */
 	// Service to generate Bearer token for user to sign in the application
 	public JwtResponse userSignIn(String username, String password) {
 
@@ -82,7 +94,13 @@ public class UserServices {
 				.collect(Collectors.toList());
 		return new JwtResponse(jwt, username, roles);
 	}
-
+	
+	/**
+	 * Method to add a new entry to defect history
+	 * 
+	 * @param DefectHistory entry.
+	 * @return String with respective status and information.
+	 */
 	// Service that allow users to request roles
 	public MessageResponse addRoletoUser(String userid, String roleRequested) {
 
@@ -91,7 +109,13 @@ public class UserServices {
 		mongoTemplate.save(pendingRequest);
 		return new MessageResponse("Request has been sent to the admin");
 	}
-
+	
+	/**
+	 * Method to add a new entry to defect history
+	 * 
+	 * @param DefectHistory entry.
+	 * @return String with respective status and information.
+	 */
 	// Service to display the information of the current user
 	public User displayUserDetail(String userid) {
 		Query query = new Query();
@@ -99,7 +123,13 @@ public class UserServices {
 		query.fields().exclude("password");
 		return mongoTemplate.findOne(query, User.class);
 	}
-
+	
+	/**
+	 * Method to add a new entry to defect history
+	 * 
+	 * @param DefectHistory entry.
+	 * @return String with respective status and information.
+	 */
 	// Service to update current user information in the database
 	public User updateUserDetails(String username, User user) {
 		Query query = Query.query(Criteria.where("username").is(username));

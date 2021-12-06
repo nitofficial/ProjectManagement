@@ -35,6 +35,7 @@ import com.example.demo.service.UserServices;
 @SpringBootTest
 public class UserManagementTests {
 
+	@SuppressWarnings("deprecation")
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 //new comment
@@ -74,13 +75,13 @@ public class UserManagementTests {
 	
 	@Test
 	public void displayUserDetailTest() throws IOException {
-		String username = "TESTUSR_SANJAY";
+		String userid = "TESTUSR_1";
 		Query query = new Query();
-		query.addCriteria(Criteria.where("username").is(username));
+		query.addCriteria(Criteria.where("id").is(userid));
 		query.fields().exclude("password");
 		Mockito.when(mongoTemplate.findOne(query, User.class))
-		.thenReturn((new User("TESTUSR_SANJAY", "12345678", "TEST1@GMAIL.COM", "1234567890")));
-		assertTrue(userServices.displayUserDetail(username) instanceof User);
+		.thenReturn((new User("TESTUSR_1","TESTUSR_SANJAY", "12345678", "TEST1@GMAIL.COM", "1234567890")));
+		assertTrue(userServices.displayUserDetail(userid) instanceof User);
 	}
 
 	// JUnit test for displayAllUserDetail service
@@ -100,8 +101,6 @@ public class UserManagementTests {
 	}
 	
 	
-
-	@SuppressWarnings("unchecked")
 	@Test
 	public void displayAllRoleDetailTest() throws IOException {
 		// UserRepository myObjectMock = mock(UserRepository.class);
@@ -112,7 +111,6 @@ public class UserManagementTests {
 		assertEquals(3, adminServices.displayAllRoleDetail().size());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void displayAllActiveRoleDetailTest() throws IOException {
 		// UserRepository myObjectMock = mock(UserRepository.class);

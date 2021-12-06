@@ -24,15 +24,21 @@ public class AuthController {
 
 	@Autowired
 	UserServices userServices;
-
-	// API for new users to register in the application
+	
+	/**
+	 * API for new users to register in the application
+	 * @return MessageResponse stating that the user registration is successful.
+	 */
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 		return ResponseEntity.ok(userServices.registerUser(signUpRequest.getUsername(), signUpRequest.getEmail(),
 				signUpRequest.getPassword()));
 	}
-
-	// API for users to sign in with the user-name and password
+	
+	/**
+	 * API for users to sign in with the user-name and password
+	 * @return MessageResponse containing user name and access token.
+	 */ 
 	@PostMapping("/signin")
 	public ResponseEntity<?> userSignIn(@Valid @RequestBody LoginRequest loginRequest) {
 		return ResponseEntity.ok(userServices.userSignIn(loginRequest.getUsername(), loginRequest.getPassword()));

@@ -57,7 +57,11 @@ public class TestController {
 
 	@Autowired
 	AdminServices adminServices;
-
+	
+	/**
+	 * Method to get all open tests with only its id.
+	 * @return List<IdOnly> with respective status and information.
+	 */
 	// API to display the Logged in user's details
 	@GetMapping("/userinfo")
 	public ResponseEntity<?> displayUserDetail() {
@@ -65,7 +69,11 @@ public class TestController {
 		UserDetailsImpl user = (UserDetailsImpl) auth.getPrincipal();
 		return ResponseEntity.ok(userServices.displayUserDetail(user.getId()));
 	}
-
+	
+	/**
+	 * Method to get all open tests with only its id.
+	 * @return List<IdOnly> with respective status and information.
+	 */
 	// API to update the details of the currently logged in user
 	@PutMapping("/updateuser")
 	public ResponseEntity<?> updateEmployee(@RequestBody User user) {
@@ -75,6 +83,10 @@ public class TestController {
 		return ResponseEntity.ok(userServices.updateUserDetails(username, user));
 	}
 
+	/**
+	 * Method to get all open tests with only its id.
+	 * @return List<IdOnly> with respective status and information.
+	 */
 	// API for registered users to request roles from the Administrator
 	@PreAuthorize("#pendingRequest.getUserid() == authentication.principal.id")
 	@PostMapping("/requestrole")
@@ -83,6 +95,10 @@ public class TestController {
 				.ok(userServices.addRoletoUser(pendingRequest.getUserid(), pendingRequest.getRequestedroleid()));
 	}
 
+	/**
+	 * Method to get all open tests with only its id.
+	 * @return List<IdOnly> with respective status and information.
+	 */
 	// API specific for Administrator to view all the users in the system
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@GetMapping("/alluserinfo")
@@ -90,6 +106,10 @@ public class TestController {
 		return ResponseEntity.ok(adminServices.displayAllUserDetail());
 	}
 
+	/**
+	 * Method to get all open tests with only its id.
+	 * @return List<IdOnly> with respective status and information.
+	 */
 	// API specific for Administrator to delete an user from the system
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@DeleteMapping("/deleteuser")
@@ -97,6 +117,10 @@ public class TestController {
 		return ResponseEntity.ok(adminServices.deleteUser(dataHashMap.get("userid")));
 	}
 
+	/**
+	 * Method to get all open tests with only its id.
+	 * @return List<IdOnly> with respective status and information.
+	 */
 	// API specific for Administrator to grant requested roles to the appropriate
 	// user
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -106,6 +130,10 @@ public class TestController {
 				dataHashMap.get("requestedroleid")));
 	}
 
+	/**
+	 * Method to get all open tests with only its id.
+	 * @return List<IdOnly> with respective status and information.
+	 */
 	// API specific for Administrator to remove a role from a particular user
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping("/deleterolefromuser")
@@ -114,6 +142,10 @@ public class TestController {
 				.ok(adminServices.deleteRoleFromUser(dataHashMap.get("userid"), dataHashMap.get("roleid")));
 	}
 
+	/**
+	 * Method to get all open tests with only its id.
+	 * @return List<IdOnly> with respective status and information.
+	 */
 	// API specific for Administrator to add new role to the application
 	@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_MANAGER')")
 	@PostMapping("/addnewrole")
@@ -121,6 +153,10 @@ public class TestController {
 		return ResponseEntity.ok(adminServices.addNewRole(dataHashMap.get("rolename")));
 	}
 
+	/**
+	 * Method to get all open tests with only its id.
+	 * @return List<IdOnly> with respective status and information.
+	 */
 	// API specific for Administrator to view all the users in the system
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@GetMapping("/allroleinfo")
@@ -128,6 +164,10 @@ public class TestController {
 		return ResponseEntity.ok(adminServices.displayAllRoleDetail());
 	}
 
+	/**
+	 * Method to get all open tests with only its id.
+	 * @return List<IdOnly> with respective status and information.
+	 */
 	// API specific for Administrator to view all the users in the system
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@GetMapping("/allactiveroleinfo")
@@ -135,6 +175,10 @@ public class TestController {
 		return ResponseEntity.ok(adminServices.displayAllActiveRoleDetail());
 	}
 
+	/**
+	 * Method to get all open tests with only its id.
+	 * @return List<IdOnly> with respective status and information.
+	 */
 	// API specific for Administrator to delete a role to the application
 	@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_MANAGER')")
 	@PostMapping("/deleterole")
@@ -142,6 +186,10 @@ public class TestController {
 		return ResponseEntity.ok(adminServices.deleteRole(dataHashMap.get("roleid")));
 	}
 
+	/**
+	 * Method to get all open tests with only its id.
+	 * @return List<IdOnly> with respective status and information.
+	 */
 	// API specific for Administrator to delete a role to the application
 	@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_MANAGER')")
 	@PostMapping("/updaterole")

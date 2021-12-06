@@ -45,7 +45,13 @@ public class AdminServices {
 	UserRepository userRepository;
 	@Autowired
 	PendingRequestRepository pendingRequestRepository;
-
+	
+	/**
+	 * Method to add a new entry to defect history
+	 * 
+	 * @param DefectHistory entry.
+	 * @return String with respective status and information.
+	 */
 	// Service that displays all the users in the application
 	public Object displayAllUserDetail() {
 		Query query = new Query();
@@ -56,6 +62,12 @@ public class AdminServices {
 		return allUsers;
 	}
 	
+	/**
+	 * Method to add a new entry to defect history
+	 * 
+	 * @param DefectHistory entry.
+	 * @return String with respective status and information.
+	 */
 	//Service that deletes an user from the user collection
 	public MessageResponse deleteUser(String userid) {
 		try {
@@ -68,7 +80,13 @@ public class AdminServices {
 			throw new BadRequestException("Request format is wrong!");
 		}
 	}
-
+	
+	/**
+	 * Method to add a new entry to defect history
+	 * 
+	 * @param DefectHistory entry.
+	 * @return String with respective status and information.
+	 */
 	// Service that allows administrator to add requested roles to a specific user
 	public Object addRoleToUser(String requestid, String userid, String requestedroleid) {
 		try {
@@ -82,10 +100,6 @@ public class AdminServices {
 			query.addCriteria(Criteria.where("id").is(userid));
 			Role role = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("id").is(requestedroleid)),
 					Role.class);
-//			User user = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("username").is(username)), User.class);
-//			if (userRepository.existByRoles(role, user)) {
-//				return new MessageResponse("Error: Role already exist");
-//			}
 			Update update = new Update().addToSet("roles", role);
 			PendingRequest pendingRequest= mongoTemplate.findOne(new Query().addCriteria(Criteria.where("requestid").is(requestid)),
 					PendingRequest.class);
@@ -97,7 +111,13 @@ public class AdminServices {
 			throw new BadRequestException("Request format is wrong!");
 		}
 	}
-
+	
+	/**
+	 * Method to add a new entry to defect history
+	 * 
+	 * @param DefectHistory entry.
+	 * @return String with respective status and information.
+	 */
 	// Service that allows administrator to remove a role from a specific user
 	
 	public MessageResponse deleteRoleFromUser(String userid, String roleid) {
@@ -115,7 +135,13 @@ public class AdminServices {
 			throw new BadRequestException("Request format is wrong!");
 		}
 	}
-
+	
+	/**
+	 * Method to add a new entry to defect history
+	 * 
+	 * @param DefectHistory entry.
+	 * @return String with respective status and information.
+	 */
 	// Service that allows administrator to add new role to the application
 	public MessageResponse addNewRole(String rolename) {
 		try {
@@ -132,7 +158,13 @@ public class AdminServices {
 			throw new BadRequestException("Request format is wrong!");
 		}
 	}
-
+	
+	/**
+	 * Method to add a new entry to defect history
+	 * 
+	 * @param DefectHistory entry.
+	 * @return String with respective status and information.
+	 */
 	// Service that allows administrator to delete role from the application
 	public MessageResponse deleteRole(String roleid) {
 		if (!roleRepository.existsById(roleid)) {
@@ -149,7 +181,13 @@ public class AdminServices {
 		mongoTemplate.updateMulti(query2, update, User.class);
 		return new MessageResponse("Role is set inactive");
 	}
-
+	
+	/**
+	 * Method to add a new entry to defect history
+	 * 
+	 * @param DefectHistory entry.
+	 * @return String with respective status and information.
+	 */
 	// Service that allows administrator to update a role in the application
 	public MessageResponse updateRole(String roleid, String rolename, Boolean rolestatus) {
 		if (!roleRepository.existsById(roleid)) {
@@ -162,6 +200,12 @@ public class AdminServices {
 		return new MessageResponse("Role has been updated");
 	}
 
+	/**
+	 * Method to add a new entry to defect history
+	 * 
+	 * @param DefectHistory entry.
+	 * @return String with respective status and information.
+	 */
 	// Service that allows administrator to delete role from the application
 	public List<Role> displayAllRoleDetail() {
 		try {
@@ -172,6 +216,12 @@ public class AdminServices {
 		}
 	}
 
+	/**
+	 * Method to add a new entry to defect history
+	 * 
+	 * @param DefectHistory entry.
+	 * @return String with respective status and information.
+	 */
 	// Service that allows administrator to delete role from the application
 	public List<Role> displayAllActiveRoleDetail() {
 		try {
